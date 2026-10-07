@@ -1,0 +1,18 @@
+{
+  "geometryId": "0e6e82d400eb",
+  "pdfPages": 4,
+  "fixtures": 42,
+  "screenWallGap": 1.2671999999999999,
+  "projectorToCounterHorizontalGap": 0.685,
+  "targetEnvelopeToCounterMinPlanGap": 0.5101304347826088,
+  "indicativeLensToScreen": 2.3,
+  "DLE085Range": [
+    1.9175451415797877,
+    2.394669830926633
+  ],
+  "standardLensRange": [
+    4.204713268153676,
+    5.900472872963838
+  ],
+  "boundary": "Only drawn geometry checked; not measured architecture, cooling, lens shifts or real optics."
+}

@@ -1,0 +1,17 @@
+{
+  "geometryId": "adcd9523b9e6",
+  "pdfPages": 5,
+  "activeFixtures": 40,
+  "barsRepresented": 7,
+  "projectorMountOnModeledB4": true,
+  "projectorToCounterHorizontalGap": 0.5049999999999999,
+  "targetEnvelopeToCounterMinPlanGap": 0.1517092317353983,
+  "targetEnvelopeToColumnsMinPlanGap": 0.1628951224617965,
+  "indicativeLensToScreen": 4.777,
+  "standardLensRange": [
+    4.204713268153676,
+    5.900472872963838
+  ],
+  "installedLens": "UNKNOWN",
+  "boundary": "Geometry of drawn volumes only. Neither optical compatibility with installed lens nor real architecture, load, mounting, cooling or availability confirmed."
+}

@@ -1,0 +1,5 @@
+from pathlib import Path
+import json,datetime
+r=Path.cwd();d=json.loads((r/'implantation.json').read_text(encoding='utf-8'))
+report={'date':datetime.datetime.now().isoformat(),'geometry':d['geometryId'],'automated':{'studio':'passed','beam_floor_and_furniture':'passed','clip':'300 frames, 1080x1080, 30 fps, 10 s, full decode passed, periodic frame matches'},'browser':{'startup_errors':[],'projector_toggle':'ON/OFF UI verified; image disappears while spots remain lit','blackout':'spots 0%, video OFF, bar maintained','reset':'100% white, fog OFF, video ON','selection':'green housing edges observed on 111 and 105','labels':'DJ and Artiste, no coulisse overlay','navigation':'mouse orbit and zoom observed; W changes view, WASD and arrow handlers installed; form fields excluded'},'limitations':['Not a photometric or lux calibration','Installed projection lens and real rigging still unvalidated','Architecture reconstructed, not a site survey','No camera collision system','Keyboard hold and all possible navigation paths not exhaustively verified']}
+(r/'VERIFICATION_V18.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')

@@ -1,0 +1,1372 @@
+{
+  "revision": "V18",
+  "status": "STUDIO LUMIERE - DISTRIBUTIONS PAR APPAREIL - BROUILLARD OFF - BAR PERMANENT",
+  "coordinates": "x droite public, y fond de scene, z hauteur depuis sol salle; metres",
+  "venue": {
+    "width": 8.5344,
+    "stageDepth": 3.6576,
+    "stageHeight": 0.6096,
+    "grid": 3.6576,
+    "ceiling": 3.81,
+    "roomDepth": 10.668
+  },
+  "screen": {
+    "x": 2.35,
+    "y": 0.807,
+    "z": 2.05,
+    "diameter": 2.0,
+    "imageWidth": 3.392,
+    "imageHeight": 2.12,
+    "coverageMarginEachSide": 0.06,
+    "contentDiameter": 1.98,
+    "visibleBorder": 0.01,
+    "mounting": "Premiere barre a y +0.807 m ; accroche proposee a valider par DT",
+    "reservationDiameter": 2.1,
+    "diameterStatus": "Estime depuis photo ; non mesure",
+    "surface": "Toile blanche diffuse ; noir du contenu video uniquement"
+  },
+  "projector": {
+    "x": 1.95,
+    "y": -4.25,
+    "z": 2.75,
+    "bodyWidth": 0.5,
+    "bodyDepth": 0.5,
+    "bodyHeight": 0.18,
+    "lensForward": 0.28,
+    "lensDown": 0.01,
+    "lensReference": "INCONNUE",
+    "bodyDimensionsStatus": "enveloppe indicative",
+    "mountBar": "B4",
+    "mounting": "Option sur barre salle reperee graphiquement ; adaptateur, charge et lentille a confirmer"
+  },
+  "dj": {
+    "x": -3,
+    "y": 2.1,
+    "width": 1.8,
+    "depth": 0.75,
+    "height": 0.9
+  },
+  "slam": {
+    "x": -0.375,
+    "y": 1.1,
+    "width": 1.5,
+    "depth": 1.5
+  },
+  "artistRoute": [
+    [
+      -3.36,
+      3.22
+    ],
+    [
+      -1.65,
+      3.22
+    ],
+    [
+      -1.65,
+      0.55
+    ],
+    [
+      -0.375,
+      0.55
+    ],
+    [
+      -0.375,
+      1.28
+    ]
+  ],
+  "bar": {
+    "x": 3.4,
+    "y": -4.5,
+    "width": 0.79,
+    "depth": 5.8,
+    "top": 1.1425,
+    "status": "dimensions et position indicatives"
+  },
+  "columns": [
+    {
+      "x": 2.99,
+      "y": -2.25,
+      "width": 0.22,
+      "depth": 0.23,
+      "status": "indicatif"
+    },
+    {
+      "x": 2.99,
+      "y": -5.4,
+      "width": 0.22,
+      "depth": 0.23,
+      "status": "indicatif"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "101",
+      "kind": "moving",
+      "x": -2.5797306874557053,
+      "y": 0.8079376328844792,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.61,
+          2.0
+        ],
+        "danceTarget": [
+          -3,
+          2.61,
+          2.0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "DJ",
+        "status": "101 dirige vers le haut du corps du DJ ; focus a confirmer sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "102",
+      "kind": "moving",
+      "x": -1.8284904323175053,
+      "y": 1.8001417434443658,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -1.8,
+          -5,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.1199,
+        "danceClearance": 2.9145,
+        "role": "ARTISTE / PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "103",
+      "kind": "moving",
+      "x": -1.2048192771084338,
+      "y": 2.7781715095676827,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -1.8,
+          -8.3,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.1199,
+        "danceClearance": 2.4173,
+        "role": "ARTISTE / PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "104",
+      "kind": "moving",
+      "x": 1.2331679659815733,
+      "y": 2.7781715095676827,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -2.7,
+          -2.5,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.6215,
+        "danceClearance": 0.8928,
+        "role": "ARTISTE / PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "105",
+      "kind": "moving",
+      "x": 1.8710134656272148,
+      "y": 1.7717930545712262,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -2.7,
+          -2.2,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.0169,
+        "danceClearance": 0.1806,
+        "role": "ARTISTE / PISTE",
+        "status": "105 reactive a la demande ; focus artiste et piste, coupure geometrique conservatrice autour ecran"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "111",
+      "kind": "moving",
+      "x": -3.7703756201275693,
+      "y": 0.9496810772501773,
+      "z": 1.45,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -1.5,
+          -3.3,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.1197,
+        "danceClearance": 4.0426,
+        "role": "ARTISTE / PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "112",
+      "kind": "moving",
+      "x": 3.784549964564139,
+      "y": 0.963855421686747,
+      "z": 1.45,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          2.6243,
+          -1.0457,
+          0
+        ],
+        "danceTarget": [
+          2.6243,
+          -1.0457,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "PISTE",
+        "status": "112 reactive vers les premiers rangs sous E1 ; pan -30 / tilt 58 / zoom 12 / balayage +/-12 maximum. Focus et parcours a valider par DT."
+      },
+      "notUsed": false
+    },
+    {
+      "id": "7",
+      "kind": "source",
+      "x": 0.0,
+      "y": 0.8221119773210489,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.9398,
+        "danceClearance": 0.9398,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "8",
+      "kind": "source",
+      "x": -3.5294117647058827,
+      "y": 0.8079376328844792,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 4.0863,
+        "danceClearance": 4.0863,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "9",
+      "kind": "source",
+      "x": 3.6144578313253013,
+      "y": 0.8079376328844792,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.4,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -1.186,
+        "danceClearance": -1.186,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "10",
+      "kind": "source",
+      "x": -3.5294117647058827,
+      "y": 1.8001417434443658,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 4.0879,
+        "danceClearance": 4.0879,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "11",
+      "kind": "source",
+      "x": 3.6002834868887317,
+      "y": 1.8001417434443658,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.4,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -0.645,
+        "danceClearance": -0.645,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "12",
+      "kind": "source",
+      "x": -3.5435861091424523,
+      "y": 2.7781715095676827,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 4.0879,
+        "danceClearance": 4.0879,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "13",
+      "kind": "source",
+      "x": 3.6002834868887317,
+      "y": 2.7781715095676827,
+      "z": 3.11,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.4,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -0.1473,
+        "danceClearance": -0.1473,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "201",
+      "kind": "colorado",
+      "x": -2.749822820694543,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3.125,
+          2.1,
+          1.62
+        ],
+        "danceTarget": [
+          -3.125,
+          2.1,
+          1.62
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "DJ",
+        "status": "201 : eclairage de travail fixe 45 pourcent sur les platines DJ ; couleur pastel selon ambiance, turquoise pale par defaut et Noir spectacle. Sans flash ni extinction programmee. Reglage manuel possible."
+      },
+      "notUsed": false
+    },
+    {
+      "id": "202",
+      "kind": "colorado",
+      "x": -1.8284904323175053,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 3.5052,
+        "danceClearance": 3.5052,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "203",
+      "kind": "colorado",
+      "x": -0.6094968107725018,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.0095,
+        "danceClearance": 1.0095,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "204",
+      "kind": "colorado",
+      "x": 0.6236711552090716,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.7746,
+        "danceClearance": 0.7746,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "205",
+      "kind": "colorado",
+      "x": 1.856839121190645,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": 0.3219,
+        "danceClearance": 0.3219,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "206",
+      "kind": "colorado",
+      "x": 2.749822820694543,
+      "y": 2.7781715095676827,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -0.0008,
+        "danceClearance": -0.0008,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "207",
+      "kind": "colorado",
+      "x": -1.6725726435152375,
+      "y": 0.8079376328844792,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 3.0253,
+        "danceClearance": 3.0253,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "208",
+      "kind": "colorado",
+      "x": -0.6094968107725018,
+      "y": 0.8079376328844792,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.9784,
+        "danceClearance": 0.9784,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "209",
+      "kind": "colorado",
+      "x": 0.6378454996456414,
+      "y": 0.8079376328844792,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.5397,
+        "danceClearance": 0.5397,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "210",
+      "kind": "colorado",
+      "x": 1.7009213323883772,
+      "y": 0.8079376328844792,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          2.0
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          2.0
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "ARTISTE",
+        "status": "210 reactive : orientation manuelle fixe vers le haut du corps artiste, champ 28 degres ; aucun mouvement motorise ; focus a valider par DT."
+      },
+      "notUsed": false
+    },
+    {
+      "id": "251",
+      "kind": "colorado",
+      "x": -0.9071580439404678,
+      "y": -4.252303330970943,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.9958,
+        "danceClearance": 0.9958,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "252",
+      "kind": "colorado",
+      "x": 0.9213323883770376,
+      "y": -4.252303330970943,
+      "z": 3.49,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.55,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.8029,
+        "danceClearance": 0.8029,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "1",
+      "kind": "zoom",
+      "x": -3.3026222537207657,
+      "y": -0.8504606661941886,
+      "z": 3.38,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.61,
+          2.0
+        ],
+        "danceTarget": [
+          -3,
+          2.61,
+          2.0
+        ],
+        "radius": 1.2,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 3.9364,
+        "danceClearance": 3.9364,
+        "role": "DJ",
+        "status": "Focus DJ demande ; reglage manuel de la decoupe, zoom propose 25 degres."
+      },
+      "notUsed": false
+    },
+    {
+      "id": "2",
+      "kind": "zoom",
+      "x": -2.1261516654854713,
+      "y": -4.252303330970943,
+      "z": 3.38,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.5,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.0684,
+        "danceClearance": 1.0684,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "3",
+      "kind": "zoom",
+      "x": -0.4252303330970943,
+      "y": -4.252303330970943,
+      "z": 3.38,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.5,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.0141,
+        "danceClearance": 1.0141,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "4",
+      "kind": "zoom",
+      "x": 0.4394046775336641,
+      "y": -4.252303330970943,
+      "z": 3.38,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.5,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.9213,
+        "danceClearance": 0.9213,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "6",
+      "kind": "zoom",
+      "x": 2.9482636428065203,
+      "y": -0.8504606661941886,
+      "z": 3.38,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.5,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -0.3766,
+        "danceClearance": -0.3766,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "SL1",
+      "kind": "sl1",
+      "x": 0,
+      "y": 0.65,
+      "z": 3.4,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          2.0
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          2.0
+        ],
+        "radius": 0.85,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 0.6226,
+        "danceClearance": 0.6226,
+        "role": "ARTISTE",
+        "status": "Focus manuel haut du corps ; champ illustratif 90 deg, reserve E1 conservee ; diffusion reelle a valider"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "M1",
+      "kind": "mini",
+      "x": -3.99,
+      "y": 1.76,
+      "z": 2.2,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "danceTarget": [
+          -3,
+          2.1,
+          0.6096
+        ],
+        "radius": 0.9,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 3.588,
+        "danceClearance": 3.588,
+        "role": "DJ",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "M2",
+      "kind": "mini",
+      "x": 3.99,
+      "y": 1.76,
+      "z": 2.2,
+      "proposed": false,
+      "focus": {
+        "slamTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          -0.375,
+          1.1,
+          1.6096
+        ],
+        "radius": 0.9,
+        "slamOn": false,
+        "danceOn": false,
+        "slamClearance": -0.7502,
+        "danceClearance": -0.7502,
+        "role": "ARTISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": true,
+      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+    },
+    {
+      "id": "S1",
+      "kind": "par",
+      "x": -3.1,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          -1.8,
+          -2.2,
+          0
+        ],
+        "danceTarget": [
+          -1.8,
+          -2.2,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 2.917,
+        "danceClearance": 2.917,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "S2",
+      "kind": "par",
+      "x": -1.55,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          -1.8,
+          -8.3,
+          0
+        ],
+        "danceTarget": [
+          -1.8,
+          -8.3,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 5.2691,
+        "danceClearance": 5.2691,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "S3",
+      "kind": "par",
+      "x": -0.16,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          -1.8,
+          -5,
+          0
+        ],
+        "danceTarget": [
+          -1.8,
+          -5,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 4.4335,
+        "danceClearance": 4.4335,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "S4",
+      "kind": "par",
+      "x": 0.16,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          1.8,
+          -5,
+          0
+        ],
+        "danceTarget": [
+          1.8,
+          -5,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 3.5586,
+        "danceClearance": 3.5586,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "S5",
+      "kind": "par",
+      "x": 1.55,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          1.8,
+          -8.3,
+          0
+        ],
+        "danceTarget": [
+          1.8,
+          -8.3,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 4.032,
+        "danceClearance": 4.032,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    },
+    {
+      "id": "S6",
+      "kind": "par",
+      "x": 3.1,
+      "y": -4.25,
+      "z": 3.3,
+      "proposed": true,
+      "focus": {
+        "slamTarget": [
+          1.8,
+          -2.2,
+          0
+        ],
+        "danceTarget": [
+          1.8,
+          -2.2,
+          0
+        ],
+        "radius": 1.4,
+        "slamOn": true,
+        "danceOn": true,
+        "slamClearance": 1.0779,
+        "danceClearance": 1.0779,
+        "role": "PISTE",
+        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+      },
+      "notUsed": false
+    }
+  ],
+  "removedFixtures": [
+    {
+      "id": "106",
+      "kind": "moving",
+      "x": 2.593905031892275,
+      "y": 0.8079376328844792,
+      "z": 3.4,
+      "proposed": false,
+      "reason": "Depose proposee pour liberer accroche ecran ; reste dans inventaire salle"
+    },
+    {
+      "id": "5",
+      "kind": "zoom",
+      "x": 2.154500354358611,
+      "y": -4.252303330970943,
+      "z": 3.38,
+      "proposed": false,
+      "reason": "Depose proposee pour reserver P1 sur B4 ; aucune nouvelle accroche LX attribuee"
+    }
+  ],
+  "rigBars": [
+    {
+      "id": "B1",
+      "a": [
+        -3.95,
+        0.807,
+        3.6576
+      ],
+      "b": [
+        3.95,
+        0.807,
+        3.6576
+      ],
+      "source": "Plan LX source, vue Top et isometrie",
+      "status": "Trace existant repere ; cotes estimees, charge et accessibilite non confirmees"
+    },
+    {
+      "id": "B2",
+      "a": [
+        -3.95,
+        1.77,
+        3.6576
+      ],
+      "b": [
+        3.95,
+        1.77,
+        3.6576
+      ],
+      "source": "Plan LX source, vue Top et isometrie",
+      "status": "Trace existant repere ; cotes estimees, charge et accessibilite non confirmees"
+    },
+    {
+      "id": "B3",
+      "a": [
+        -3.95,
+        2.78,
+        3.6576
+      ],
+      "b": [
+        3.95,
+        2.78,
+        3.6576
+      ],
+      "source": "Plan LX source, vue Top et isometrie",
+      "status": "Trace existant repere ; cotes estimees, charge et accessibilite non confirmees"
+    },
+    {
+      "id": "B4",
+      "a": [
+        -3.95,
+        -4.25,
+        3.6576
+      ],
+      "b": [
+        3.95,
+        -4.25,
+        3.6576
+      ],
+      "source": "Plan LX source, vue Top et isometrie",
+      "status": "Trace existant repere ; cotes estimees, charge et accessibilite non confirmees"
+    },
+    {
+      "id": "L-G",
+      "a": [
+        -3.36,
+        0,
+        3.6576
+      ],
+      "b": [
+        -3.36,
+        -4.25,
+        3.6576
+      ],
+      "source": "Traces longitudinaux de la vue Top du dossier LX",
+      "status": "Reperage graphique approximatif ; nature continue et limites a confirmer sur place"
+    },
+    {
+      "id": "L-C",
+      "a": [
+        -0.2,
+        0,
+        3.6576
+      ],
+      "b": [
+        -0.2,
+        -4.25,
+        3.6576
+      ],
+      "source": "Traces longitudinaux de la vue Top du dossier LX",
+      "status": "Reperage graphique approximatif ; nature continue et limites a confirmer sur place"
+    },
+    {
+      "id": "L-D",
+      "a": [
+        3.02,
+        0,
+        3.6576
+      ],
+      "b": [
+        3.02,
+        -4.25,
+        3.6576
+      ],
+      "source": "Traces longitudinaux de la vue Top du dossier LX",
+      "status": "Reperage graphique approximatif ; nature continue et limites a confirmer sur place"
+    }
+  ],
+  "rigNotes": "Barres carrees 2 pouces selon source. Aucun rail a rideaux, conduit, poutre decorative ou surface vide ne vaut point approuve. Pas de charge admissible fournie.",
+  "lightingProtection": {
+    "enabled": true,
+    "screenSphereRadius": 1.2,
+    "extraMargin": 0.15,
+    "movingEffects": "PDF: focus fixes. Studio: mouvements simules avec coupure dynamique pres ecran. A programmer et tester par DT.",
+    "scope": "Avant et arriere ecran ; orientation et blackout des faisceaux a risque, sans validation photometrique",
+    "projectorBoundary": "B4 reste une hypothese non retenue pour la lentille actuelle ; verifier les obstacles quand le point video reel sera fixe"
+  },
+  "atmosphere": {
+    "id": "F1",
+    "model": "Antari F-1W (inventaire salle)",
+    "x": -3.62,
+    "y": 1.43,
+    "z": 0.6096,
+    "width": 0.608,
+    "depth": 0.275,
+    "height": 0.286,
+    "status": "Au sol entre enceinte gauche et booth DJ, recule de 30 cm pour degager la place. Position indicative ; sortie et ventilation a valider avec le DT. Diffusion illustrative."
+  },
+  "compatibleSceneGeometryIds": [
+    "a2d4fc43e80c"
+  ],
+  "geometryId": "294317811a38"
+}

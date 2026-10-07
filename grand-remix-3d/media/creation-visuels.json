@@ -1,0 +1,34 @@
+{
+  "tool": "imagegen built-in",
+  "output_directory": "C:\\Users\\VJs DMTeam\\Documents\\ChatGPT\\a\\output\\grand-remix-3d\\media",
+  "assets": [
+    {
+      "files": [
+        "Ocean_Bleu.png",
+        "Ocean_Bleu.webp"
+      ],
+      "prompt": "Fond carré cinématographique de vagues océaniques bleu profond et écume turquoise, eau photographique détaillée, centre sombre ouvert pour la typographie, sans violet, texte, bateau ni cadre."
+    },
+    {
+      "files": [
+        "Rouge_Conflit.png",
+        "Rouge_Conflit.webp"
+      ],
+      "prompt": "Fond carré anti-guerre non graphique : façades urbaines dévastées, collage de papier déchiré, charbon et rouge intense, grain de photographie rayée. Sans personne, corps, gore, arme, symbole ni texte."
+    },
+    {
+      "files": [
+        "Vacances_Or.png",
+        "Vacances_Or.webp"
+      ],
+      "prompt": "Fond carré de vacances photographique : mer tropicale au coucher du soleil, vagues vues de la plage, palmes dans les coins, jaune or et ambre chaleureux, sans bleu, violet, personne, texte ni cadre."
+    },
+    {
+      "files": [
+        "Grand_Slam_Logo_Transparent.png"
+      ],
+      "prompt": "Détourer uniquement le fond blanc du logo fourni. Préserver exactement le lettrage noir et turquoise GRAND SLAM INTERNATIONAL DE MONTRÉAL et les câbles. Transparence alpha réelle. Aucun flou, halo, ombre ni réinterprétation."
+    }
+  ],
+  "web_encoding": "Original PNGs retained. WebP quality92, native1254-square dimensions. Logo RGBA retained and recoloured by runtime video effect."
+}
