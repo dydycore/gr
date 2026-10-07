@@ -1,2 +1,5 @@
 .netlify/
 node_modules/
+
+# Fichier d'aperçu local, à ne pas publier
+Grand_Remix_3D_optimise.html
