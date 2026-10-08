@@ -30,6 +30,12 @@ jobs:
         run: |
           node build.cjs
           node build_site.cjs
+      - name: Vérifier les 30 tests de la maquette et des exports
+        run: |
+          for test in check-*.mjs; do
+            echo "Vérification de $test"
+            node "$test"
+          done
       - name: Contrôler l'accueil, le logo et les liens
         run: npm run test:ux
       - name: Tester les ambiances partagées et la sauvegarde locale
