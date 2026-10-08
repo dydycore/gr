@@ -1,0 +1,32 @@
+name: Vérifier l'aperçu 3D optimisé
+
+on:
+  pull_request:
+    paths:
+      - "grand-remix-3d/**"
+      - ".github/workflows/performance-preview-check.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-performance-preview:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: grand-remix-3d
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: grand-remix-3d/package-lock.json
+      - name: Installer les dépendances
+        run: npm ci
+      - name: Tester le limiteur FPS
+        run: npm run test:fps
+      - name: Compiler sans écraser la maquette
+        run: npm run preview:optim
+      - name: Vérifier la génération HTML
+        run: test -s Grand_Remix_3D_optimise.html

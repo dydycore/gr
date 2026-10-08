@@ -1,4 +1,5 @@
 import {batchStaticSurfaces} from './static-batching.js';
+import {createFrameLimiter} from './frame-limiter.mjs';
 import {simplifySidebar} from './sidebar-layout.js';
 import {ambienceDefinitions,createAmbience,ambienceDuration} from './ambiences.js';
 import {drawEventVisual} from './event-motion.js';
@@ -331,6 +332,10 @@ if(travelDelta.lengthSq()){travelDelta.normalize().multiplyScalar(dt*2.2);camera
 window.addEventListener('keydown',e=>{if(!travelMap[e.code]||editingField()||e.ctrlKey||e.metaKey||e.altKey)return;e.preventDefault();const fresh=!travelKeys.has(e.code);travelKeys.add(e.code);if(fresh)travel(.055);});
 window.addEventListener('keyup',e=>travelKeys.delete(e.code));window.addEventListener('blur',()=>travelKeys.clear());document.addEventListener('visibilitychange',()=>{if(document.hidden)travelKeys.clear();});
 let last=0,elapsed=0,screenFrame=0,lastLightingFrame=0,perfFrames=0,perfStart=0,perfWork=0;
+const fpsLimitKey='grand-remix-render-fps';
+let preferredFps=30;
+try{preferredFps=localStorage.getItem(fpsLimitKey)==='60'?60:30;}catch{}
+const frameLimiter=createFrameLimiter(preferredFps);
 function cameraCutaway(){
  // When orbiting out of the room, remove the near architectural shell rather
  // than letting its polygon cover the model. Keep the far interior surfaces.
@@ -344,15 +349,15 @@ function cameraCutaway(){
   if(wall.visible!==visible){wall.visible=visible;barGlow.shadow.needsUpdate=true;sun.shadow.needsUpdate=true;for(const f of fixtures)f.actualLight.shadow.needsUpdate=true;}
  }
 }
-function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return;}const frameStarted=performance.now();const realDelta=last?Math.max(0,(now-last)/1000):0;let dt=Math.min(realDelta,.05);last=now;if(state.motion)elapsed+=realDelta;const cycleDuration=Math.max(2,Math.min(30,Number($('#scene-hold')?.value)||ambienceDuration));if(state.ambiencePlaying&&elapsed>=cycleDuration){const next=(ambienceDefinitions.findIndex(p=>p.id===state.ambience)+1)%ambienceDefinitions.length;activateAmbience(ambienceDefinitions[next].id);}const timeText=state.ambience?(state.motion?'Cycle de '+cycleDuration+' s':'En pause')+' · '+String(Math.floor(elapsed%cycleDuration)).padStart(2,'0')+' / '+cycleDuration+' s'+(state.ambienceCustomized?' · ajustée':''):'';if($('#ambience-time').textContent!==timeText)$('#ambience-time').textContent=timeText;
+function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;frameLimiter.reset();return;}if(!frameLimiter.shouldRender(now))return;const frameStarted=performance.now();const realDelta=last?Math.max(0,(now-last)/1000):0;let dt=Math.min(realDelta,.05);last=now;if(state.motion)elapsed+=realDelta;const cycleDuration=Math.max(2,Math.min(30,Number($('#scene-hold')?.value)||ambienceDuration));if(state.ambiencePlaying&&elapsed>=cycleDuration){const next=(ambienceDefinitions.findIndex(p=>p.id===state.ambience)+1)%ambienceDefinitions.length;activateAmbience(ambienceDefinitions[next].id);}const timeText=state.ambience?(state.motion?'Cycle de '+cycleDuration+' s':'En pause')+' · '+String(Math.floor(elapsed%cycleDuration)).padStart(2,'0')+' / '+cycleDuration+' s'+(state.ambienceCustomized?' · ajustée':''):'';if($('#ambience-time').textContent!==timeText)$('#ambience-time').textContent=timeText;
 travel(dt);fogPreview.update(dt,now/1000);if(entrance)sun.shadow.needsUpdate=true;
 if(transition){let a=Math.min(1,(now-transition.start)/800),s=a*a*(3-2*a);camera.position.lerpVectors(transition.a,transition.b,s);controls.target.lerpVectors(transition.ta,transition.tb,s);if(a>=1)transition=null;}
 if(entrance){let t=Math.min(1,(now-entrance.start)/7500),exiting=entrance.exiting,path=exiting?[...routePoints].reverse():routePoints,lengths=path.slice(1).map((p,i)=>p.distanceTo(path[i])),distance=t*lengths.reduce((a,b)=>a+b,0),idx=0;while(idx<lengths.length-1&&distance>lengths[idx]){distance-=lengths[idx];idx++;}performer.position.lerpVectors(path[idx],path[idx+1],distance/lengths[idx]);performer.position.y=H;let delta=path[idx+1].clone().sub(path[idx]);performer.rotation.y=Math.atan2(delta.x,delta.z);if(t>=1){setArtistVisible(!exiting);for(const f of fixtures)f.actualLight.shadow.needsUpdate=true;}}
 lightingEditor?.tick(now);
-if(now-lastLightingFrame>40){renderFixtures(elapsed);lastLightingFrame=now;}
+if(frameLimiter.fps===30||now-lastLightingFrame>40){renderFixtures(elapsed);lastLightingFrame=now;}
 if(now-screenFrame>=1000/30-1){drawVJ(elapsed);screenFrame=now;}controls.update();cameraCutaway();renderRoom(!!transition||performance.now()-lastCameraChange<220);
 const labelKey=camera.matrixWorld.elements.join(',')+'|'+state.labels+'|'+state.rigFocus+'|'+performer.visible;if(labelKey!==lastLabelKey){lastLabelKey=labelKey;const r={width:viewportWidth,height:viewportHeight};for(const l of labelItems){let p=l.pos.clone().project(camera),visible=state.labels&&(l!==artistLabel||performer.visible)&&(!l.rigOnly||state.rigFocus)&&p.z<1&&p.z>-1&&Math.abs(p.x)<.99&&Math.abs(p.y)<.96;l.e.style.display=visible?'block':'none';if(visible){l.e.style.left=(p.x*.5+.5)*r.width+'px';l.e.style.top=(-p.y*.5+.5)*r.height+'px';}}}
-perfFrames++;perfWork+=performance.now()-frameStarted;if(now-perfStart>=2000){host.dataset.renderFps=(perfFrames*1000/(now-perfStart)).toFixed(1);host.dataset.renderCpuMs=(perfWork/perfFrames).toFixed(1);host.dataset.renderPixels=renderer.domElement.width+'x'+renderer.domElement.height;perfStart=now;perfFrames=0;perfWork=0;}
+perfFrames++;perfWork+=performance.now()-frameStarted;if(now-perfStart>=2000){host.dataset.renderFps=(perfFrames*1000/(now-perfStart)).toFixed(1);host.dataset.renderCpuMs=(perfWork/perfFrames).toFixed(1);host.dataset.renderPixels=renderer.domElement.width+'x'+renderer.domElement.height;const status=document.getElementById('render-rate');if(status)status.textContent='FPS mesurés : '+host.dataset.renderFps+' · Résolution : '+host.dataset.renderPixels;perfStart=now;perfFrames=0;perfWork=0;}
 }
 // A narrow read-only diagnostic surface is kept for local verification and GLB export.
 const videoPanel=document.createElement('div');videoPanel.className='section';videoPanel.innerHTML='<p class="eyebrow">P1 · Vidéoprojecteur</p><button id="video-toggle">Éteindre le projecteur</button><p class="note" id="video-status"></p>';$('#color-editor').before(videoPanel);
@@ -365,7 +370,25 @@ lightingEditor=createLightingEditor({fixtures,colors,geometryId:layout.geometryI
 $('#fog-toggle').onclick=()=>{fogPreview.toggle();syncFog();};$('#fog-rate').oninput=e=>{fogPreview.set({...fogPreview.state,rate:Number(e.target.value)/100});syncFog();};syncFog();
 function syncAmbienceName(force=false){const input=$('#ambience-name');if(!input)return;const identity=state.savedAmbience?'saved-'+state.savedAmbience.index:state.ambience||'free';if(force||input.dataset.identity!==identity){input.dataset.identity=identity;input.value=state.savedAmbience?.name||lightingEditor?.presetName(state.ambience,ambienceDefinitions.find(p=>p.id===state.ambience)?.name)||'';lightingEditor?.setSceneName(input.value);}}
 function renderSavedAmbiences(items){const list=$('#saved-ambience-buttons');if(!list)return;list.replaceChildren();$('#saved-ambience-heading').hidden=!items.length;for(const item of items){const b=document.createElement('button');b.textContent=item.name;b.dataset.savedIndex=item.index;b.setAttribute('aria-pressed',String(state.savedAmbience?.index===item.index));b.onclick=()=>{lightingEditor.loadSaved(item.index);state.savedAmbience=item;renderSavedAmbiences(lightingEditor.sceneSummaries());applyMode();};list.appendChild(b);}}
-simplifySidebar();renderSavedAmbiences(lightingEditor.sceneSummaries());
+simplifySidebar();
+// Both options preserve the exact same lighting, shadow maps, fog and draw resolution.
+const performanceSettings=document.querySelector('#view-settings .sidebar-detail-body');
+if(performanceSettings){
+ const rateRow=document.createElement('div');rateRow.className='row';
+ const rateLabel=document.createElement('label');rateLabel.htmlFor='render-fps-limit';rateLabel.textContent='Cadence 3D';
+ const rateSelect=document.createElement('select');rateSelect.id='render-fps-limit';
+ rateSelect.setAttribute('aria-label','Cadence de rendu 3D');
+ rateSelect.innerHTML='<option value="30">30 FPS · Économe</option><option value="60">60 FPS · Fluide</option>';
+ rateSelect.style.cssText='max-width:175px;padding:7px;background:#111c24;color:#e9ecef;border:1px solid #53616b;border-radius:6px;font:inherit';
+ rateSelect.value=String(frameLimiter.fps);
+ rateSelect.addEventListener('change',()=>{frameLimiter.setFps(Number(rateSelect.value));try{localStorage.setItem(fpsLimitKey,rateSelect.value);}catch{}});
+ rateRow.append(rateLabel,rateSelect);performanceSettings.prepend(rateRow);
+ const qualityNote=document.createElement('p');qualityNote.className='note';qualityNote.textContent='Les deux modes gardent la même résolution, les ombres, les gobos et le brouillard.';
+ rateRow.after(qualityNote);
+ const perfStatus=document.createElement('p');perfStatus.id='render-rate';perfStatus.className='note';perfStatus.textContent='FPS mesurés : en cours…';
+ qualityNote.after(perfStatus);
+}
+renderSavedAmbiences(lightingEditor.sceneSummaries());
 const saveChanges=document.createElement('button');saveChanges.id='ambience-save-changes';saveChanges.textContent='Enregistrer';saveChanges.style.cssText='width:100%;margin-top:7px;font-size:11px;padding:8px 7px';$('#ambience-save-shortcut').before(saveChanges);
 const nameLabel=document.createElement('label');nameLabel.htmlFor='ambience-name';nameLabel.textContent='Nom de l’ambiance';nameLabel.style.cssText='display:block;font-size:10px;margin-top:12px';saveChanges.before(nameLabel);
 const nameInput=document.createElement('input');nameInput.id='ambience-name';nameInput.type='text';nameInput.maxLength=70;nameInput.placeholder='Nouvelle ambiance';nameInput.style.cssText='width:100%;margin-top:5px;padding:8px;border:1px solid #62737d;border-radius:5px;background:#111c24;color:#edf5f5';saveChanges.before(nameInput);
