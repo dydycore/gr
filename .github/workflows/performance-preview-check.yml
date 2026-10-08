@@ -26,6 +26,8 @@ jobs:
         run: npm ci
       - name: Tester le limiteur FPS
         run: npm run test:fps
+      - name: Contrôler l'accueil, le logo et les liens
+        run: npm run test:ux
       - name: Compiler sans écraser la maquette
         run: npm run preview:optim
       - name: Vérifier la génération HTML
