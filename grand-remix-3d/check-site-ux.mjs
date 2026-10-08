@@ -44,6 +44,8 @@ assert.ok(info.indexOf('id="guide-import"')<info.indexOf('id="guide-export"'),'I
 assert.ok(!info.includes('<dt>Nom de l’ambiance</dt>')&&!info.includes('<dt>Enregistrer / Enregistrer sous…</dt>')&&!info.includes('<dt>Flashs</dt>'),'Info doit correspondre à la nouvelle interface.');
 
 assert.ok(model.includes('id="fixture-save"')&&model.includes('id="color-reset"'),'Enregistrer doit être placé à côté de Rétablir ce spot.');
+assert.ok(sidebar.includes("disclosure('selected-equipment'")&&sidebar.includes("selected.body.appendChild(selectedDetail)"),'Les descriptions des objets cliqués doivent rester visibles dans la barre latérale.');
+assert.ok(model.includes('selectedPanel.hidden=false')&&model.includes('selectedPanel.open=true'),'Un clic 3D doit ouvrir les informations de l’élément.');
 assert.ok(model.includes('id="fog-rate" min="0" max="100" step="1" value="30"'),'Le nouveau curseur affiche 0 à 100%.');
 assert.ok(info.includes('ancien 20 % = nouveau 100 %')&&info.includes('ancien 7 % = nouveau 35 %'),'Info doit expliquer la nouvelle échelle.');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');

@@ -53,10 +53,15 @@ export function simplifySidebar(){
  // exposing a second information panel. File exports belong in Exporter.
  const imageExports=technical.body.querySelector('#capture')?.closest('.section');if(imageExports)exports.body.appendChild(imageExports);
  technical.el.hidden=true;
+ // Details for a clicked stage object must not stay inside the hidden technical panel.
+ const selected=disclosure('selected-equipment','Équipement sélectionné','Détails de l’élément cliqué dans la maquette');
+ const selectedDetail=find('detail');
+ if(selectedDetail)selected.body.appendChild(selectedDetail);
+ selected.el.hidden=true;
  // Detailed operating help lives under the model on the site. Do not repeat
  // the room/reset paragraphs here; retain the hidden live projection status.
  const videoStatus=find('video-status');if(videoStatus){videoStatus.hidden=true;technical.body.appendChild(videoStatus);}
- side.replaceChildren(top,spots.el,fogSection.el,commands.el,scenes.el,display.el,imports.el,exports.el,technical.el);
+ side.replaceChildren(top,selected.el,spots.el,fogSection.el,commands.el,scenes.el,display.el,imports.el,exports.el,technical.el);
  const help=document.createElement('a');help.id='maquette-info-link';help.href='index.html#maquette-info';help.target='_top';help.textContent='Info';help.setAttribute('aria-label','Info : comment utiliser la maquette');side.appendChild(help);
  help.onclick=event=>{if(window.parent!==window){event.preventDefault();window.parent.postMessage({type:'grand-remix-open-help'},location.origin);}};
   // Keep the location of the selected apparatus obvious when using the list.
