@@ -1,4 +1,4 @@
-name: Prévisualisation mise en page Grand Remix
+name: Aperçu des ambiances communes Grand Remix
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
       - name: Récupérer la nouvelle interface non fusionnée
         uses: actions/checkout@v4
         with:
-          ref: amelioration-accueil-slam-v1
+          ref: ambiances-publiques-v1
 
       - name: Préparer Node
         uses: actions/setup-node@v4
@@ -47,6 +47,10 @@ jobs:
         working-directory: grand-remix-3d
         run: npm run test:fps
 
+      - name: Vérifier les sept ambiances publiques et les deux scènes
+        working-directory: grand-remix-3d
+        run: npm run test:public
+
       - name: Générer la maquette sans perte d'effet
         working-directory: grand-remix-3d
         run: npm run preview:optim
@@ -59,6 +63,7 @@ jobs:
           cp Grand_Remix_3D_optimise.html _github_pages_preview/maquette.html
           test -s _github_pages_preview/media/Grand_Slam_Logo_Transparent.png
           test -s _github_pages_preview/maquette.html
+          grep -q 'pinky love' _github_pages_preview/maquette.html
 
       - name: Configurer Pages
         uses: actions/configure-pages@v5
