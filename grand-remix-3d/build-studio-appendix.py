@@ -16,9 +16,13 @@ assert published['geometryId'] == d['geometryId']
 presets = published['presetOverrides']
 def fog_label(key):
     f = presets[key]['fog']
+    assert 0 <= f['rate'] <= .07, f'Brouillard hors limite : {key} = {f["rate"]}'
     return '<b>ON - ' + str(round(f['rate'] * 100)) + ' %</b>' if f['on'] else '<b>OFF</b>'
-pdfmetrics.registerFont(TTFont('AR', 'C:/Windows/Fonts/arial.ttf'))
-pdfmetrics.registerFont(TTFont('AB', 'C:/Windows/Fonts/arialbd.ttf'))
+def font_path(filename, fallbacks):
+    choices = [Path('C:/Windows/Fonts') / filename, *(Path(p) for p in fallbacks)]
+    return str(next(p for p in choices if p.exists()))
+pdfmetrics.registerFont(TTFont('AR', font_path('arial.ttf', ['/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'])))
+pdfmetrics.registerFont(TTFont('AB', font_path('arialbd.ttf', ['/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'])))
 pdfmetrics.registerFontFamily('AR', normal='AR', bold='AB', italic='AR', boldItalic='AB')
 W, H = landscape(A3)
 buf = io.BytesIO()
@@ -137,7 +141,8 @@ head(8, 'HUIT AMBIANCES SUGGÉRÉES')
 para(32, H - 99, W - 64,
      'Pistes artistiques à faire évoluer selon les morceaux et les besoins du spectacle. Elles illustrent la direction souhaitée ; '
      '<b>conduite et patch à finaliser avec la direction technique.</b> '
-     'Débits F1 indicatifs, à ajuster en salle selon la ventilation et le contraste de projection.', 12)
+     '<b>Maquette 3D : débit visuel de 0 à 7 % maximum ; Bleu océan : 6 %.</b> '
+     'Les pourcentages décrivent la simulation, et non une consigne physique ou DMX. À valider avec le DT.', 12)
 rows = [
     ['Ambiance', 'Intention lumière', 'Brouillard F1<br/>Pourcentage indicatif'],
     ['<b>01<br/>Entrée du public</b>',
@@ -167,6 +172,9 @@ rows = [
 ]
 y = table(32, H - 158, [200, 775, W - 64 - 975], rows, size=13.5, padding=14,
           first_colors=['#eaf1ed', '#f2e8ee', '#e6f1f8', '#f9e8e5', '#fbf1d9', '#fbe8f3', '#e9e8f5', '#e9f1df'])
+para(32, y - 16, W - 64,
+     '<b>Commandes maquette :</b> Enregistrer à côté de Rétablir ce spot ; scènes dans Mes ambiances. '
+     'Flash uniquement dans les séquences ; Importer avant Exporter dans le panneau de droite.', 10.5)
 c.showPage()
 
 # 9: Physical placement and validation, separated from app instructions.
@@ -212,7 +220,8 @@ text(left + 16, diagram_bottom + 10, 'S-G : enceinte. F1 : dégagement / ventila
 y = diagram_bottom - 24
 y = section(left, y, cw, 'Diffusion',
             '<b>Proposition : OFF à l’accueil et à l’ouverture.</b> Débits suggérés p. 8. '
-            'Diffusion douce au sol et en hauteur ; réduire dès qu’un voile diminue le contraste de projection.')
+            '<b>Pour toutes les ambiances : 7 % maximum, Bleu océan 6 %.</b> '
+             'La valeur visuelle de la maquette n’est pas une consigne DMX ; réduire si la brume diminue le contraste.')
 section(left, y, cw, 'Dégagements',
         '<b>Emplacement à valider.</b> Le manuel F-1 prescrit au moins <b>50 cm libres autour</b> ; '
         'identifier le F-1W installé et confirmer ses consignes. Sortie, ventilation et accès dégagés. '
