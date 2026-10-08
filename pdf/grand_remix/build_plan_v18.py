@@ -4,8 +4,8 @@ ROOT = Path(__file__).resolve().parent
 exec((ROOT / 'build_plan.py').read_text(encoding='utf-8').split('# SHEET 1:')[0])
 OUT = ROOT / 'Grand_Remix_Plan_Technique_V18.pdf'
 c = canvas.Canvas(str(OUT), pagesize=(W,H), pageCompression=1)
-c.setTitle('Grand Remix - Écran avant droit écarté du mur, DJ gauche, éclairage de piste - V18')
-c.setAuthor('Cindy Bélanger - DMTeam')
+c.setTitle('Grand Remix - Scénographie et éclairage')
+c.setAuthor('DMTeam')
 MAGENTA=colors.HexColor('#F000DE'); GREEN=colors.HexColor('#12CD21')
 PINK=colors.HexColor('#E7ACD3'); ORANGE=colors.HexColor('#FF6B18')
 CYAN=colors.HexColor('#00CCD9'); BLUE=colors.HexColor('#446BFF')
@@ -30,14 +30,13 @@ def head(n,title):
     txt(30,H-32,'Le Ministère - Grand Remix',22,True,colors.black)
     txt(31,H-49,title,12,True,colors.black)
     txt(W-30,H-28,'30 OCTOBRE 2026',11,True,colors.black,'right')
-    txt(W-30,H-46,'V18 - 07/10/2026 - POUR VALIDATION DT',9,True,ORANGE,'right')
+    txt(W-30,H-46,'POUR VALIDATION DT',9,True,ORANGE,'right')
     line(27,H-59,W-27,H-59,colors.black,2)
 
 def foot(n):
     line(28,43,W-28,43,colors.black,1)
-    txt(30,29,'Cindy Bélanger - DMTeam | Implantation proposée - non validée DT',8,color=colors.black)
-    txt(W/2,29,'Géométrie '+LAYOUT['geometryId'],7,color=MUTED,align='center')
-    txt(W-30,29,f'A3 paysage - imprimer à 100 % | {n}/10',8,color=colors.black,align='right')
+    txt(30,29,'DMTeam | Implantation proposée - non validée DT',8,color=colors.black)
+    txt(W-30,29,f'A3 paysage - imprimer à 100 % | {n}/9',8,color=colors.black,align='right')
 
 def pane(x,y,w,h,title):
     box(x,y,w,h,None,colors.black,1.2)
@@ -86,7 +85,7 @@ def legend(x,y,w):
         yy=y-27-i*26;fixture(x+22,yy,kind,k=.8)
         txt(x+56,yy+2,name,8);txt(x+w-54,yy+2,count,8,align='center');txt(x+w-23,yy+2,mode,7,align='center')
     txt(x+8,y-200,'ROUGE = APPAREIL NON UTILISÉ',8,True,colors.HexColor('#E96666'))
-    return para(x+8,y-212,w-16,'Rouge : extinction durant l’événement pour protéger la projection, notamment derrière l’écran.<br/>* Source 36° : 8 inventoriés, 7 dessinés. PAR : proposés.<br/>** Patch source : SL1 strobe à reconfigurer avec le DT (p. 9).',8)
+    return para(x+8,y-212,w-16,'* Source 36° : 8 inventoriés, 7 dessinés. PAR : implantation proposée.<br/>** SL1 : profil strobe à confirmer (p. 7).',8)
 
 def screen_circle(project,color=VIOLET):
     pts=[project(SCREEN_X+SCREEN_D/2*math.cos(a),SCREEN_Y,SCREEN_Z+SCREEN_D/2*math.sin(a)) for a in [i*2*math.pi/80 for i in range(80)]]
@@ -185,17 +184,17 @@ for a,b in zip(LAYOUT['artistRoute'],LAYOUT['artistRoute'][1:]):
 rx,ry=top(.20,-10.22);box(rx,ry,1.80*s,.72*s,None,colors.black,.7)
 txt(rx+.9*s,ry+.3*s,'RÉGIE',7,True,ORANGE,'center')
 # Leaders in the open margin.
-notes=[(669,'KIT LX ET AJOUT PROPOSÉ','ROUGE CLAIR = NON UTILISÉ : 9, 11, 13, 205, 206, M2. Appareils conservés en place, sans faisceau. F1 entre enceinte et booth ; booth reculé de 30 cm. Déposes 106 et 5 inchangées, proposées au DT.'),
-(585,'DJ À GAUCHE VUE PUBLIC','Table proposée 1,80 x 0,75 m. Centre : x = -3,00 ; y = +2,10. Bord de table à 37 cm du mur gauche. Trajet artiste par le fond puis côté centre.'),
-(501,'ÉCRAN ÉCARTÉ DU MUR','Hypothèse Ø 2 m ; place réservée Ø 2,10 m. E1 : centre x = +2,35 ; y = +0,807. Plan sur la première barre derrière le nez de scène ; bord droit x = +3,35, à 0,92 m du mur. Ø environ 2,00 m.'),
-(409,'VIDÉOPROJECTEUR À DROITE','Panasonic PT-RZ770. Option B4 : corps x +1,95 ; y -4,25 ; z +2,75 m. Hors comptoir dans la maquette. Repère lentille à 4,78 m d’E1. Couverture et décentrements non validés ; voir calcul page 4. P0 vert : position d’origine.'),
-(308,'LUMIÈRES DANS LA SALLE','6 PAR 56 S1-S6 proposés sur la barre salle à y = -4,25 m. S1/S6 vers A ; S3/S4 vers B ; S2/S5 vers C. Flèches bleues A102–A111 : Accueil blanc fixe, cibles page 6 ; orange : autres intentions de focus. Accroches à valider.'),
-(201,'CADRAGE DU PLAN','Origine au centre du nez de scène. x positif à droite du public ; y positif vers le fond de scène. Dimensions nominales de la fiche.')]
+notes=[(669,'MODIFICATIONS DU KIT','Déposes proposées : 106 pour E1, Zoom 5 pour P1. F1 entre enceinte gauche et poste DJ ; table reculée de 30 cm.'),
+(585,'DJ À GAUCHE VUE PUBLIC','Table 1,80 x 0,75 m. Centre x -3,00 ; y +2,10. Bord à 37 cm du mur. Passage artiste par le fond.'),
+(501,'ÉCRAN E1 SUR B1','Ø 2,00 m estimé ; réserve Ø 2,10 m. Centre x +2,35 ; y +0,807. Bord droit à 0,92 m du mur.'),
+(409,'PROJECTEUR P1 SUR B4 - OPTION','Corps x +1,95 ; y -4,25 ; z +2,75 m. Repère lentille à 4,78 m de E1. Optique et support à confirmer (p. 4). P0 : origine.'),
+(308,'ÉCLAIRAGE DU PUBLIC','PAR S1/S6 vers A ; S3/S4 vers B ; S2/S5 vers C. Flèches bleues : Accueil ; orange : autres focus. Pointages p. 6.'),
+(201,'COORDONNÉES / MÈTRES','Origine : centre du nez de scène. x : droite public ; y : fond de scène ; z : hauteur depuis le sol salle.')]
 for yy,title,body in notes:
     txt(526,yy,title,8.5,True,colors.black);para(526,yy-11,250,body,8)
 scalebar(526,89,s)
-para(820,389,332,'<b>E1 :</b> écran suspendu Ø 2,00 m estimé à l’avant droit, sur la première barre, à 0,807 m derrière le nez de scène. Bord droit à 0,92 m du mur droit. Bas proposé +1,05 m, haut +3,05 m / sol salle.<br/><br/><b>P1 :</b> option B4 x +1,95 ; y -4,25 ; z +2,75 m. Enveloppe indicative de 0,50 x 0,50 m, à 0,805 m du bord du comptoir modélisé. Lentille indicative à 4,78 m de l’écran. Lentille réelle, décentrements et accroche non validés.<br/><br/><b>Piste :</b> 6 PAR 56 proposés dans la salle pour une base fixe graduable, complétée par 7 Intimidator utilisables (112 réactivé ; 106 en dépose proposée). Les PAR ne sont pas attestés libres ou déjà installés à ces positions.',8.5)
-para(820,162,332,'<b>DT :</b> Rémi LeGresley - Le Ministère<br/><b>Base :</b> dossier Audio-LX fourni + plan LX 2023 envoyé par Rémi.<br/><b>Statut :</b> implantation et pointages proposés. Emplacements LX repris graphiquement ; 106 et Zoom 5 déposés proposés. Accroches E1/P1 à valider.',8)
+para(820,389,332,'<b>E1 :</b> bas +1,05 m ; haut +3,05 m / sol salle. Suspension sur B1 à valider.<br/><br/><b>P1 :</b> enveloppe indicative 0,50 x 0,50 m ; bord à 0,805 m du comptoir dessiné. Bar et poteaux à relever.<br/><br/><b>S1-S6 :</b> six PAR proposés sur B4 à y -4,25 m ; disponibilité, gradateurs et charge à confirmer.<br/><br/><b>Rouge clair :</b> appareils conservés en place mais non utilisés ; aucune émission rouge.',9)
+para(820,162,332,'<b>DT :</b> Rémi LeGresley - Le Ministère<br/><b>Base :</b> fiche Audio-LX et plan LX fourni.<br/><b>Statut :</b> implantation proposée, à valider sur place.',9)
 foot(1);c.showPage()
 
 # PAGE 2: familiar front and side elevations, all inventory types included.
@@ -269,13 +268,13 @@ for d in [3.1,6.1,8.9]:
     line(xx,zz+1.52*ss,xx,zz+.75*ss,LINE,1)
     line(xx,zz+.75*ss,xx-5,zz,LINE,1);line(xx,zz+.75*ss,xx+5,zz,LINE,1)
 txt(160,82,'SCÈNE',8,True,colors.black,'center');txt(560,82,'PUBLIC / DANSE',8,True,ORANGE,'center')
-para(44,371,733,'<b>P1 est une proposition de repositionnement.</b> La fiche décrit l’installation existante à 5 pi (1,52 m) de son écran 150 pouces. Dans V18 : corps à 4,25 m devant le nez de scène, repère de lentille indicatif à 4,78 m. La lentille de la salle est inconnue : essai spatial, non validé optiquement.',8.5)
-para(44,319,733,'Trajet vidéo schématique : la lentille ultra-courte peut imposer un décalage et un trajet différents. B4 est repérée sur le plan source. Adaptation du Chief VCMU au tube carré, hauteur, charge et lentille à confirmer.',8,color=MUTED)
-para(820,389,332,'<b>1. Kit existant.</b> Conserver les positions et le patch source, sauf déposes proposées de 106 pour E1 et du Zoom 5 pour P1. Mode strobe SL1 à confirmer avec le DT (p. 9). Les PAR S1-S6 sont une proposition complémentaire avec du matériel inventorié, non une implantation existante confirmée.<br/><br/><b>2. Écran E1.</b> Ø environ 2,00 m, suspendu à l’avant droit, écarté du mur vue public. Plan de l’écran sur la première barre (y = +0,807) ; bord droit à 0,92 m du mur. Suspension et sécurité secondaire à définir par le DT.<br/><br/><b>3. Lumières dans la salle.</b> Proposer S1-S6 sur la barre transversale existante, à 4,25 m du nez de scène. Vérifier place disponible, charge, accroches, gradateurs et disponibilité des PAR. Puissance totale : 6 x 500 W = 3 kW.<br/><br/><b>4. Projection.</b> PT-RZ770 et Chief VCMU documentés. Lentille installée non nommée : ne pas appliquer le ratio du zoom standard à l’installation ultra-courte. P1 hors du bar modélisé. Repère lentille à 4,78 m de l’écran, option sur B4 compatible en recul avec ET-DLE150 ; disponibilité et décentrement à vérifier. Lentille de la salle inconnue.<br/><br/><b>5. Public dansant.</b> PAR : base fixe graduable. Intimidator : mouvements prévisualisés, coupure au voisinage de la réserve E1. Limites à programmer par le DT. Régler l’éblouissement et la couverture au fond.<br/><br/><b>6. Accroches.</b> Aucun appareil sur les rails à rideaux. Points approuvés par la salle uniquement. Le 8e Source Four 36° reste non localisé.',8.4)
+para(44,371,733,'<b>P1 / B4 proposé :</b> lentille à environ 4,78 m de E1. L’installation existante est décrite à 5 pi de son écran 150 pouces ; sa lentille n’est pas identifiée.',9)
+para(44,319,733,'Trajet vidéo indicatif. Optique, décentrement et adaptation du Chief VCMU à confirmer avant montage (p. 4).',9,color=MUTED)
+para(820,389,332,'<b>Montage LX.</b> Conserver le kit existant, sauf déposes proposées 106 et Zoom 5. Profil strobe SL1 à confirmer (p. 7).<br/><br/><b>Scénographie.</b> E1 suspendu sur B1, DJ à gauche. Valider visibilité, dégagements et accès artiste.<br/><br/><b>Public.</b> S1-S6 sur B4 : 6 x 500 W = <b>3 kW</b>. Confirmer accroches et gradateurs ; régler la couverture sans éblouissement.<br/><br/><b>Accroches.</b> Points approuvés par le DT, fixation et sécurité secondaire. Aucun appareil sur les rails à rideaux.<br/><br/><b>Projection.</b> Identifier la lentille avant de retenir P1. Calcul de recul p. 4 ; focus de protection p. 6.',10)
 foot(2);c.showPage()
 
 # PAGE 3: wireframe isometric layout like the venue's overview, plus equipment.
-head(3,'VUE D’ENSEMBLE LX / SETUP ET SPÉCIFICATIONS')
+head(3,'VUE D’ENSEMBLE LX / IMPLANTATION ET SPÉCIFICATIONS')
 pane(28,276,765,468,'ISOMÉTRIE DE REPÉRAGE - SANS ÉCHELLE - IMPLANTATION PROPOSÉE')
 pane(810,370,352,374,'ÉQUIPEMENTS TECHNIQUES LX - FICHE SALLE')
 pane(810,56,352,303,'VIDÉOPROJECTION - DONNÉES DOCUMENTÉES')
@@ -320,27 +319,42 @@ tag(px-40,py+9,'P1',VIOLET,8)
 for d,key in [(2.2,'A'),(5,'B'),(8.3,'C')]:tag(*iso(0,-d,.03),f'PISTE {key}',ORANGE,8)
 txt(51,292,'S1-S6 : 6 PAR proposés au-dessus de la piste. 106 et Zoom 5 : déposes proposées pour E1/P1 ; autres points conservés.',8)
 # Full inventory from the source, including reserve items absent from the plot.
-rows=[['Appareil','Qté','Donnée principale'],['Colorado 1 Tri Tour','12','LED RGB / ARC1'],['Intimidator Spot 375Z','8','5 suspendus + 2 bas ; 106 déposé'],['Source Four 25-50°','6','5 dessinés ; Zoom 5 déposé proposé'],['Source Four 36°','8','575 W / 7 dessinés'],['DMG SL1 Mix','1','200 W'],['DMG Mini Mix','2','100 W'],['PAR 56 WFL','6','500 W / S1-S6 proposés']]
+rows=[['Appareil','Qté','Donnée principale'],['Colorado 1 Tri Tour','12','LED RGB / ARC1'],['Intimidator Spot 375Z','8','5 suspendus + 2 bas ; 106 déposé'],['Source Four 25-50°','6','Zoom 5 : dépose proposée'],['Source Four 36°','8','575 W / 7 dessinés'],['DMG SL1 Mix','1','200 W'],['DMG Mini Mix','2','100 W'],['PAR 56 WFL','6','500 W / S1-S6 proposés']]
 table(819,701,334,[159,34,141],rows,rowheights=[24]+[25]*7,size=8)
-para(822,484,330,'<b>Commande :</b> GrandMA3 Command Wing Compact sur PC.<br/><b>Gradateurs :</b> 4 Lite-Putter DX-1210.<br/><b>Distribution DMX :</b> 1 Chauvet Data Stream 4.<br/><b>Brouillard :</b> Antari F-1W, usage à convenir.<br/><b>Complément :</b> conserver l’éclairage général de salle pour accueil et circulation.',8.2)
-para(822,326,330,'<b>Panasonic PT-RZ770</b><br/>Laser DLP ; <b>7 000 lumens</b> nominaux.<br/>Résolution native : <b>1920 x 1200, 16:10</b>.<br/>HDMI disponible ; câble annoncé par Rémi.<br/><br/><b>Installation décrite par la salle :</b><br/>Support Chief VCMU ; ultra short throw ; à 5 pi (1,52 m) de l’écran existant 16:9 de 150 pouces.<br/><br/><b>Écran de ce projet :</b> cercle Ø 2,00 m estimé. Prévoir un masque circulaire. Gabarit V18 : 3,392 x 2,12 m avant masque, image visible Ø 1,98 m, marge non projetée de 1 cm sur toile blanche. Réserve native pour réglage du masque.<br/><br/><b>À relever :</b> référence de lentille et repère exact des 5 pi. Le modèle est connu ; le ratio de l’optique installée n’est pas fourni.',8.5)
+para(822,484,330,'<b>Console :</b> GrandMA3 Command Wing Compact / PC.<br/><b>Gradateurs :</b> 4 Lite-Putter DX-1210.<br/><b>DMX :</b> Chauvet Data Stream 4.<br/><b>Brouillard :</b> Antari F-1W.<br/><b>Bar :</b> éclairage maintenu.',9)
+para(822,326,330,'<b>Panasonic PT-RZ770</b><br/>Laser DLP, 7 000 lm nominaux.<br/>1920 x 1200 / 16:10 ; HDMI.<br/><br/><b>Installation existante :</b> Chief VCMU, ultra-courte focale, à 5 pi (1,52 m) de l’écran 16:9 de 150 pouces selon la salle.<br/><br/><b>Projet :</b> toile ronde Ø 2,00 m estimé, avec masque circulaire.<br/><br/><b>Lentille installée inconnue.</b> Recul et décentrement proposés : p. 4.',10)
 rows=[['Élément','Cote / destination','Application'],['E1 - écran','x +2,35 ; y +0,807 ; Ø 2,00 m estimé','Bord droit x +3,35 ; mur à 0,92 m. Bas proposé +1,05 m / sol salle.'],['P1 - vidéo','x +1,95 ; y -4,25 ; z +2,75 m','Hors comptoir modélisé. Repère lentille à 4,78 m. Optique, décentrements et support non validés.'],['DJ / slam','DJ : x -3,00 ; y +2,10. Slam : x -0,375 ; y +1,10.','Table 1,80 x 0,75 m ; mur gauche à 37 cm. Passage artiste derrière puis côté centre.'],['PAR S1-S6','y -4,25 ; x -3,10 / -1,55 / -0,16 / +0,16 / +1,55 / +3,10.','Hauteur de corps proposée +3,30 m. S1/S6 : A ; S3/S4 : B ; S2/S5 : C.']]
 table(37,229,747,[105,257,385],rows,rowheights=[24,29,29,29,29],size=8)
-para(38,80,743,'<b>Sources :</b> dossier Audio-LX du Ministère (dimensions, inventaire, support et installation vidéo) ; plan LX communiqué par Rémi ; spécifications Panasonic PT-RZ770. Les cotes du nouveau setup sont des propositions de conception, pas un relevé de l’existant.',7.6)
+para(38,80,743,'<b>Sources :</b> fiche Audio-LX et plan LX du Ministère ; Panasonic PT-RZ770 Spec File. Cotes de projet proposées, à confirmer sur place.',8)
 c.linkURL('https://leministere.ca/assets/documents/Le-Minist%C3%A8re_Fiche-technique_Audio-LX.pdf',(38,57,420,85),relative=0,thickness=0)
 c.linkURL('https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/PT-RZ770G_STE_04%28sec%29.pdf',(430,57,783,85),relative=0,thickness=0)
 foot(3);c.showPage()
-head(4,'CONCORDANCE PLAN / 3D ET CALCUL DU GABARIT VIDÉO')
-pane(28,395,1134,349,'DONNÉES COMMUNES - V18 - ESSAI SPATIAL, PAS UN PLAN DE MONTAGE VALIDÉ')
-para(45,700,1090,'B4 reste une hypothèse non validée ; lentille installée inconnue. Reprendre le point vidéo avec le DT. Le PDF et la maquette lisent le même fichier implantation.json : positions E1/P1/DJ, dimensions principales, trajet artiste, bar, poteaux et 40 appareils représentés, dont 6 non utilisés ; 106 et Zoom 5 déposés proposés. Le repère de géométrie est identique dans les deux livrables. Cette concordance ne remplace pas un relevé architectural.',12)
-rows=[['Élément','Repères communs en mètres','Niveau de validation'],['Scène / parterre','8,5344 x 3,6576 ; parterre 8,5344 x 10,668','Dimensions nominales du dossier de salle'],['Écran E1',f"x {SCREEN_X:.2f} ; y {SCREEN_Y:.2f} ; z {SCREEN_Z:.2f} ; diamètre {SCREEN_D:.2f}",'Proposé : suspension et visibilité à valider'],['Projecteur P1',f"x {P1X:.2f} ; y {P1Y:.2f} ; z {P1Z:.2f}",'Option B4 ; lentille installée et adaptation support non validées'],['DJ',f"x {DJX:.2f} ; y {DJY:.2f} ; table 1,80 x 0,75",'Proposé ; dégagement mur 0,367 m'],['Bar / poteaux','Mêmes volumes indicatifs dans les deux vues','Aucun relevé coté disponible ; collisions réelles non garanties'],['Lumières','34 existants + 6 PAR proposés ; 6 non utilisés','Positions reprises graphiquement ; accroches réelles à conserver']]
-table(45,627,1097,[165,445,487],rows,rowheights=[25]+[27]*6,size=9)
-pane(28,56,1134,326,'CALCUL DE COUVERTURE - IDENTIFIER LA LENTILLE AVANT DE FIXER LE RECUL')
+head(4,'VIDÉOPROJECTION - GABARIT ET RECUL')
+pane(28,395,1134,349,'DONNÉES DE CALCUL - ÉCRAN ESTIMÉ / LENTILLE À IDENTIFIER')
+para(45,703,1090,'<b>PT-RZ770 confirmé ; lentille installée inconnue.</b> P1 sur B4 est une option de repositionnement, à valider avec le DT.',12)
 diag=math.hypot(E['imageWidth'],E['imageHeight'])/.0254
 low=diag*.0174-.0471; high=diag*.0216-.0442
 dle150low=diag*.0286-.054; dle150high=diag*.0413-.0498
 stdlow=diag*.0379-.0746; stdhigh=diag*.0529-.0725
-para(45,345,1089,f"<b>Dimension estimée :</b> Ø 2,00 m non mesuré ; réserve d’encombrement Ø 2,10 m. Depuis V16 : E1 seul décalé de 0,40 m vers la droite ; recul et hauteur conservés. P1 reste provisoire.<br/><b>Image demandée :</b> cercle Ø 2,00 m estimé ; image visible Ø 1,98 m, marge non projetée de 1 cm sur toile blanche. Gabarit natif 16:10 = 3,392 x 2,12 m, diagonale {diag:.3f} pouces. Réserve optique de 2,12 m en hauteur ; masque à ajuster au diamètre réel, jusque 2,10 m. Le gabarit doit être noir hors du cercle.<br/><br/><b>Option B4 :</b> corps P1 x +1,95 ; y -4,25 ; z +2,75 m. Écran x +2,35 ; y +0,807 ; z +2,05 m. Lentille indicative avancée de 0,28 m : L = 4,25 - 0,28 + 0,807 = <b>4,777 m</b>. Décentrement horizontal : 0,40 m non validé ; écart vertical : 2,75 - 0,01 - 2,05 = 0,69 m.<br/><br/><b>Zoom standard / ET-DLE170 :</b> plage de recul {stdlow:.3f} à {stdhigh:.3f} m, d’après les formules constructeur. Recul insuffisant à B4 pour ce gabarit avec réserve.<br/><b>ET-DLE150 :</b> plage {dle150low:.3f} à {dle150high:.3f} m : 4,777 m est dans la plage. Décentrement vertical et repère réel à contrôler.<br/><b>ET-DLE085 :</b> plage {low:.3f} à {high:.3f} m ; ne convient pas à ce recul et à ce gabarit.<br/><br/><b>Conclusion conditionnelle :</b> la position B4 est une option avec une optique appropriée, pas une installation confirmée avec la lentille actuelle. La salle décrit un montage ultra-court sans identifier sa lentille. Référence et disponibilité de l’optique indispensables avant de retenir B4.<br/><br/><b>Accroche :</b> barre transversale reprise graphiquement ; cotes non relevées. Chief VCMU inventorié, mais adaptation, charge et longueur de suspension non documentées. Zoom 5 réservé à la dépose pour P1 ; 106 pour E1. Le dessin ne certifie ni leur déplacement ni la capacité de la structure. Corps à 0,805 m du comptoir indicatif ; ancien gabarit à environ 0,015 m du comptoir en plan : marge insuffisante, point vidéo à reprendre ; visibilité, ventilation et obstacles réels à vérifier.<br/><br/><b>Source :</b> Panasonic PT-RZ770 Spec File, pages 15–16 ; plan LX et fiche Audio-LX du Ministère. Les rayons sont un gabarit cible, pas une simulation de la lentille installée.",10.5)
+rows=[['Élément','Valeur retenue','À vérifier'],
+['Écran E1','Ø 2,00 m estimé ; réserve Ø 2,10 m','Mesurer la toile et confirmer sa suspension.'],
+['Image native 16:10',f'3,392 x 2,12 m ; diagonale {diag:.3f} pouces','Réserve optique pour ajuster le masque.'],
+['Image visible','Cercle Ø 1,98 m ; marge blanche 1 cm','Noir hors cercle ; ajuster au diamètre réel.'],
+['Recul lentille / E1','L = 4,25 - 0,28 + 0,807 = 4,777 m','Repère de lentille et position de B4 à relever.'],
+['Décentrements','Horizontal 0,40 m ; vertical 0,69 m','Compatibilité de l’optique, non validée.'],
+['Encombrement P1','Corps x +1,95 ; y -4,25 ; z +2,75 m','Bar, poteaux, ventilation et support réels.']]
+table(45,649,1097,[205,450,442],rows,rowheights=[27]+[34]*6,size=11)
+pane(28,56,1134,326,'PLAGES CONSTRUCTEUR POUR CE GABARIT')
+rows=[['Optique','Plage de recul calculée','Position P1 à 4,777 m'],
+['Standard / ET-DLE170',f'{stdlow:.3f} à {stdhigh:.3f} m','Recul insuffisant.'],
+['ET-DLE150',f'{dle150low:.3f} à {dle150high:.3f} m','Dans la plage ; disponibilité et décentrement à vérifier.'],
+['ET-DLE085',f'{low:.3f} à {high:.3f} m','Hors plage pour ce gabarit.']]
+table(45,339,1097,[260,270,567],rows,rowheights=[27,34,34,34],size=11)
+para(45,189,1089,'<b>Conclusion :</b> B4 peut convenir avec une optique adaptée, mais ne valide pas la lentille actuelle. '
+     'Identifier sa référence avant de fixer le point vidéo.<br/><br/>'
+     '<b>Accroche :</b> adaptation Chief VCMU / tube carré, charge et suspension à approuver. '
+     'Le comptoir est indicatif : contrôler les dégagements sur place.',11)
+para(45,88,1089,'<b>Source :</b> Panasonic PT-RZ770 Spec File, p. 15-16 ; fiche Audio-LX du Ministère. Calcul de recul seul, sans validation de décentrement.',9)
 foot(4);c.showPage()
 head(5,'BARRES ET PRIORITÉS D’ACCROCHE - REPÉRAGE DEPUIS LE PLAN SOURCE')
 pane(28,56,690,688,'GRILLE SEULE - SECTIONS VIDES VISIBLES - COTES GRAPHIQUES APPROXIMATIVES')
@@ -366,10 +380,10 @@ line(*rigp(P1X,P1Y+.28),*rigp(SCREEN_X,SCREEN_Y),VIOLET,1,(4,3))
 dimv(656,rigp(0,-4.25)[1],rigp(0,0)[1],'env. 4,25 m',rigp(3.95,0)[0])
 txt(50,110,'Vert : tubes repérés. Jaune : rails à rideaux, accroche interdite.',9)
 txt(50,91,'Une section sans appareil n’est pas un point de charge validé.',9,True,ORANGE)
-para(751,702,392,'<b>B1–B3 : traverses de scène.</b><br/>y ≈ +0,807 / +1,77 / +2,78 m depuis le bord avant.<br/><br/><b>B4 : traverse salle.</b><br/>y ≈ -4,25 m. P1 provisoire à x +1,95 m, décalé de 0,40 m par rapport à E1. Environ 2,32 m du mur droit à l’axe, selon la largeur nominale.<br/><br/><b>L-G / L-C / L-D : tracés longitudinaux.</b><br/>x ≈ -3,36 / -0,20 / +3,02 m ; de la scène vers B4. Repérage graphique : continuité, extrémités et nature de chaque tronçon à confirmer.<br/><br/><b>Section documentée :</b> tubes carrés 2 x 2 pouces (50,8 mm). Aucun rail à rideaux, conduit de ventilation ou élément décoratif n’est retenu comme point d’accroche.<br/><br/><b>Priorités projection :</b><br/>106 : dépose proposée pour la suspension E1 sur B1.<br/>Zoom 5 : dépose proposée pour le support P1 sur B4.<br/>En rouge clair derrière / bord E1 : 9, 11, 13, 205, 206, M2. Conservés sur place, non utilisés. Couleur du symbole uniquement ; aucun faisceau rouge. 112 utilisable sous E1, vers le public ; éteint au départ, dans Accueil et Ouverture. 210 réactivé, fixe vers l’artiste ; focus à valider.<br/><br/><b>Avant montage :</b> DT à consulter pour identification de la lentille, contrôle du support Chief VCMU, fixation adaptée au tube carré, capacité de charge, suspension secondaire, refroidissement et trajet optique réel.<br/><br/><b>Fidélité du modèle :</b> mêmes segments et coordonnées dans le PDF et le 3D. Le dossier ne donne ni un relevé complet de tous les points cachés ni leurs charges admissibles. Ce repérage ne remplace pas la visite technique.',10)
+para(751,702,392,'<b>Traverses B1-B3.</b><br/>y ≈ +0,807 / +1,77 / +2,78 m.<br/><br/><b>Traverse B4.</b><br/>y ≈ -4,25 m. Option P1 : x +1,95 m.<br/><br/><b>Longitudinales L-G / L-C / L-D.</b><br/>x ≈ -3,36 / -0,20 / +3,02 m. Continuité et extrémités à relever.<br/><br/><b>Section publiée.</b><br/>Tube carré 2 x 2 pouces / 50,8 mm.<br/><br/><b>Réservations proposées.</b><br/>B1 / E1 : dépose de 106.<br/>B4 / P1 : dépose du Zoom 5.<br/><br/><b>Accord du DT avant montage.</b><br/>Confirmer nature des tubes, charges admissibles, fixation Chief VCMU et sécurité secondaire. Aucun rail à rideaux, conduit ou élément décoratif utilisé.<br/><br/>Repérage graphique, sans relevé complet des points d’accroche.',11)
 foot(5);c.showPage()
 head(6,'FOCUS LX - PROTECTION DES DEUX FACES DE L’ÉCRAN')
-pane(28,56,680,688,'ORIENTATIONS PARTAGÉES AVEC LE 3D - VIDÉO ACTIVE')
+pane(28,56,680,688,'DESTINATIONS ET POINTAGES - VIDÉO ACTIVE')
 pane(724,56,438,688,'CONSIGNES POUR LE FOCUS ET LA PROGRAMMATION')
 groups={}
 for f in LAYOUT['fixtures']:
@@ -378,17 +392,28 @@ for f in LAYOUT['fixtures']:
 rows=[['Appareils','Destination','Slam + vidéo','Danse + vidéo']]
 for (role,slam,dance),ids in groups.items():rows.append([', '.join(i+'*' if i in ('112','S6') else i for i in ids),role,'DISPONIBLE' if slam else 'ÉTEINT','DISPONIBLE' if dance else 'ÉTEINT'])
 table(42,700,652,[310,108,117,117],rows,rowheights=[27]+[37]*(len(rows)-1),size=9)
-para(43,445,644,'<b>Lecture du tableau :</b> DISPONIBLE indique un focus utilisable, pas un allumage dans toutes les ambiances.<br/><br/><b>Départ et réinitialisation :</b> appareils utilisables blancs à 100 %, sauf <b>112 et S6 éteints, 201 pastel à 45 %, couleur selon l’ambiance</b>. Les six repères rouges et le Zoom 6 restent éteints.<br/><b>201 :</b> éclairage fixe des platines à 45 %, couleur pastel selon l’ambiance, sans extinction ; turquoise pâle au départ et dans le Noir spectacle, indépendant de 101 et des flashs ; réglable manuellement. Cible x -3,125 / y +2,10 / z +1,62 m, sans déplacer l’appareil.<br/><b>112* :</b> conservé sous E1, vers le public. Éteint au départ, au reset, dans Accueil et Ouverture ; accompagne les gobos des cinq autres ambiances. Repère de prévisualisation : pan −30°, tilt 58°, zoom 12°, balayage ±6° ; cible x +2,6243 / y −1,0457 / z 0 m. Ces angles ne sont pas des valeurs DMX calibrées ; parcours à valider.<br/><b>S6* :</b> éteint au départ et au reset ; disponible manuellement et dans les ambiances prévues.<br/><br/><b>210 et SL1 :</b> focus manuel vers le haut du corps de l’artiste : x -0,375 / y +1,10 / z +2,00 m. Positions conservées, aucun mouvement motorisé. COLORado 210 : RGB, champ 28°, cœur 15°. SL1 : strobe blanc, crête 80 %, fond rouge maintenu (page 7). Vérifier les deux faces de E1.',10)
-arrival_rows=[['ACCUEIL','Pan / tilt / zoom (aperçu)','Cible x / y / z (m)']]
+para(43,468,644,'<b>DISPONIBLE :</b> focus utilisable, selon l’ambiance. Les appareils éteints restent en place.<br/>'
+     '<b>112* :</b> OFF à l’accueil, à l’ouverture et dans Pinky love. <b>S6* :</b> selon ambiance.',11)
+arrival_rows=[['ACCUEIL','Pan / tilt / zoom','Cible x / y / z (m)']]
 for label,focus in ARRIVAL_FOCUS.items():
     target=focus['target']
     arrival_rows.append([label,f"{focus['pan']:+.1f}° / {focus['tilt']:.1f}° / {focus['zoom']:.0f}°",' / '.join(f'{n:+.3f}' for n in target)])
-arrival_y=249
+arrival_y=398
 for i,row in enumerate(arrival_rows):
-    box(42,arrival_y-17,652,17,INK if i==0 else (PALE if i%2 else colors.white),None)
-    for x,cell in zip([50,138,396],row):txt(x,arrival_y-12,cell,10,i==0,colors.white if i==0 else INK)
-    line(42,arrival_y-17,694,arrival_y-17,LINE,.5);arrival_y-=17
-para(43,140,644,'Accueil : orientations fixes blanches à 100 %, sans gobo ni flash ; différentes des parcours d’effets. Angles non calibrés DMX. Zoom 1 et 101 : DJ, cible x -3,00 / y +2,61 / z +2,00 m ; Zoom 1 à 25°. Transition DJ : artiste absent ; 101 à 100 %, 202/207 à 85 %, 201 stable à 45 %, sans blanc. 105 : artiste / piste. 112 : conservé sous E1, réactivé vers le public ; focus à valider. Cible artiste : x -0,375 / y +1,10 / z +1,6096 m. Piste : flèches du plan. Éteint ne signifie pas déposé. Source Four : utiliser les couteaux pour couper les débordements ; Zoom : resserrer si nécessaire. 106 et 5 : seules déposes proposées. Niveaux à programmer en salle.',10)
-para(741,700,399,'<b>1. Lumières derrière E1.</b> 9, 11, 13, 205, 206 et M2 conservés en place et marqués ROUGE CLAIR : NON UTILISÉS DURANT L’ÉVÉNEMENT. Aucune émission rouge. Les autres restent pointés vers artiste, DJ ou piste. Aucun éclairage direct sur l’une ou l’autre face du cercle.<br/><br/><b>2. Appareils à risque.</b> Les états ci-contre coupent les faisceaux dont le volume illustratif s’approche trop de l’écran. Une rotation ne garantit pas l’absence de débordement : contrôler les contours et la diffusion réelle.<br/><br/><b>3. Lyres.</b> Mouvements prévisualisés avec coupure autour de la réserve E1 ci-dessous. Pan 540°, tilt 270° : limiter les parcours et calibrer les zéros en salle. Correspondance des angles à établir manuellement sur la console ; aucune commande DMX transmise.<br/><br/><b>4. Zone protégée.</b> Contrôle conservateur autour d’une sphère de rayon 1,20 m centrée sur E1 : réserve écran Ø 2,10 m plus 15 cm. Les rayons de faisceau sont des gabarits de conception, pas des mesures photométriques.<br/><br/><b>5. Trajet vidéo.</b> Sept visuels animés de 30 s suivent l’ambiance sur le cercle ; projection active dès l’accueil (page 8). Dans la maquette, l’image vidéo reste indépendante des ombres et de l’éclairage de salle ; P1 éteint, la toile diffuse reçoit cet éclairage. Ce choix de rendu ne simule pas la photométrie réelle. Garder appareils, câbles et accessoires hors du faisceau vidéo réel. Les appareils derrière la toile ne bloquent pas une projection frontale si aucun élément ne dépasse devant elle ; ils peuvent néanmoins éclairer son dos. Recontrôler après identification de la lentille et du nouveau point P1.<br/><br/><b>6. Validation réelle.</b> Tester une mire blanche puis noire avec chaque appareil séparément, de face et derrière la toile. Corriger couteaux, zoom et orientation ; laisser éteint tout appareil qui lave l’image. Vérifier aussi les reflets et le brouillard.<br/><br/><b>Portée :</b> consignes et maquette mises à jour ; aucun réglage de la GrandMA3 ni déplacement réel exécuté.',10)
+    box(42,arrival_y-23,652,23,INK if i==0 else (PALE if i%2 else colors.white),None)
+    for x,cell in zip([50,138,396],row):txt(x,arrival_y-16,cell,11,i==0,colors.white if i==0 else INK)
+    line(42,arrival_y-23,694,arrival_y-23,LINE,.5);arrival_y-=23
+para(43,242,644,'Accueil proposé : axes moyens, blanc à 100 %, mouvement 1°, sans gobo ni flash. '
+     '<b>Angles de repérage, non calibrés DMX.</b>',11)
+para(43,192,644,'<b>Cibles fixes x / y / z (m)</b><br/>'
+     'Zoom 1 / 101 vers DJ : -3,00 / +2,61 / +2,00 ; Zoom 1 à 25°.<br/>'
+     '201 vers platines : -3,125 / +2,10 / +1,62 ; sans flash.<br/>'
+     'Artiste : -0,375 / +1,10 / +1,6096.<br/>'
+     '210 / SL1 vers haut du corps : -0,375 / +1,10 / +2,00.',11)
+para(741,700,399,'<b>1. Protéger E1.</b><br/>Aucun éclairage direct sur la face ou le dos. Réserve de contrôle : rayon 1,20 m, soit Ø 2,10 m + 15 cm de marge radiale. Gabarit de conception, à vérifier par essai.<br/><br/>'
+     '<b>2. Découpes et lyres.</b><br/>Régler couteaux et zoom ; calibrer les zéros. Contrôler les bords du faisceau sur tout le parcours et limiter les amplitudes. Garder le trajet vidéo libre.<br/><br/>'
+     '<b>3. Lyre 112 vers le public.</b><br/>Base : pan -30°, tilt 58°, zoom 12°, balayage ±6°. Cible : x +2,6243 ; y -1,0457 ; z 0 m. Focus à valider sans débordement sur E1.<br/><br/>'
+     '<b>4. États et permanences.</b><br/>Bar maintenu ; platines lisibles avec 201, sans flash. Les appareils rouges du plan et Zoom 6 restent éteints. Ambiances suggérées : p. 8.<br/><br/>'
+     '<b>5. Essai de focus.</b><br/>Mire blanche puis noire ; chaque appareil séparément. Corriger orientation et découpe, puis tester les mouvements et le brouillard. Laisser éteint tout faisceau atteignant directement la toile.',12)
 foot(6);c.showPage();c.save()
 print(OUT)

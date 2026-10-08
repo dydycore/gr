@@ -1,0 +1,660 @@
+{
+  "schemaVersion": 1,
+  "title": "Sources et portée du dossier Grand Remix",
+  "auditedOn": "2026-10-08",
+  "scope": "Sources attestées du dossier et des médias actuels ; bibliothèques directes et outils locaux identifiés. Ce registre n’est pas un inventaire de toutes les dépendances transitives du système.",
+  "entries": [
+    {
+      "id": "venue",
+      "category": "technical",
+      "title": "Le Ministère — fiche Audio-LX et plans",
+      "url": "https://leministere.ca/assets/documents/Le-Minist%C3%A8re_Fiche-technique_Audio-LX.pdf",
+      "use": "Dimensions publiées, inventaire, plans LX (pages 7 et 8), projecteur PT-RZ770 et support Chief VCMU.",
+      "evidence": "../pdf/grand_remix/build_plan_v18.py; fixture-profiles.js; implantation.json",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      }
+    },
+    {
+      "id": "panasonic",
+      "category": "technical",
+      "title": "Panasonic PT-RZ770 — Spec File",
+      "url": "https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/PT-RZ770G_STE_04%28sec%29.pdf",
+      "use": "Caractéristiques du projecteur, formules de recul et options de lentilles ; ne prouve pas la lentille installée.",
+      "evidence": "../pdf/grand_remix/build_plan_v18.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Document utilisé précédemment et toujours indexé sur le domaine constructeur ; accès direct non reconfirmé",
+        "limitation": "Timeout via navigateur de recherche et certificat TLS expiré lors de la revérification. Lien source conservé sans le déclarer disponible."
+      }
+    },
+    {
+      "id": "chauvet-375z",
+      "category": "technical",
+      "title": "Chauvet Intimidator Spot 375Z IRC — manuel Rev. 6",
+      "url": "https://fr.chauvetdj.com/wp-content/uploads/2017/07/Intimidator_Spot_375Z_IRC_UM_Rev6.pdf",
+      "use": "Zoom, pan/tilt, roue de couleurs, gobos et canaux ; motifs de gobos extraits de la page imprimée 7 pour la prévisualisation.",
+      "evidence": "fixture-profiles.js; 375z-manual.pdf; extract-manufacturer-gobos.py; manufacturer-gobo-masks.js; build-studio-appendix.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "limitations": [
+        "La roue physique installée dans la salle reste à vérifier.",
+        "Les illustrations du manuel ne sont pas déclarées sous licence libre."
+      ]
+    },
+    {
+      "id": "chauvet-colorado",
+      "category": "technical",
+      "title": "Chauvet COLORado 1-Tri Tour v2 — manuel Rev. 4",
+      "url": "https://storage.googleapis.com/web-congoblue/2016/01/COLORado-Tri-Tour-Manual-1.pdf",
+      "use": "Faisceau 15°, champ 28°, RGB et mode ARC.1 ; orientation manuelle.",
+      "evidence": "fixture-profiles.js; build-studio-appendix.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      }
+    },
+    {
+      "id": "etc-source-four",
+      "category": "technical",
+      "title": "ETC Source Four — gamme et documentation",
+      "url": "https://www.etcconnect.com/Products/Entertainment-Fixtures/Source-Four/",
+      "use": "Source Four 36° et fonctionnement des découpes ; puissances/lampes du kit reprises de la fiche salle.",
+      "evidence": "fixture-profiles.js; build-studio-appendix.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "relatedUrls": [
+        "https://www.etcconnect.com/Products/Entertainment-Fixtures/Source-Four/Source-Four/Documentation.aspx"
+      ]
+    },
+    {
+      "id": "dmg-user",
+      "category": "technical",
+      "title": "Rosco DMG MINI et SL1 MIX — guide utilisateur",
+      "url": "https://ca.rosco.com/sites/default/files/content/resource/2019-06/DMG%20MINI%20and%20SL1%20MIX%20User%20Guide.pdf",
+      "use": "Panneaux MIX, puissances et fonctions de couleur.",
+      "evidence": "fixture-profiles.js; build-studio-appendix.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      }
+    },
+    {
+      "id": "dmg-dmx",
+      "category": "technical",
+      "title": "Rosco DMG — profils DMX, novembre 2022",
+      "url": "https://emea.rosco.com/sites/default/files/content/resource/2022-12/DMG_DMX_Profiles_PDF_nov22.pdf",
+      "use": "Modes DMX et strobe SL1 ; le mode requis doit être confirmé avec le DT, le patch source 4 canaux ne suffit pas.",
+      "evidence": "fixture-profiles.js; build-studio-appendix.py",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "relatedUrls": [
+        "https://la.rosco.com/sites/default/files/content/resource/2022-12/DMG_DMX_Profiles_PDF_nov22.pdf"
+      ]
+    },
+    {
+      "id": "antari",
+      "category": "technical",
+      "title": "Antari F-1 — manuel constructeur",
+      "url": "https://www.antari.com/usermanual/F/F-1/F-1.pdf",
+      "use": "Fonctionnement et consignes de dégagement ; la fiche salle nomme F-1W, version et encombrement à confirmer.",
+      "evidence": "build-studio-appendix.py; fog-preview.js",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "PDF officiel reçu HTTP 200, signature PDF vérifiée ; trace dans le PDF du projet"
+      },
+      "limitations": [
+        "La fumée du site est une simulation illustrative, pas une simulation CFD ni une mesure de débit.",
+        "Le boîtier dessiné est un gabarit indicatif, non un dessin coté certifié du F-1W."
+      ]
+    },
+    {
+      "id": "mixkit-5016",
+      "category": "video",
+      "title": "Waves coming to the beach",
+      "url": "https://mixkit.co/free-stock-video/waves-coming-to-the-beach-5016/",
+      "use": "Mer et écume filmées ; recadrage, étalonnage et fondu de boucle pour dream.",
+      "evidence": "media/backgrounds/footage-sources.json; media/backgrounds/encoding-verification.json; video-backgrounds.js",
+      "license": {
+        "name": "Mixkit Stock Video Free License",
+        "id": null,
+        "url": "https://mixkit.co/license/#videoFree",
+        "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+        "termsUrl": "https://mixkit.co/terms/",
+        "attributionRequired": false,
+        "conditions": "Usage commercial et non commercial, adaptation et diffusion autorisés selon les conditions Mixkit ; sources brutes non publiées en bibliothèque."
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "scene": "dream",
+      "asset": "media/backgrounds/dream.mp4",
+      "sourceSha256": "34f6919aade3de12d025fb08643b4a7c11b609da62caa48a7a163cfc1209b2b5"
+    },
+    {
+      "id": "mixkit-2168",
+      "category": "video",
+      "title": "Bright orange sunset on beach",
+      "url": "https://mixkit.co/free-stock-video/bright-orange-sunset-on-beach-2168/",
+      "use": "Plage et coucher de soleil filmés ; recadrage, étalonnage et fondu de boucle pour warm.",
+      "evidence": "media/backgrounds/footage-sources.json; media/backgrounds/encoding-verification.json; video-backgrounds.js",
+      "license": {
+        "name": "Mixkit Stock Video Free License",
+        "id": null,
+        "url": "https://mixkit.co/license/#videoFree",
+        "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+        "termsUrl": "https://mixkit.co/terms/",
+        "attributionRequired": false,
+        "conditions": "Usage commercial et non commercial, adaptation et diffusion autorisés selon les conditions Mixkit ; sources brutes non publiées en bibliothèque."
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "scene": "warm",
+      "asset": "media/backgrounds/warm.mp4",
+      "sourceSha256": "7ab97cc990ae86bdd371d9a973ffb64c56c95376ff325dd1c0bc664737aaf21e"
+    },
+    {
+      "id": "mixkit-100900",
+      "category": "video",
+      "title": "Droplets Falling on Blooming Pink Roses",
+      "url": "https://mixkit.co/free-stock-video/droplets-falling-on-blooming-pink-roses-100900/",
+      "use": "Roses roses filmées ; gouttes faisant trembler les pétales ; recadrage, étalonnage et fondu de boucle pour pinky.",
+      "evidence": "media/backgrounds/footage-sources.json; media/backgrounds/encoding-verification.json; video-backgrounds.js",
+      "license": {
+        "name": "Mixkit Stock Video Free License",
+        "id": null,
+        "url": "https://mixkit.co/license/#videoFree",
+        "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+        "termsUrl": "https://mixkit.co/terms/",
+        "attributionRequired": false,
+        "conditions": "Usage commercial et non commercial, adaptation et diffusion autorisés selon les conditions Mixkit ; sources brutes non publiées en bibliothèque."
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "scene": "pinky",
+      "asset": "media/backgrounds/pinky.mp4",
+      "sourceSha256": "b522a74f70e0d660bf16a0655eaedff198828e456fc890177b6d6b9dc879cca9"
+    },
+    {
+      "id": "mixkit-3754",
+      "category": "video",
+      "title": "Fire on black background",
+      "url": "https://mixkit.co/free-stock-video/fire-on-black-background-3754/",
+      "use": "Flammes vives montant sur fond noir ; recadrage, étalonnage et fondu de boucle pour red_alert.",
+      "evidence": "media/backgrounds/footage-sources.json; media/backgrounds/encoding-verification.json; video-backgrounds.js",
+      "license": {
+        "name": "Mixkit Stock Video Free License",
+        "id": null,
+        "url": "https://mixkit.co/license/#videoFree",
+        "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+        "termsUrl": "https://mixkit.co/terms/",
+        "attributionRequired": false,
+        "conditions": "Usage commercial et non commercial, adaptation et diffusion autorisés selon les conditions Mixkit ; sources brutes non publiées en bibliothèque."
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "scene": "red_alert",
+      "asset": "media/backgrounds/red_alert.mp4",
+      "sourceSha256": "edafc35b6ed8a51e68b8f0c212db10c3b9dd1d52d2c27cc14abfc7426323e694"
+    },
+    {
+      "id": "art-red",
+      "category": "project-art",
+      "title": "Collage rouge fictif",
+      "url": null,
+      "use": "Architecture et armes stylisées, éléments rouges ; image créée avec imagegen, animée au-dessus du feu réellement filmé. Ce n’est pas un document de guerre.",
+      "evidence": "media/creation-visuels.json; visual-scenes-colour.js; visual-art-data.js",
+      "license": {
+        "name": "Création pour ce projet avec assistance IA ; aucune licence de banque d’images ni licence libre déclarée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Provenance locale + code de composition inspectés"
+      },
+      "asset": "media/Rouge_Conflit.webp"
+    },
+    {
+      "id": "logo",
+      "category": "project-art",
+      "title": "Logo Grand Slam International de Montréal fourni par l’organisatrice",
+      "url": null,
+      "use": "Logo fourni dans la conversation, détouré avec imagegen puis animé dans la maquette.",
+      "evidence": "media/creation-visuels.json; media/Grand_Slam_Logo_Transparent.png; event-motion.js",
+      "license": {
+        "name": "Élément fourni — droits du logo non documentés par une licence publique",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Pièce fournie dans la conversation + provenance locale"
+      },
+      "asset": "media/Grand_Slam_Logo_Transparent.png"
+    },
+    {
+      "id": "screen-photo",
+      "category": "project-reference",
+      "title": "Photographie de l’écran fournie dans la conversation",
+      "url": null,
+      "use": "Référence visuelle pour l’estimation du diamètre voisin de 2 m ; aucune mesure étalon disponible. Photo non diffusée comme stock.",
+      "evidence": "Conversation du projet; implantation.json",
+      "license": {
+        "name": "Référence fournie — droits non documentés",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Pièce utilisateur ; estimation déclarée, pas mesure sur place"
+      }
+    },
+    {
+      "id": "font-cormorant",
+      "category": "font",
+      "title": "Cormorant",
+      "url": "https://github.com/CatharsisFonts/Cormorant",
+      "use": "Gras italique utilisé pour Bleu océan.",
+      "evidence": "index.template.html; visual-scenes-colour.js; media/fonts/*-OFL.txt",
+      "license": {
+        "name": "SIL Open Font License 1.1",
+        "id": "OFL-1.1",
+        "url": "https://openfontlicense.org/",
+        "includedLicenseFiles": [
+          "media/fonts/cormorant-bolditalic-OFL.txt"
+        ]
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "assets": [
+        "media/fonts/cormorant-bolditalic.woff2"
+      ]
+    },
+    {
+      "id": "font-caveat",
+      "category": "font",
+      "title": "Caveat",
+      "url": "https://github.com/googlefonts/caveat",
+      "use": "Mots du visuel soleil.",
+      "evidence": "index.template.html; visual-scenes-colour.js; media/fonts/*-OFL.txt",
+      "license": {
+        "name": "SIL Open Font License 1.1",
+        "id": "OFL-1.1",
+        "url": "https://openfontlicense.org/",
+        "includedLicenseFiles": [
+          "media/fonts/caveat-OFL.txt"
+        ]
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "assets": [
+        "media/fonts/caveat.woff2"
+      ]
+    },
+    {
+      "id": "font-dynapuff",
+      "category": "font",
+      "title": "DynaPuff",
+      "url": "https://github.com/googlefonts/dynapuff",
+      "use": "Mot SOLEIL du visuel soleil.",
+      "evidence": "index.template.html; visual-scenes-colour.js; media/fonts/*-OFL.txt",
+      "license": {
+        "name": "SIL Open Font License 1.1",
+        "id": "OFL-1.1",
+        "url": "https://openfontlicense.org/",
+        "includedLicenseFiles": [
+          "media/fonts/dynapuff-OFL.txt"
+        ]
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "assets": [
+        "media/fonts/dynapuff.woff2"
+      ]
+    },
+    {
+      "id": "font-great-vibes",
+      "category": "font",
+      "title": "Great Vibes",
+      "url": "https://github.com/googlefonts/great-vibes",
+      "use": "Mots de Pinky love.",
+      "evidence": "index.template.html; visual-scenes-colour.js; media/fonts/*-OFL.txt",
+      "license": {
+        "name": "SIL Open Font License 1.1",
+        "id": "OFL-1.1",
+        "url": "https://openfontlicense.org/",
+        "includedLicenseFiles": [
+          "media/fonts/great-vibes-OFL.txt"
+        ]
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "assets": [
+        "media/fonts/great-vibes.woff2"
+      ]
+    },
+    {
+      "id": "font-anton",
+      "category": "font",
+      "title": "Anton",
+      "url": "https://github.com/googlefonts/AntonFont",
+      "use": "Police embarquée et déclarée ; le visuel rouge actuel utilise Impact comme police système.",
+      "evidence": "index.template.html; visual-scenes-colour.js; media/fonts/*-OFL.txt",
+      "license": {
+        "name": "SIL Open Font License 1.1",
+        "id": "OFL-1.1",
+        "url": "https://openfontlicense.org/",
+        "includedLicenseFiles": [
+          "media/fonts/anton-OFL.txt"
+        ]
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "assets": [
+        "media/fonts/anton.woff2"
+      ]
+    },
+    {
+      "id": "system-fonts",
+      "category": "font",
+      "title": "Polices système et Arial du PDF",
+      "url": null,
+      "use": "Arial/Helvetica pour l’interface, Impact pour Rouge ; polices de repli système. Arial de Windows est incorporée au PDF ; les fichiers système ne sont pas distribués comme polices web.",
+      "evidence": "index.template.html; portal.template.html; visual-scenes-colour.js; ../pdf/grand_remix/build_plan.py; build-studio-appendix.py",
+      "license": {
+        "name": "Licences propriétaires des polices système ; aucune licence libre attribuée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Déclarations CSS/Canvas et source PDF inspectées"
+      }
+    },
+    {
+      "id": "three",
+      "category": "software",
+      "title": "Three.js 0.180.0 + OrbitControls",
+      "url": "https://github.com/mrdoob/three.js/tree/r180",
+      "use": "Moteur de rendu 3D dans le navigateur.",
+      "evidence": "node_modules/three/package.json; node_modules/three/LICENSE; scene.js; app.bundle.js",
+      "license": {
+        "name": "MIT",
+        "id": "MIT",
+        "url": "https://github.com/mrdoob/three.js/blob/r180/LICENSE"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": true
+    },
+    {
+      "id": "mediabunny",
+      "category": "software",
+      "title": "Mediabunny 1.61.3",
+      "url": "https://github.com/Vanilagy/mediabunny/tree/v1.61.3",
+      "use": "Assemblage MP4 pour l’export image par image ; bibliothèque sans modifications locales.",
+      "evidence": "node_modules/mediabunny/package.json; node_modules/mediabunny/LICENSE; offline-scene-recorder.js; app.bundle.js",
+      "license": {
+        "name": "MPL-2.0",
+        "id": "MPL-2.0",
+        "url": "https://github.com/Vanilagy/mediabunny/blob/v1.61.3/LICENSE"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": true
+    },
+    {
+      "id": "esbuild",
+      "category": "software",
+      "title": "esbuild",
+      "url": "https://github.com/evanw/esbuild",
+      "use": "Compilation du site ; outil non embarqué.",
+      "evidence": "package-lock.json; build.cjs; node_modules/esbuild/LICENSE.md",
+      "license": {
+        "name": "MIT",
+        "id": "MIT",
+        "url": "https://github.com/evanw/esbuild/blob/main/LICENSE.md"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": false
+    },
+    {
+      "id": "ffmpeg",
+      "category": "software",
+      "title": "FFmpeg 8.0 / ffprobe",
+      "url": "https://ffmpeg.org/",
+      "use": "Préparation et vérification des vidéos ; exécutable local avec libx264, non embarqué dans le site.",
+      "evidence": "prepare-video-backgrounds.py; sortie locale ffmpeg -L",
+      "license": {
+        "name": "GPL-3.0-or-later",
+        "id": "GPL-3.0-or-later",
+        "url": "https://ffmpeg.org/legal.html"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": false
+    },
+    {
+      "id": "reportlab",
+      "category": "software",
+      "title": "ReportLab 4.4.9",
+      "url": "https://docs.reportlab.com/",
+      "use": "Création des pages PDF ; outil local non embarqué.",
+      "evidence": "build-studio-appendix.py; distribution locale reportlab-4.4.9 / LICENSE",
+      "license": {
+        "name": "BSD-3-Clause",
+        "id": "BSD-3-Clause",
+        "url": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": false
+    },
+    {
+      "id": "pypdf",
+      "category": "software",
+      "title": "pypdf 6.10.0",
+      "url": "https://github.com/py-pdf/pypdf",
+      "use": "Assemblage et lecture des PDF ; outil local non embarqué.",
+      "evidence": "build-studio-appendix.py; extract-manufacturer-gobos.py; distribution locale pypdf-6.10.0 / LICENSE",
+      "license": {
+        "name": "BSD-3-Clause",
+        "id": "BSD-3-Clause",
+        "url": "https://github.com/py-pdf/pypdf/blob/main/LICENSE"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": false
+    },
+    {
+      "id": "pillow",
+      "category": "software",
+      "title": "Pillow 12.3.0",
+      "url": "https://github.com/python-pillow/Pillow",
+      "use": "Traitement d’images et masques de gobos ; outil local non embarqué.",
+      "evidence": "extract-manufacturer-gobos.py; distribution locale Pillow-12.3.0 / LICENSE",
+      "license": {
+        "name": "MIT-CMU",
+        "id": "MIT-CMU",
+        "url": "https://github.com/python-pillow/Pillow/blob/main/LICENSE"
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Paquet/licence locale et utilisation inspectés ; lien éditeur lorsque disponible"
+      },
+      "shippedInSite": false
+    },
+    {
+      "id": "mediabunny-doc",
+      "category": "implementation-reference",
+      "title": "Mediabunny — EncodedVideoPacketSource",
+      "url": "https://mediabunny.dev/guide/media-sources#encodedvideopacketsource",
+      "use": "Documentation de l’assemblage des paquets encodés pour l’export MP4.",
+      "evidence": "offline-scene-recorder.js",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      }
+    },
+    {
+      "id": "chrome-recorder",
+      "category": "implementation-reference",
+      "title": "Chrome 126 — MP4 dans MediaRecorder",
+      "url": "https://developer.chrome.com/release-notes/126#mp4_container_support_for_mediarecorder",
+      "use": "Référence de compatibilité pour l’enregistreur natif de repli ; la disponibilité réelle est testée dans le navigateur.",
+      "evidence": "video-recorder.js",
+      "license": {
+        "name": "Documentation de référence — aucune licence ouverte de redistribution attestée",
+        "id": null
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      }
+    },
+    {
+      "id": "pbr-transmittance",
+      "category": "rendering",
+      "title": "Physically Based Rendering - Transmittance",
+      "url": "https://www.pbr-book.org/4ed/Volume_Scattering/Transmittance",
+      "use": "Beer-Lambert extinction along the projector-to-screen and screen-to-viewer paths in the illustrative fog volume.",
+      "evidence": "fog-volume.js",
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Primary reference opened and compared to rendering model"
+      }
+    },
+    {
+      "id": "calamine",
+      "category": "creative-reference",
+      "title": "Calamine — références artistiques officielles",
+      "url": "https://www.bravomusique.com/fr/artistes/calamine/",
+      "additionalUrls": [
+        "https://linktr.ee/calamine",
+        "https://www.instagram.com/calamine_mtl/"
+      ],
+      "use": "Univers du rap engagé et Rétrograde : composition animée originale DMTeam pour la finale. Aucun extrait de paroles, photographie, clip ou audio de l’artiste réutilisé.",
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Biographie Bravo musique et Linktree officiel consultés ; Instagram fourni par l’utilisateur, accès automatisé limité."
+      }
+    },
+    {
+      "id": "mixkit-40741",
+      "category": "video",
+      "title": "Sunset in the distance walking through the city",
+      "url": "https://mixkit.co/free-stock-video/sunset-in-the-distance-walking-through-the-city-40741/",
+      "use": "Marche urbaine à la première personne ; recadrage, contraste doux, couleurs désaturées et fondu de boucle pour Calamine.",
+      "evidence": "media/backgrounds/footage-sources.json; media/backgrounds/encoding-verification.json; video-backgrounds.js",
+      "license": {
+        "name": "Mixkit Stock Video Free License",
+        "id": null,
+        "url": "https://mixkit.co/license/#videoFree",
+        "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+        "termsUrl": "https://mixkit.co/terms/",
+        "attributionRequired": false,
+        "conditions": "Usage commercial et non commercial, adaptation et diffusion autorisés selon les conditions Mixkit ; sources brutes non publiées en bibliothèque."
+      },
+      "verification": {
+        "date": "2026-10-08",
+        "method": "Source primaire ouverte + trace dans les fichiers du projet"
+      },
+      "scene": "hiphop",
+      "asset": "media/backgrounds/hiphop.mp4",
+      "sourceSha256": "c55f65b026527cd5d8c0075ca3f03a787be9112e7b917c01ff12ef28cdd42115"
+    }
+  ],
+  "limitations": [
+    "Les dimensions publiées de la salle servent de base ; bar, colonnes et détails architecturaux sont reconstitués, sans relevé complet.",
+    "Écran rond estimé à environ 2 m à partir d’une photo. Mesures, dégagements et accrochages doivent être confirmés sur place.",
+    "PT-RZ770 et support Chief VCMU sont inventoriés ; la lentille installée reste inconnue. L’option ET-DLE150 et la position P1 sont des propositions, non une installation validée.",
+    "Faisceaux, couleurs, gobos et brouillard sont des prévisualisations. Pas de calcul photométrique certifié ni de reproduction exacte du résultat réel. Patch, modes DMX et protections à confirmer avec le DT.",
+    "PAR S1–S6 : implantation proposée avec du matériel inventorié. Le 8e Source Four 36° n’est pas localisé sur le plan source. Les 20 silhouettes ne représentent pas la capacité autorisée.",
+    "Les licences des médias et logiciels n’accordent aucun aval technique des fabricants ou de la salle."
+  ],
+  "retiredAssets": [
+    {
+      "assets": [
+        "media/Ocean_Bleu.webp",
+        "media/Vacances_Or.webp",
+        "media/Pinky_Love.webp"
+      ],
+      "origin": "Créations imagegen documentées dans media/creation-visuels.json",
+      "status": "Anciens fonds fixes remplacés par les vrais clips vidéo ; non réintroduits comme fonds par le runtime."
+    }
+  ],
+  "excludedUnattestedClaims": [
+    "Aucune autorisation privée ou licence du logo n’est inventée.",
+    "Aucun courriel Gmail/Drive n’est présenté comme une nouvelle vérification documentaire dans cet audit."
+  ]
+}

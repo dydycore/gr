@@ -11,11 +11,12 @@ for(const file of ['check-published-lighting.mjs','check-frame-limiter.mjs','che
 execFileSync(process.execPath,['preview-performance.cjs'],{cwd:root,stdio:'inherit'});
 const model=path.join(root,'Grand_Remix_3D_optimise.html');
 const target=path.join(site,'maquette.html');
-const contents=fs.readFileSync(model,'utf8');
-if(!contents.includes('pinky love'))
+let contents=fs.readFileSync(model,'utf8');
+if(!/pinky love/i.test(contents))
  throw new Error('Les scènes publiques ne sont pas intégrées à la maquette compilée.');
 if(!fs.existsSync(path.join(site,'index.html'))||!fs.existsSync(path.join(site,'media','Grand_Slam_Logo_Transparent.png')))
  throw new Error('L’accueil ou le logo manquent dans le dossier site.');
-fs.copyFileSync(model,target);
+contents=contents.replaceAll('href="../pdf/grand_remix/Grand_Remix_Plan_Technique_V18.pdf"','href="documents/Grand-Remix-Plan-Technique-V18.pdf"');
+fs.writeFileSync(target,contents);
 console.log('Site prêt pour Netlify : '+site);
-console.log('7 ambiances et 2 scènes publiques incluses. Aucun déploiement n’a été effectué.');
+console.log('8 ambiances principales incluses. Aucun déploiement n’a été effectué.');

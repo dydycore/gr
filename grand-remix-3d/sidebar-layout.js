@@ -21,20 +21,24 @@ export function simplifySidebar(){
  };
  const top=section('show-ambiences');heading(top,'Ambiances');
  top.appendChild(find('ambience-buttons'));
- const savedHeading=heading(top,'Mes ambiances');savedHeading.id='saved-ambience-heading';savedHeading.hidden=true;
- const savedButtons=document.createElement('div');savedButtons.id='saved-ambience-buttons';savedButtons.className='ambience-buttons';savedButtons.setAttribute('role','group');savedButtons.setAttribute('aria-label','Mes ambiances enregistrées');top.appendChild(savedButtons);
+ // Personal saves are managed in Mes ambiances; keep the main list to eight ambiences.
+ const savedCatalogue=document.createElement('div');savedCatalogue.hidden=true;top.appendChild(savedCatalogue);
+ const savedHeading=heading(savedCatalogue,'Mes ambiances');savedHeading.id='saved-ambience-heading';savedHeading.hidden=true;
+ const savedButtons=document.createElement('div');savedButtons.id='saved-ambience-buttons';savedButtons.className='ambience-buttons';savedCatalogue.appendChild(savedButtons);
  const actions=find('ambience-play').closest('.studio-actions');
  top.appendChild(actions);
- const saveShortcut=document.createElement('button');saveShortcut.id='ambience-save-shortcut';saveShortcut.textContent='Enregistrer mon ambiance';top.appendChild(saveShortcut);
+ const saveShortcut=document.createElement('button');saveShortcut.id='ambience-save-shortcut';saveShortcut.textContent='Enregistrer mon ambiance';
  top.appendChild(find('ambience-time'));top.appendChild(find('ambience-status'));
- const quick=section('quick-controls');heading(quick,'Commandes');
+ const commands=disclosure('command-settings','Commandes');
+ const quick=section('quick-controls');commands.body.appendChild(quick);
  quick.appendChild(find('room-reset').closest('.studio-actions'));
  const videoActions=document.createElement('div');videoActions.className='video-actions';videoActions.appendChild(find('video-toggle'));quick.appendChild(videoActions);
  const spots=disclosure('spot-settings','Régler un spot','Cliquez sur un spot dans la salle');
+ const ambienceEdit=section('ambience-edit');ambienceEdit.appendChild(saveShortcut);spots.body.appendChild(ambienceEdit);
  spots.body.appendChild(spot);spot.querySelector('.eyebrow')?.remove();
  const fogSection=disclosure('fog-settings','Brouillard','Arrêté au départ');
  if(fog){fogSection.body.appendChild(fog);fog.querySelector('.eyebrow')?.remove();}
- const scenes=disclosure('saved-scenes','Mes scènes','Enregistrer et retrouver vos réglages');
+ const scenes=disclosure('saved-scenes','Mes ambiances','Enregistrer et retrouver vos réglages');
  if(saved){scenes.body.appendChild(saved);saved.querySelector('.eyebrow')?.remove();}
  const display=disclosure('view-settings','Vue et repères','Intensité, faisceaux et affichage');
  // The ambience row now contains only the optional display controls and notes.
@@ -42,15 +46,21 @@ export function simplifySidebar(){
  const ambienceNotes=[...ambience.children].filter(el=>el.matches('p.note'));
  for(const note of ambienceNotes)note.remove();
  display.body.appendChild(ambience);
- const technical=disclosure('technical-settings','Informations techniques','Équipements, implantation et documents');
+ const technical=disclosure('technical-settings','Informations techniques','Écran, validation et plans');
+ const exports=disclosure('export-settings','Exporter','Vidéo et sauvegarde des réglages');
+ const imports=disclosure('import-settings','Importer','Charger des ambiances depuis un fichier');
  const used=new Set([ambience,spot,fog,saved,room,video]);
  for(const node of original)if(!used.has(node))technical.body.appendChild(node);
- const operationDetails=document.createElement('div');operationDetails.className='section';heading(operationDetails,'Repères de prévisualisation');
- for(const note of ambienceNotes)operationDetails.appendChild(note);
- const videoStatus=find('video-status');if(videoStatus){videoStatus.hidden=true;operationDetails.appendChild(videoStatus);}
- for(const note of room.querySelectorAll('p.note'))operationDetails.appendChild(note);
- technical.body.appendChild(operationDetails);
- side.replaceChildren(top,quick,spots.el,fogSection.el,scenes.el,display.el,technical.el);
+ // Keep technical nodes available to the scene's selection callbacks, without
+ // exposing a second information panel. File exports belong in Exporter.
+ const imageExports=technical.body.querySelector('#capture')?.closest('.section');if(imageExports)exports.body.appendChild(imageExports);
+ technical.el.hidden=true;
+ // Detailed operating help lives under the model on the site. Do not repeat
+ // the room/reset paragraphs here; retain the hidden live projection status.
+ const videoStatus=find('video-status');if(videoStatus){videoStatus.hidden=true;technical.body.appendChild(videoStatus);}
+ side.replaceChildren(top,spots.el,fogSection.el,commands.el,scenes.el,display.el,exports.el,imports.el,technical.el);
+ const help=document.createElement('a');help.id='maquette-info-link';help.href='index.html#maquette-info';help.target='_top';help.textContent='Info';help.setAttribute('aria-label','Info : comment utiliser la maquette');side.appendChild(help);
+ help.onclick=event=>{if(window.parent!==window){event.preventDefault();window.parent.postMessage({type:'grand-remix-open-help'},location.origin);}};
  saveShortcut.onclick=()=>{scenes.el.open=true;find('scene-name')?.focus();};
  // Keep the location of the selected apparatus obvious when using the list.
  find('fixture-select')?.addEventListener('change',()=>{spots.el.open=true;});

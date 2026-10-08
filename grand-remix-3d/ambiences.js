@@ -1,18 +1,23 @@
 import {sanitizeFx,wheel} from './fixture-profiles.js';
 import {createShowTimelines} from './programmed-timelines.js';
 import arrivalFocus from './arrival-focus.json' with {type:'json'};
+import publishedLighting from './published-lighting.json' with {type:'json'};
 const color=name=>wheel.find(([n])=>n===name)[1];
 export const ambienceDefinitions=[
- {id:'arrival',name:'Entrée du public',description:'Salle claire et répartie · scène éteinte · sans flash',mode:'dance',videoOn:true,artistVisible:false},
- {id:'opening',name:'Ouverture',description:'DJ magenta · artiste blanc · salle éteinte',mode:'slam',videoOn:true},
- {id:'dream',name:'Bleu océan',description:'Bleu franc · ondes cyan lentes · DJ bleu · brouillard',mode:'dance',videoOn:true,fog:{on:true,rate:.95}},
- {id:'red_alert',name:'Rouge intense',description:'Fond rouge · anneaux rapides · accents blancs du SL1',mode:'dance',videoOn:true,fog:{on:true,rate:.55}},
- {id:'warm',name:'Jaune et rouge',description:'Chaleur · gobos souples · aucun blanc',mode:'dance',videoOn:true,fog:{on:true,rate:.25}},
- {id:'dj',name:'Transition DJ',description:'DJ seule bien éclairée · couleurs vives · pleins et gobos',mode:'dance',videoOn:true,artistVisible:false,fog:{on:true,rate:.4}},
- {id:'hiphop',name:'Finale hip-hop',description:'Grande finale · duos évolutifs · piste en mouvement et boucane',mode:'dance',videoOn:true,fog:{on:true,rate:.85}}
+ {id:'arrival',name:'Entrée du public',description:'Salle claire et répartie · scène éteinte · sans flash',mode:'dance',videoOn:true,artistVisible:false,fog:{on:false,rate:.06}},
+ {id:'opening',name:'Ouverture',description:'DJ magenta · artiste blanc · salle éteinte',mode:'slam',videoOn:true,fog:{on:false,rate:.06}},
+ {id:'dream',name:'Bleu océan',description:'Bleu franc · ondes cyan lentes · DJ bleu · brouillard',mode:'dance',videoOn:true,fog:{on:true,rate:.15}},
+ {id:'red_alert',name:'Rouge intense',description:'Fond rouge · anneaux rapides · accents blancs du SL1',mode:'dance',videoOn:true,fog:{on:true,rate:.11}},
+ {id:'warm',name:'Jaune et rouge',description:'Chaleur · gobos souples · aucun blanc',mode:'dance',videoOn:true,fog:{on:true,rate:.05}},
+ {id:'pinky',name:'Pinky love',description:'Rose, magenta et violet · amour et douceur',mode:'dance',videoOn:true,videoMode:'pinky',artistVisible:true,fog:{on:true,rate:.07}},
+ {id:'dj',name:'Transition DJ',description:'DJ seule bien éclairée · couleurs vives · pleins et gobos',mode:'dance',videoOn:true,artistVisible:false,fog:{on:true,rate:.15}},
+ {id:'hiphop',name:'Finale hip-hop',description:'Grande finale · duos évolutifs · piste en mouvement et boucane',mode:'dance',videoOn:true,fog:{on:true,rate:.17}}
 ];
 export function createAmbience(id,fixtures){
  const definition=ambienceDefinitions.find(p=>p.id===id);if(!definition)throw new Error('Ambiance inconnue : '+id);
+ // These two scenes were composed and published by the user. Promote them
+ // verbatim; regenerating their tracks would lose those authored settings.
+ if(['opening','pinky'].includes(id))return {...definition,...structuredClone(publishedLighting.presetOverrides[id])};
  const prefs=Object.fromEntries(fixtures.map(f=>[f.id,sanitizeFx({dimmer:0},f.kind)])),colors={};
  function on(ids,dimmer,hex='#ffffff',extra={}){for(const id of ids.split(' ')){const f=fixtures.find(f=>f.id===id);if(!f||f.notUsed)continue;prefs[id]=sanitizeFx({dimmer,...extra},f.kind);colors[id]=hex;}}
  const dj=(d=55)=>{const energetic=['dj','hiphop','red_alert'].includes(id);on('101',d,color('Magenta'),{gobo:energetic?6:0,rotation:id==='red_alert'?24:energetic?18:0,movement:energetic?'circle':'static',amplitude:energetic?6:0,period:id==='red_alert'?4:energetic?6:26,zoom:18});on('201 202 207',35,'#ff40cb');};

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {createFogVolume} from './fog-volume.js';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);};
 const xyz=p=>Array.isArray(p)?[...p]:[p.x,p.y,p.z];
@@ -14,14 +15,15 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
   return height;
  };
  const particles=Array.from({length:capacity},()=>({active:false,age:0,life:0,position:[...nozzle],velocity:[0,0,0],radius:.1,opacity:0,mass:0,phase:0,spin:0,band:'high',spread:1,vertical:1}));
- let on=false,rate=.35,pump=0,credit=0,time=0,remainder=0,density=0,emitted=0;
+ let on=false,rate=.06,pump=0,credit=0,time=0,remainder=0,density=0,emitted=0;
  function birth(){
   const p=particles.find(p=>!p.active);if(!p)return;
   p.active=true;p.age=0;p.life=48+random()*8;p.phase=random()*Math.PI*2;p.spin=(random()-.5)*.07;
   // Two parcels in five remain low, the others gradually entrain upward.
   // Stable membership avoids switching a cloud's trajectory mid-flight.
   p.band=emitted++%5<2?'low':'high';p.spread=1;p.vertical=1;
-  p.mass=(.12+.88*rate)*(.8+random()*.4);p.radius=.09;p.opacity=0;
+  // Low output stays a fine mist; the upper half adds clearly denser parcels.
+  p.mass=(.04+.96*Math.pow(rate,1.25))*(.8+random()*.4);p.radius=.09;p.opacity=0;
   p.position[0]=nozzle[0]+(random()-.5)*.025;p.position[1]=nozzle[1]+(random()-.5)*.016;p.position[2]=nozzle[2];
   p.velocity[0]=.025+(random()-.5)*.03;p.velocity[1]=.035;p.velocity[2]=.8+(random()-.5)*.12;
  }
@@ -60,17 +62,20 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
     }
     if(axis>=0){p.position[axis]=edge;p.velocity[axis]=0;}
    }
-   p.radius=.09+.018*age+.014*Math.pow(age,1.18);
+   // Entrainment widens neighbouring parcels into one plume instead of
+   // leaving isolated little puffs. Age, not output, controls this spread.
+   p.radius=Math.min(2.6,.12+.038*age+.014*Math.pow(age,1.18));
    p.spread=1+(low?.4:.14)*turbulence;p.vertical=1+(low?-.58:.10)*turbulence;
-   const tail=1-smooth(p.life*.68,p.life,age),mass=p.mass*Math.exp(-age/28)*tail;
-   p.opacity=.46*mass*smooth(0,.38,age)/(1+age*.05);aerosol+=mass;
+   if(!on)p.mass*=Math.exp(-dt/30);
+   const tail=1-smooth(p.life*.55,p.life,age),mass=p.mass*Math.exp(-age/22)*tail;
+   p.opacity=.80*mass*smooth(0,.38,age)/(1+age*.05);aerosol+=mass;
   }
   density+=(clamp(aerosol/17,0,1)-density)*(1-Math.exp(-dt/.8));
   if(!on&&pump===0&&!particles.some(p=>p.active)){density=0;credit=0;}
  }
  return {
   particles,
-  reset(){on=false;rate=.35;pump=0;credit=0;time=0;remainder=0;density=0;emitted=0;for(const p of particles){p.active=false;p.opacity=0;}},
+  reset(){on=false;rate=.06;pump=0;credit=0;time=0;remainder=0;density=0;emitted=0;for(const p of particles){p.active=false;p.opacity=0;}},
   get state(){return {on,rate};},get density(){return density;},get emission(){return pump;},
   set(value){on=!!value?.on;const n=Number(value?.rate);if(Number.isFinite(n))rate=clamp(n,.05,1);},
   toggle(){on=!on;},
@@ -91,8 +96,7 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
  };
 }
 
-export function createFogPreview({scene,origin}){
- const root=new THREE.Group();root.name='Brouillard_illustratif';scene.add(root);
+export function createFogPreview({scene,origin,projectionSource}){
  const floor=scene.getObjectByName('Sol_salle'),ceiling=scene.getObjectByName('Plafond');
  let bounds=null;const solids=[];
  if(floor){floor.updateWorldMatrix(true,false);const box=new THREE.Box3().setFromObject(floor);bounds={min:[box.min.x,box.max.y,box.min.z],max:[box.max.x,ceiling?ceiling.position.y-.06:origin.y+3,box.max.z]};}
@@ -102,18 +106,6 @@ export function createFogPreview({scene,origin}){
   if(selected){o.updateWorldMatrix(true,false);const b=new THREE.Box3().setFromObject(o);solids.push({min:b.min.toArray(),max:b.max.toArray(),support:o.name.startsWith('Scene_')});}
  });
  const dynamics=createFogDynamics({origin,bounds,solids});
- const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const c=canvas.getContext('2d'),pixels=c.createImageData(128,128);
- for(let y=0;y<128;y++)for(let x=0;x<128;x++){
-  const u=(x-63.5)/64,v=(y-63.5)/64,r=Math.hypot(u,v),curl=.58+.18*Math.sin(u*8+Math.sin(v*5))+.12*Math.sin(v*13+u*4)+.07*Math.cos(u*23-v*17);
-  const alpha=Math.exp(-3.2*r*r)*(1-smooth(.55,.96,r))*clamp(curl,0,1),i=(y*128+x)*4;
-  pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=255;pixels.data[i+3]=Math.round(alpha*255);
- }
- c.putImageData(pixels,0,0);
- const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
- const sprites=dynamics.particles.map(()=>{
-  const material=new THREE.SpriteMaterial({map:texture,transparent:true,opacity:0,depthTest:true,depthWrite:false,color:'#ffffff',toneMapped:false});
-  const sprite=new THREE.Sprite(material);sprite.layers.set(1);sprite.visible=false;root.add(sprite);return sprite;
- });
  // Sampling precedes HDR rendering; its final step restores every light's
  // visibility. We therefore never read a leftover six-light batch.
  let lights=null;
@@ -123,7 +115,7 @@ export function createFogPreview({scene,origin}){
   for(const item of lights){const light=item.light;if(!light.visible||light.intensity<=0)continue;light.getWorldPosition(item.position);if(light.isSpotLight){light.target.getWorldPosition(item.direction);item.direction.sub(item.position).normalize();}live.push(item);}
   return live;
  }
- function illuminate(p,sprite,lights){
+ function illuminate(p,lights){
   let red=0,green=0,blue=0;
   for(const {light,position,direction} of lights){
    const dx=p.position[0]-position.x,dy=p.position[1]-position.y,dz=p.position[2]-position.z,d2=Math.max(.04,dx*dx+dy*dy+dz*dz),distance=Math.sqrt(d2);
@@ -141,25 +133,18 @@ export function createFogPreview({scene,origin}){
   // The concentrated young jet remains legible in weak ambient light, then
   // loses that visibility as it disperses. Coloured spots still dominate it.
   // This is a small visual ambient-scattering floor, never an emitted light.
-  const youngJet=1-smooth(.5,4,p.age),ambient=.055+.085*youngJet;
-  sprite.material.color.setRGB(ambient+.52*red/safe*illumination,ambient+.52*green/safe*illumination,ambient+.003+.52*blue/safe*illumination);
-  // A modest density boost only where an actual light illuminates the plume.
-  // Keep the faint ambient-grey blackout appearance and parcel physics intact.
-  const litVisibility=1+.30*smooth(.01,.12,illumination);
-  sprite.material.opacity=p.opacity*(.27+.48*youngJet+.88*Math.sqrt(illumination))*litVisibility;
+  const youngJet=1-smooth(.5,4,p.age),ambient=.018+.040*youngJet;
+  return [ambient+.52*red/safe*illumination,ambient+.52*green/safe*illumination,ambient+.003+.52*blue/safe*illumination].map(v=>Math.pow(Math.max(0,v),1/2.2));
  }
+ let lit=[];
+ const volume=createFogVolume({projectionSource,bounds:bounds||{min:[origin.x-5,0,origin.z-3],max:[origin.x+5,origin.y+4,origin.z+15]},solids,particles:dynamics.particles,colour:p=>illuminate(p,lit),compact:typeof matchMedia==='function'&&matchMedia('(pointer: coarse)').matches});
  return {
-  reset(){dynamics.reset();for(const sprite of sprites){sprite.visible=false;sprite.material.opacity=0;}},
-  setVisible(value){root.visible=value;},get state(){return dynamics.state;},
+  reset(){dynamics.reset();volume.reset();},
+  clear(){const rate=dynamics.state.rate;this.reset();dynamics.set({on:false,rate});},
+  setVisible(value){volume.setVisible(value);},get state(){return dynamics.state;},
   set(value){dynamics.set(value);},toggle(){dynamics.toggle();},get density(){return dynamics.density;},
   sampleDensity:point=>dynamics.sampleDensity(point),
-  update(dt){
-   dynamics.update(dt);const lit=lightSamples();
-   for(let i=0;i<sprites.length;i++){
-    const p=dynamics.particles[i],sprite=sprites[i];sprite.visible=p.active;if(!p.active)continue;
-    sprite.position.fromArray(p.position);sprite.scale.set(p.radius*2.3*p.spread,p.radius*1.8*p.vertical,1);
-    sprite.material.rotation=p.band==='low'?.10*Math.sin(p.phase+p.age*.1):p.phase+p.age*p.spin;illuminate(p,sprite,lit);
-   }
-  }
+  render:(renderer,depth,camera)=>volume.render(renderer,depth,camera),
+  update(dt){dynamics.update(dt);lit=lightSamples();volume.update(dt);}
  };
 }

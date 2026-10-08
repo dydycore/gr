@@ -4,7 +4,7 @@ const origin=[-3.46,.7796,-1.2525];
 const tick=(fog,seconds,hz=60)=>{for(let i=0;i<Math.round(seconds*hz);i++)fog.update(1/hz);};
 const active=fog=>fog.particles.filter(p=>p.active);
 const fog=createFogDynamics({origin});
-assert.deepEqual(fog.state,{on:false,rate:.35});tick(fog,20);
+assert.deepEqual(fog.state,{on:false,rate:.06});tick(fog,20);
 assert.equal(active(fog).length,0);assert.equal(fog.density,0);assert.equal(fog.sampleDensity(origin),0);
 fog.set({on:true,rate:.6});assert.equal(active(fog).length,0,'Starting cannot fill the room instantly');
 fog.update(.1);assert.ok(fog.emission>0&&fog.emission<.2,'Fan output ramps in');
@@ -26,7 +26,7 @@ assert.ok(residual>0);fog.update(.1);assert.ok(active(fog).length>0,'Stop leaves
 assert.ok(fog.emission>0,'Fan output ramps down');
 tick(fog,35);assert.ok(active(fog).length>0,'OFF leaves a slowly dissipating residual instead of clearing the room early');
 tick(fog,25);assert.equal(active(fog).length,0);assert.equal(fog.density,0,'Long-lived residual eventually dissipates');
-fog.toggle();tick(fog,5);fog.reset();assert.deepEqual(fog.state,{on:false,rate:.35});assert.equal(active(fog).length,0);assert.equal(fog.sampleDensity(origin),0);
+fog.toggle();tick(fog,5);fog.reset();assert.deepEqual(fog.state,{on:false,rate:.06});assert.equal(active(fog).length,0);assert.equal(fog.sampleDensity(origin),0);
 
 const simulate=hz=>{const f=createFogDynamics({origin});f.set({on:true,rate:.5});tick(f,10,hz);return f;};
 const rates=[.05,.35,.7,1].map(rate=>{const f=createFogDynamics({origin});f.set({on:true,rate});tick(f,8);return f;});
@@ -79,7 +79,7 @@ assert.equal(layered.sampleDensity([0,-.1,1]),0,'No density under the room floor
 layered.set({on:false,rate:.6});tick(layered,1);
 assert.ok(active(layered).some(p=>p.band==='low')&&active(layered).some(p=>p.band==='high'),'OFF preserves both residual components');
 tick(layered,60);assert.equal(active(layered).length,0,'Both long-lived residual components eventually dissipate');
-layered.reset();assert.equal(layered.density,0);assert.deepEqual(layered.state,{on:false,rate:.35});
+layered.reset();assert.equal(layered.density,0);assert.deepEqual(layered.state,{on:false,rate:.06});
 
 // Observe transport over a whole minute, with the actual stage/booth scale.
 // Detect gradual arrival at the centre and rear rather than uniform opacity.

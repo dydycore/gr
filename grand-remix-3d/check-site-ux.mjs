@@ -26,5 +26,8 @@ for(const file of ['index.html','maquette.html','documents/Grand-Remix-Plan-Tech
  assert.ok(fs.statSync(path.join(site,file)).size>100,`Ressource absente : ${file}`);
 }
 const pdfPreviewCount=fs.readdirSync(path.join(site,'previews')).filter(f=>/^plan-\d+\.png$/.test(f)).length;
-assert.equal(pdfPreviewCount,8,'La publication existante doit conserver ses huit aperçus PDF.');
+assert.equal(pdfPreviewCount,9,'Le dossier technique doit publier les neuf aperçus PDF.');
+for(let page=1;page<=9;page++)assert.ok(fs.statSync(path.join(site,'previews',`plan-${page}.png`)).size>100,`Aperçu PDF ${page} absent`);
+for(const id of ['dream','red_alert','warm','pinky','hiphop'])assert.ok(fs.statSync(path.join(site,'media','backgrounds',`${id}.mp4`)).size>100000,`Fond vidéo ${id} absent`);
+assert.ok(!fs.readdirSync(path.join(site,'media','backgrounds')).some(name=>name.includes('-source')),'Les sources vidéo brutes ne doivent pas être publiées');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');

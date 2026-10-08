@@ -9,7 +9,7 @@ function simulate(refreshHz,limit,durationMs=10000){
  assert.ok(measured>limit-2.5&&measured<=limit+2,`at ${refreshHz}Hz/${limit}fps got ${measured}fps`);
  return measured;
 }
-for(const limit of [30,60])for(const refresh of [60,75,120,144]){
+for(const limit of [15,20,24,30,60])for(const refresh of [60,75,120,144]){
  console.log(`${refresh}Hz cap ${limit}: ${simulate(refresh,limit)} fps`);
 }
 const limiter=createFrameLimiter(30);

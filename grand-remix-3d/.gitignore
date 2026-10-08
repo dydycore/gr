@@ -1,5 +1,13 @@
 .netlify/
 node_modules/
+__pycache__/
 
 # Fichier d'aperçu local, à ne pas publier
 Grand_Remix_3D_optimise.html
+
+# Miniatures des sources, inutilisées par l'application.
+media/backgrounds/*-source.jpg
+
+# Vérifications locales et fichiers temporaires, hors livraison.
+proofs/
+site/__qa-*

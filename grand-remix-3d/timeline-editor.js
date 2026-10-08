@@ -1,4 +1,4 @@
-import {TIMELINE_LIMITS,timelineDuration,previewFlashLimit} from './fixture-timeline.js';
+import {TIMELINE_LIMITS,timelineDuration,previewFlashLimit,insertFixtureTimelineStep} from './fixture-timeline.js';
 
 const fmt=value=>Number(value.toFixed(2)).toLocaleString('fr-CA');
 let nextBlockId=0;
@@ -54,8 +54,15 @@ export function createTimelineEditor({host,selectedFixture,getTimeline,setTimeli
  function patch(values){const {f,t}=current(),i=index(f,t);if(!t.steps[i])return;if(values.duration!==undefined)values={...values,duration:Math.max(TIMELINE_LIMITS.minDuration,Math.min(TIMELINE_LIMITS.maxDuration,values.duration,TIMELINE_LIMITS.maxTotalDuration-timelineDuration(t)+t.steps[i].duration))};commit({...t,steps:t.steps.map((s,n)=>n===i?{...s,...values}:s)},i);}
  function makeStep(settings){return {id:blockId(),duration:2,transition:'cut',flashHz:0,flashPattern:'steady',flashOnly:false,color:settings.color,fx:{...settings.fx}};}
  $('timeline-enabled').onchange=()=>{const {f,t}=current();commit({...t,enabled:$('timeline-enabled').checked,steps:t.steps.length?t.steps:[makeStep(getCurrentSettings(f))]},0);};
- $('timeline-add').onclick=()=>{const {f,t}=current(),remaining=TIMELINE_LIMITS.maxTotalDuration-timelineDuration(t);if(t.steps.length>=TIMELINE_LIMITS.maxSteps||remaining<TIMELINE_LIMITS.minDuration)return;const i=index(f,t),steps=[...t.steps],added=makeStep(getCurrentSettings(f));added.duration=Math.min(added.duration,remaining);steps.splice(i+1,0,added);commit({...t,enabled:true,steps},i+1);};
- $('timeline-duplicate').onclick=()=>{const {f,t}=current(),i=index(f,t),remaining=TIMELINE_LIMITS.maxTotalDuration-timelineDuration(t);if(!t.steps[i]||t.steps.length>=TIMELINE_LIMITS.maxSteps||remaining<TIMELINE_LIMITS.minDuration)return;const steps=[...t.steps];steps.splice(i+1,0,{...steps[i],id:blockId(),duration:Math.min(steps[i].duration,remaining),fx:{...steps[i].fx}});commit({...t,steps},i+1);};
+ function insert(copy){
+  const {f,t}=current(),i=index(f,t);if(f.notUsed||copy&&!t.steps[i])return;
+  const added=copy?{...t.steps[i],id:blockId(),fx:{...t.steps[i].fx}}:makeStep(getCurrentSettings(f));
+  const result=insertFixtureTimelineStep(t,added,i+1,f.kind);
+  if(!result.inserted){$('timeline-message').textContent='Il y a déjà 10 blocs. Retirez-en un pour ajouter une couleur.';return;}
+  const notice=result.timeline.steps.length>=TIMELINE_LIMITS.maxSteps?'Il y a déjà 10 blocs. Retirez-en un pour ajouter une couleur.':result.redistributed?'Bloc '+(copy?'dupliqué':'ajouté')+' · durées ajustées pour rester à 30 s.':'';
+  commit(result.timeline,result.index,notice);
+ }
+ $('timeline-add').onclick=()=>insert(false);$('timeline-duplicate').onclick=()=>insert(true);
  $('timeline-remove').onclick=()=>{const {f,t}=current(),i=index(f,t),steps=t.steps.filter((s,n)=>n!==i);commit({...t,enabled:!!steps.length,steps},Math.max(0,i-1));};
  for(const [id,offset] of [['timeline-left',-1],['timeline-right',1]])$(id).onclick=()=>{const {f,t}=current(),i=index(f,t),other=i+offset;if(other<0||other>=t.steps.length)return;const steps=[...t.steps];[steps[i],steps[other]]=[steps[other],steps[i]];commit({...t,steps},other);};
  $('timeline-duration').onchange=()=>{const value=Number($('timeline-duration').value);if(Number.isFinite(value)&&value>0)patch({duration:value});else sync();};
@@ -71,13 +78,13 @@ export function createTimelineEditor({host,selectedFixture,getTimeline,setTimeli
   section.querySelectorAll('[data-block-flash]').forEach(b=>b.hidden=Number(b.dataset.blockFlash)>previewFlashLimit(f.kind));
   const signature=JSON.stringify([f.id,t,i]);
   if(signature!==lastRender){lastRender=signature;lastPlayhead='';$('timeline-playhead').textContent='';$('timeline-blocks').replaceChildren();
-   t.steps.forEach((block,n)=>{const b=document.createElement('button');b.type='button';b.dataset.blockIndex=n;b.setAttribute('aria-pressed',String(n===i));b.setAttribute('aria-label',`Bloc ${n+1}, ${fmt(block.duration)} secondes`);b.title=`Bloc ${n+1} · ${fmt(block.duration)} s`;const fill=block.fx.dimmer===0?'#27333c':block.color;b.style.setProperty('--block-color',fill);const brightness=[1,3,5].map((p,i)=>parseInt(fill.slice(p,p+2),16)*[.2126,.7152,.0722][i]).reduce((a,b)=>a+b,0);b.style.setProperty('--block-ink',brightness>145?'#102018':'#f3f8fa');
-    const label=document.createElement('strong');label.textContent=n+1;const duration=document.createElement('span');duration.textContent=fmt(block.duration)+' s';b.append(label,duration);b.onclick=()=>{remember(f,n);onSelectBlock();sync();};$('timeline-blocks').appendChild(b);
+   t.steps.forEach((block,n)=>{const b=document.createElement('button');b.type='button';b.dataset.blockIndex=n;b.setAttribute('aria-pressed',String(n===i));b.setAttribute('aria-label',`Bloc ${n+1}, ${fmt(block.duration)} secondes`);b.title=`Bloc ${n+1} · ${fmt(block.duration)} s`;const fill=block.color;b.style.setProperty('--block-color',fill);const brightness=[1,3,5].map((p,i)=>parseInt(fill.slice(p,p+2),16)*[.2126,.7152,.0722][i]).reduce((a,b)=>a+b,0);b.style.setProperty('--block-ink',brightness>145?'#102018':'#f3f8fa');
+    const label=document.createElement('strong');label.textContent=block.fx.dimmer===0?'OFF':n+1;const duration=document.createElement('span');duration.textContent=fmt(block.duration)+' s';b.append(label,duration);b.onclick=()=>{remember(f,n);onSelectBlock();sync();};$('timeline-blocks').appendChild(b);
    });
   }
   $('timeline-total').textContent=t.steps.length+'/'+TIMELINE_LIMITS.maxSteps+' blocs · '+fmt(timelineDuration(t))+'/'+TIMELINE_LIMITS.maxTotalDuration+' s';$('timeline-editing').textContent=s?`Bloc ${i+1} : modifiez les réglages ci-dessous.`:'';
-  $('timeline-message').textContent=t.steps.length>=TIMELINE_LIMITS.maxSteps?TIMELINE_LIMITS.maxSteps+' blocs maximum.':timelineDuration(t)>=TIMELINE_LIMITS.maxTotalDuration?TIMELINE_LIMITS.maxTotalDuration+' secondes maximum.':'';
-  $('timeline-add').disabled=!!f.notUsed||t.steps.length>=TIMELINE_LIMITS.maxSteps||TIMELINE_LIMITS.maxTotalDuration-timelineDuration(t)<TIMELINE_LIMITS.minDuration;
+  $('timeline-message').textContent=t.steps.length>=TIMELINE_LIMITS.maxSteps?'Il y a déjà 10 blocs. Retirez-en un pour ajouter une couleur.':timelineDuration(t)>=TIMELINE_LIMITS.maxTotalDuration-.001?'Ajouter ou dupliquer ajuste les durées pour rester à 30 s.':'';
+  $('timeline-add').disabled=!!f.notUsed;
   $('timeline-duplicate').disabled=$('timeline-add').disabled||!s;$('timeline-remove').disabled=!!f.notUsed||!s;$('timeline-left').disabled=!!f.notUsed||i===0;$('timeline-right').disabled=!!f.notUsed||i>=t.steps.length-1;
   $('timeline-duration').value=s?.duration??2;$('timeline-duration').disabled=!!f.notUsed||!s;
   $('timeline-fade-in-row').hidden=s?.transition!=='fade';$('timeline-fade-in').value=s?.fadeIn??0;$('timeline-fade-out').value=s?.fadeOut??0;
