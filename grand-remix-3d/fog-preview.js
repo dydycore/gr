@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {createFogVolume} from './fog-volume.js';
+import {FOG_REFERENCE_MAX} from './fog-scale.mjs';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);};
 const xyz=p=>Array.isArray(p)?[...p]:[p.x,p.y,p.z];
@@ -77,7 +78,7 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
   particles,
   reset(){on=false;rate=.06;pump=0;credit=0;time=0;remainder=0;density=0;emitted=0;for(const p of particles){p.active=false;p.opacity=0;}},
   get state(){return {on,rate};},get density(){return density;},get emission(){return pump;},
-  set(value){on=!!value?.on;const n=Number(value?.rate);if(Number.isFinite(n))rate=clamp(n,0,.07);},
+  set(value){on=!!value?.on;const n=Number(value?.rate);if(Number.isFinite(n))rate=clamp(n,0,FOG_REFERENCE_MAX);},
   toggle(){on=!on;},
   update(dt){if(!Number.isFinite(dt)||dt<=0)return;remainder+=Math.min(dt,.25);while(remainder>=1/60-1e-10){advance(1/60);remainder-=1/60;}},
   sampleDensity(point){
