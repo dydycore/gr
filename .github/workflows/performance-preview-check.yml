@@ -28,7 +28,11 @@ jobs:
         run: npm run test:fps
       - name: Contrôler l'accueil, le logo et les liens
         run: npm run test:ux
-      - name: Compiler sans écraser la maquette
-        run: npm run preview:optim
-      - name: Vérifier la génération HTML
-        run: test -s Grand_Remix_3D_optimise.html
+      - name: Tester les ambiances partagées et la sauvegarde locale
+        run: npm run test:public
+      - name: Vérifier toute la préparation pour Netlify
+        run: npm run prepare:netlify
+      - name: Vérifier la maquette publiée
+        run: |
+          test -s site/maquette.html
+          grep -q 'pinky love' site/maquette.html
