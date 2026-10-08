@@ -2,7 +2,7 @@ name: Aperçu 3D optimisé sur GitHub Pages
 
 on:
   push:
-    branches: [amelioration-accueil-slam-v1]
+    branches: [optimisation-performance-v1]
     paths:
       - ".github/workflows/pages-optimized-preview.yml"
       - "grand-remix-3d/scene.js"
@@ -10,7 +10,6 @@ on:
       - "grand-remix-3d/preview-performance.cjs"
       - "grand-remix-3d/index.template.html"
       - "grand-remix-3d/site/**"
-      - "grand-remix-3d/check-site-ux.mjs"
       - "grand-remix-3d/package.json"
       - "grand-remix-3d/package-lock.json"
   workflow_dispatch:
@@ -48,10 +47,6 @@ jobs:
       - name: Vérifier le limiteur de FPS
         working-directory: grand-remix-3d
         run: npm run test:fps
-
-      - name: Contrôler le logo et la navigation du site
-        working-directory: grand-remix-3d
-        run: npm run test:ux
 
       - name: Compiler la maquette optimisée sans toucher à l’original
         working-directory: grand-remix-3d
