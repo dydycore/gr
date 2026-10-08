@@ -16,8 +16,8 @@ assert published['geometryId'] == d['geometryId']
 presets = published['presetOverrides']
 def fog_label(key):
     f = presets[key]['fog']
-    assert 0 <= f['rate'] <= .07, f'Brouillard hors limite : {key} = {f["rate"]}'
-    return '<b>ON - ' + str(round(f['rate'] * 100)) + ' %</b>' if f['on'] else '<b>OFF</b>'
+    assert 0 <= f['rate'] <= .20, f'Brouillard hors limite : {key} = {f["rate"]}'
+    return '<b>ON - ' + str(round(f['rate'] * 500)) + ' %</b>' if f['on'] else '<b>OFF</b>'
 def font_path(filename, fallbacks):
     choices = [Path('C:/Windows/Fonts') / filename, *(Path(p) for p in fallbacks)]
     return str(next(p for p in choices if p.exists()))
@@ -141,7 +141,7 @@ head(8, 'HUIT AMBIANCES SUGGÉRÉES')
 para(32, H - 99, W - 64,
      'Pistes artistiques à faire évoluer selon les morceaux et les besoins du spectacle. Elles illustrent la direction souhaitée ; '
      '<b>conduite et patch à finaliser avec la direction technique.</b> '
-     '<b>Maquette 3D : débit visuel de 0 à 7 % maximum ; Bleu océan : 6 %.</b> '
+     '<b>Nouvelle échelle : ancien 20 % = 100 % ; ancien 7 % = 35 % ; Bleu océan : 30 %.</b> '
      'Les pourcentages décrivent la simulation, et non une consigne physique ou DMX. À valider avec le DT.', 12)
 rows = [
     ['Ambiance', 'Intention lumière', 'Brouillard F1<br/>Pourcentage indicatif'],
@@ -220,7 +220,7 @@ text(left + 16, diagram_bottom + 10, 'S-G : enceinte. F1 : dégagement / ventila
 y = diagram_bottom - 24
 y = section(left, y, cw, 'Diffusion',
             '<b>Proposition : OFF à l’accueil et à l’ouverture.</b> Débits suggérés p. 8. '
-            '<b>Pour toutes les ambiances : 7 % maximum, Bleu océan 6 %.</b> '
+            '<b>Échelle revue : 100 % = ancien 20 % ; 35 % = ancien 7 % ; Bleu océan 30 % = ancien 6 %.</b> '
              'La valeur visuelle de la maquette n’est pas une consigne DMX ; réduire si la brume diminue le contraste.')
 section(left, y, cw, 'Dégagements',
         '<b>Emplacement à valider.</b> Le manuel F-1 prescrit au moins <b>50 cm libres autour</b> ; '
