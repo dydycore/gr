@@ -1,6 +1,7 @@
 const fs=require('fs'),path=require('path');
 const root=__dirname, dist=path.join(root,'site');
 for(const folder of ['', 'documents','previews','media'])fs.mkdirSync(path.join(dist,folder),{recursive:true});
+fs.copyFileSync(path.join(root,'media','Grand_Slam_Logo_Transparent.png'),path.join(dist,'media','Grand_Slam_Logo_Transparent.png'));
 const layout=JSON.parse(fs.readFileSync(path.join(root,'implantation.json'),'utf8'));
 if(layout.revision!=='V18')throw new Error('Mettre à jour les références de publication pour la nouvelle révision.');
 fs.writeFileSync(path.join(dist,'index.html'),fs.readFileSync(path.join(root,'portal.template.html'),'utf8').replace(/Géométrie commune : [a-f0-9]+/g,'Géométrie commune : '+layout.geometryId));
