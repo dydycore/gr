@@ -120,7 +120,7 @@ header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);heigh
 @media(max-width:850px){#panel-maquette .model-frame{height:560px}}
 @media(max-width:700px){#panel-maquette .section-head .actions{width:100%;gap:9px}#panel-maquette .model-open{flex:1;min-width:210px}#panel-maquette .section-head .actions>.button:not(.primary){flex:1;text-align:center}}
 /* Keep the original transparent logo whole, directly on the page. */
-#panel-projet .reference-hero .hero-logo-card{display:grid;align-items:center;justify-self:start;width:100%;max-width:610px;margin-left:-14px;min-width:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+#panel-projet .reference-hero .hero-logo-card{display:grid;align-items:center;justify-self:start;width:100%;max-width:610px;min-width:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
 #panel-projet .reference-hero .hero-logo-wrap{display:block;width:100%;min-width:0;min-height:0;aspect-ratio:auto;background:transparent;overflow:visible}
 #panel-projet .reference-hero .hero-logo-wrap::before{content:none;display:none}
 #panel-projet .reference-hero .hero-logo-wrap img{display:block;width:100%;max-width:100%;height:auto;min-height:0;max-height:none;object-fit:contain;transform:none;filter:none}
@@ -250,6 +250,27 @@ header nav a,.button,.page-menu button,.view-switch button,summary{white-space:n
 .guide-topic h4{margin:22px 20px 4px;font-size:13px;color:#087289}.guide-topic dl{display:grid;grid-template-columns:minmax(155px,30%) minmax(0,1fr);gap:0;margin:0;padding:8px 20px 15px}
 .guide-topic dt,.guide-topic dd{padding:12px 0;border-bottom:1px solid #edf1f3;font-size:13px;line-height:1.65;overflow-wrap:anywhere;min-width:0}.guide-topic dt{font-weight:600;color:#294d5b;padding-right:20px}.guide-topic dd{margin:0;color:#56707d}.guide-topic dt:nth-last-child(2),.guide-topic dd:last-child{border:0}.guide-topic>p{margin:0;padding:0 20px 18px}
 @media(max-width:600px){.guide-legend-panel .guide-legend,.guide-topic dl{grid-template-columns:minmax(0,1fr)}.guide-topic dt{border:0;padding:14px 0 3px;font-size:14px}.guide-topic dd{padding:0 0 14px;font-size:14px}.guide-legend li{font-size:14px}.guide-topic>summary{font-size:15px;min-height:48px}}
+
+/* Accueil : texte et logo réunis vers le centre, sans rogner le visuel. */
+@media (min-width:761px){
+  .wrap:has(> #panel-projet:not([hidden])){max-width:1360px}
+  #panel-projet .reference-hero{
+    width:100%;
+    max-width:1160px;
+    margin-inline:auto;
+    grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+    column-gap:clamp(6px,.65vw,12px);
+    min-height:0;
+  }
+  #panel-projet .reference-hero .hero-logo-card{
+    margin:0 0 0 -40px;
+    width:calc(100% + 40px);
+  }
+}
+@media (min-width:761px) and (max-width:1100px){
+  #panel-projet .reference-hero{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);column-gap:12px;min-height:0}
+  #panel-projet .reference-hero .hero-logo-card{margin-left:-10px;width:calc(100% + 10px)}
+}
 </style></head><body>
 <a href="#content" class="skip">Aller au contenu</a>
 <header><div class="wordmark">GRAND REMIX<span>LE MINISTÈRE · MONTRÉAL</span></div><nav aria-label="Navigation principale"><a href="#projet" data-panel="projet" aria-current="page">Le projet</a><a href="#maquette" data-panel="maquette">Maquette 3D</a><a href="#plans" data-panel="plans">Plans PDF</a><a href="#validation" data-panel="validation">À valider avec le DT</a></nav><div class="edition">30 OCTOBRE 2026<br>DOSSIER TECHNIQUE</div></header>
