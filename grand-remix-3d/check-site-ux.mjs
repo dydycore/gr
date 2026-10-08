@@ -30,4 +30,16 @@ assert.equal(pdfPreviewCount,9,'Le dossier technique doit publier les neuf aper�
 for(let page=1;page<=9;page++)assert.ok(fs.statSync(path.join(site,'previews',`plan-${page}.png`)).size>100,`Aperçu PDF ${page} absent`);
 for(const id of ['dream','red_alert','warm','pinky','hiphop'])assert.ok(fs.statSync(path.join(site,'media','backgrounds',`${id}.mp4`)).size>100000,`Fond vidéo ${id} absent`);
 assert.ok(!fs.readdirSync(path.join(site,'media','backgrounds')).some(name=>name.includes('-source')),'Les sources vidéo brutes ne doivent pas être publiées');
+
+const model=fs.readFileSync(path.join(site,'maquette.html'),'utf8');
+const sidebar=fs.readFileSync(path.join(root,'sidebar-layout.js'),'utf8');
+const info=fs.readFileSync(path.join(root,'portal.template.html'),'utf8');
+assert.ok(!model.includes('ambience-save-shortcut')&&!model.includes('ambience-save-changes'),'Les sauvegardes doublonnées sont supprimées.');
+assert.ok(!model.includes('show-flashes'),'La case Flashs redondante est supprimée.');
+assert.ok(model.includes('data-block-flash="1"')&&model.includes('data-block-flash="2"'),'Les rythmes natifs 1 Hz et 2 Hz restent disponibles dans les séquences.');
+assert.ok(model.includes('id="scene-save" disabled>Ajouter une ambiance</button>'),'Ajouter une ambiance est toujours disponible.');
+assert.ok(model.includes('id="scene-update">Remplacer</button>'),'Remplacer reste disponible.');
+assert.ok(sidebar.includes('display.el,imports.el,exports.el,technical.el'),'Importer doit précéder Exporter dans le panneau.');
+assert.ok(info.indexOf('id="guide-import"')<info.indexOf('id="guide-export"'),'Importer doit précéder Exporter dans Info.');
+assert.ok(!info.includes('<dt>Nom de l’ambiance</dt>')&&!info.includes('<dt>Enregistrer / Enregistrer sous…</dt>')&&!info.includes('<dt>Flashs</dt>'),'Info doit correspondre à la nouvelle interface.');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');

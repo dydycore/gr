@@ -27,19 +27,17 @@ export function simplifySidebar(){
  const savedButtons=document.createElement('div');savedButtons.id='saved-ambience-buttons';savedButtons.className='ambience-buttons';savedCatalogue.appendChild(savedButtons);
  const actions=find('ambience-play').closest('.studio-actions');
  top.appendChild(actions);
- const saveShortcut=document.createElement('button');saveShortcut.id='ambience-save-shortcut';saveShortcut.textContent='Enregistrer mon ambiance';
- top.appendChild(find('ambience-time'));top.appendChild(find('ambience-status'));
+  top.appendChild(find('ambience-time'));top.appendChild(find('ambience-status'));
  const commands=disclosure('command-settings','Commandes');
  const quick=section('quick-controls');commands.body.appendChild(quick);
  quick.appendChild(find('room-reset').closest('.studio-actions'));
  const videoActions=document.createElement('div');videoActions.className='video-actions';videoActions.appendChild(find('video-toggle'));quick.appendChild(videoActions);
  const spots=disclosure('spot-settings','Régler un spot','Cliquez sur un spot dans la salle');
- const ambienceEdit=document.createElement('div');ambienceEdit.id='ambience-edit';ambienceEdit.style.cssText='display:grid;gap:8px;margin:10px 0 16px';ambienceEdit.appendChild(saveShortcut);
- spots.body.appendChild(spot);spot.querySelector('.eyebrow')?.remove();
+  spots.body.appendChild(spot);spot.querySelector('.eyebrow')?.remove();
  const fogSection=disclosure('fog-settings','Brouillard','Arrêté au départ');
  if(fog){fogSection.body.appendChild(fog);fog.querySelector('.eyebrow')?.remove();}
  const scenes=disclosure('saved-scenes','Mes ambiances','Enregistrer et retrouver vos réglages');
- if(saved){scenes.body.appendChild(saved);saved.querySelector('.eyebrow')?.remove();saved.insertBefore(ambienceEdit,find('scene-list'));}
+ if(saved){scenes.body.appendChild(saved);saved.querySelector('.eyebrow')?.remove();}
  const display=disclosure('view-settings','Vue et repères','Intensité, faisceaux et affichage');
  // The ambience row now contains only the optional display controls and notes.
  ambience.querySelector('.eyebrow')?.remove();
@@ -61,7 +59,6 @@ export function simplifySidebar(){
  side.replaceChildren(top,spots.el,fogSection.el,commands.el,scenes.el,display.el,imports.el,exports.el,technical.el);
  const help=document.createElement('a');help.id='maquette-info-link';help.href='index.html#maquette-info';help.target='_top';help.textContent='Info';help.setAttribute('aria-label','Info : comment utiliser la maquette');side.appendChild(help);
  help.onclick=event=>{if(window.parent!==window){event.preventDefault();window.parent.postMessage({type:'grand-remix-open-help'},location.origin);}};
- saveShortcut.onclick=()=>{scenes.el.open=true;find('scene-name')?.focus();};
- // Keep the location of the selected apparatus obvious when using the list.
+  // Keep the location of the selected apparatus obvious when using the list.
  find('fixture-select')?.addEventListener('change',()=>{spots.el.open=true;});
 }
