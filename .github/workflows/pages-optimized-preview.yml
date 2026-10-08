@@ -1,0 +1,75 @@
+name: Aperçu 3D optimisé sur GitHub Pages
+
+on:
+  push:
+    branches: [optimisation-performance-v1]
+    paths:
+      - ".github/workflows/pages-optimized-preview.yml"
+      - "grand-remix-3d/scene.js"
+      - "grand-remix-3d/frame-limiter.mjs"
+      - "grand-remix-3d/preview-performance.cjs"
+      - "grand-remix-3d/index.template.html"
+      - "grand-remix-3d/site/**"
+      - "grand-remix-3d/package.json"
+      - "grand-remix-3d/package-lock.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "grand-remix-optimised-pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Télécharger le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: grand-remix-3d/package-lock.json
+
+      - name: Installer les dépendances
+        working-directory: grand-remix-3d
+        run: npm ci
+
+      - name: Vérifier le limiteur de FPS
+        working-directory: grand-remix-3d
+        run: npm run test:fps
+
+      - name: Compiler la maquette optimisée sans toucher à l’original
+        working-directory: grand-remix-3d
+        run: npm run preview:optim
+
+      - name: Préparer une copie complète du site, avec la maquette optimisée
+        working-directory: grand-remix-3d
+        run: |
+          mkdir -p _github_pages_preview
+          cp -a site/. _github_pages_preview/
+          cp Grand_Remix_3D_optimise.html _github_pages_preview/maquette.html
+          test -s _github_pages_preview/index.html
+          test -s _github_pages_preview/maquette.html
+          grep -q 'render-fps-limit' _github_pages_preview/maquette.html
+
+      - name: Configurer GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Envoyer le site compilé en artefact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./grand-remix-3d/_github_pages_preview
+
+      - name: Publier uniquement l’aperçu GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

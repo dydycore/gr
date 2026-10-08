@@ -1,16 +1,28 @@
 const fs=require('fs'),path=require('path');
 const root=__dirname, dist=path.join(root,'site');
 for(const folder of ['', 'documents','previews','media'])fs.mkdirSync(path.join(dist,folder),{recursive:true});
+// Remove only retired delivery files; keep editable sources outside the site.
+for(const file of ['documents/Grand-Remix-Plan-Technique-V17.pdf','previews/plan-10.png','media/fonts/cormorant-italic.woff2','media/fonts/cormorant-italic-OFL.txt'])fs.rmSync(path.join(dist,file),{force:true});
+fs.copyFileSync(path.join(root,'media','Grand_Slam_Logo_Transparent.png'),path.join(dist,'media','Grand_Slam_Logo_Transparent.png'));
+const fontFolder=path.join(root,'media','fonts');
+if(fs.existsSync(fontFolder)){fs.mkdirSync(path.join(dist,'media','fonts'),{recursive:true});for(const family of ['anton','caveat','cormorant-bolditalic','dynapuff','great-vibes'])for(const suffix of ['.woff2','-OFL.txt']){const file=family+suffix;fs.copyFileSync(path.join(fontFolder,file),path.join(dist,'media','fonts',file));}}
+for(const file of ['sedgwick-ave-display.ttf','sedgwick-ave-display-OFL.txt'])fs.copyFileSync(path.join(fontFolder,file),path.join(dist,'media','fonts',file));
+// Playback loads only the selected ambience's local video.
+const videoFolder=path.join(root,'media','backgrounds');
+for(const id of ['dream','red_alert','warm','pinky','hiphop']){
+ const source=path.join(videoFolder,id+'.mp4');
+ if(fs.existsSync(source)){fs.mkdirSync(path.join(dist,'media','backgrounds'),{recursive:true});fs.copyFileSync(source,path.join(dist,'media','backgrounds',id+'.mp4'));}
+}
 const layout=JSON.parse(fs.readFileSync(path.join(root,'implantation.json'),'utf8'));
 if(layout.revision!=='V18')throw new Error('Mettre à jour les références de publication pour la nouvelle révision.');
 fs.writeFileSync(path.join(dist,'index.html'),fs.readFileSync(path.join(root,'portal.template.html'),'utf8').replace(/Géométrie commune : [a-f0-9]+/g,'Géométrie commune : '+layout.geometryId));
 let model=fs.readFileSync(path.join(root,'Grand_Remix_3D.html'),'utf8');
 model=model.replace('<title>Grand Remix · Le Ministère · Maquette 3D</title>','<title>Grand Remix — Maquette 3D · Le Ministère</title><meta name="robots" content="noindex,nofollow">');
 model=model.replace('Maquette spatiale · Projecteur avant droit · 30 octobre 2026','Scénographie et éclairage · 30 octobre 2026 · V18');
-model=model.replaceAll('href="PLAN_AVANT_CORRIGE.pdf"','href="documents/Grand-Remix-Plan-Technique-V18.pdf"');
+model=model.replaceAll('href="../pdf/grand_remix/Grand_Remix_Plan_Technique_V18.pdf"','href="documents/Grand-Remix-Plan-Technique-V18.pdf"');
 fs.writeFileSync(path.join(dist,'maquette.html'),model);
 fs.copyFileSync(path.join(root,'../pdf/grand_remix/Grand_Remix_Plan_Technique_V18.pdf'),path.join(dist,'documents/Grand-Remix-Plan-Technique-V18.pdf'));
-for(let i=1;i<=10;i++)fs.copyFileSync(path.join(root,'../../tmp/pdfs/grand-remix',`v18-${i}.png`),path.join(dist,'previews',`plan-${i}.png`));
+for(let i=1;i<=9;i++)fs.copyFileSync(path.join(root,'../pdf/grand_remix/previews',`plan-${i}.png`),path.join(dist,'previews',`plan-${i}.png`));
 fs.writeFileSync(path.join(dist,'robots.txt'),'User-agent: *\nDisallow: /\n');
 fs.writeFileSync(path.join(dist,'_headers'),'/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Robots-Tag: noindex, nofollow\n  Cache-Control: public, max-age=0, must-revalidate\n/documents/*.pdf\n  Content-Type: application/pdf\n');
 console.log('Publication préparée : '+dist+' — '+layout.geometryId);

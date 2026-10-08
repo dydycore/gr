@@ -1,0 +1,94 @@
+name: Reconstruire la maquette et le PDF Grand Remix
+
+on:
+  push:
+    branches:
+      - codex/grand-remix-version-nettoyee
+    paths:
+      - ".github/workflows/grand-remix-sync-build.yml"
+      - "grand-remix-3d/ambiences.js"
+      - "grand-remix-3d/published-lighting.json"
+      - "grand-remix-3d/fog-preview.js"
+      - "grand-remix-3d/fog-volume.js"
+      - "grand-remix-3d/beam-volume.js"
+      - "grand-remix-3d/gobo-preview.js"
+      - "grand-remix-3d/mobile-rendering.mjs"
+      - "grand-remix-3d/lighting-editor.js"
+      - "grand-remix-3d/scene.js"
+      - "grand-remix-3d/index.template.html"
+      - "grand-remix-3d/sidebar-layout.js"
+      - "grand-remix-3d/portal.template.html"
+      - "grand-remix-3d/build-studio-appendix.py"
+      - "grand-remix-3d/check-*.mjs"
+      - "pdf/grand_remix/build_plan.py"
+      - "pdf/grand_remix/build_plan_v18.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: grand-remix-sync-build
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer la branche
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Installer Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: grand-remix-3d/package-lock.json
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dépendances PDF et polices compatibles Arial
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y fonts-liberation poppler-utils
+          python -m pip install --disable-pip-version-check reportlab pypdf
+      - name: Dépendances de la maquette
+        working-directory: grand-remix-3d
+        run: npm ci
+      - name: Tester la limite de brouillard et les ambiances
+        working-directory: grand-remix-3d
+        run: |
+          node check-fog-scale.mjs
+          node check-fog.mjs
+          node check-fog-volume.mjs
+          node check-mobile-rendering.mjs
+          node check-ambiences.mjs
+          node check-published-lighting.mjs
+          node check-timeline.mjs
+          node check-timeline-editor.mjs
+      - name: Reconstruire les neuf pages du PDF technique
+        run: |
+          python pdf/grand_remix/build_plan_v18.py
+          python grand-remix-3d/build-studio-appendix.py
+          mkdir -p pdf/grand_remix/previews
+          pdftoppm -f 1 -l 9 -r 75 -png pdf/grand_remix/Grand_Remix_Plan_Technique_V18.pdf pdf/grand_remix/previews/plan
+          for n in $(seq 1 9); do test -s "pdf/grand_remix/previews/plan-${n}.png"; done
+      - name: Compiler et publier les HTML générés dans le dépôt
+        working-directory: grand-remix-3d
+        run: |
+          node build.cjs
+          node build_site.cjs
+          node check-site-ux.mjs
+      - name: Enregistrer automatiquement les fichiers compilés
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add grand-remix-3d/app.bundle.js grand-remix-3d/Grand_Remix_3D.html grand-remix-3d/index.html grand-remix-3d/site/index.html grand-remix-3d/site/maquette.html pdf/grand_remix/Grand_Remix_Plan_Technique_V18.pdf grand-remix-3d/site/documents/Grand-Remix-Plan-Technique-V18.pdf pdf/grand_remix/previews/ grand-remix-3d/site/previews/
+          if git diff --cached --quiet; then
+            echo "Aucun changement compilé."
+          else
+            git commit -m "build: synchroniser PDF et maquette - ancien 20% = nouveau 100%"
+            git push origin HEAD:codex/grand-remix-version-nettoyee
+          fi

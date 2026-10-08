@@ -1,5 +1,18 @@
 import * as THREE from 'three';
 
+// Room, bar and DJ furniture are static. Reuse their centre-ray intersection
+// until a fixture changes position or aim; moving lights still recast normally.
+export function createStaticLightRay(obstacles){
+ const ray=new THREE.Raycaster(),cache=new WeakMap();
+ return (fixture,origin,direction)=>{
+  let entry=cache.get(fixture);
+  if(entry&&entry.origin.equals(origin)&&entry.direction.equals(direction))return entry.hit;
+  ray.set(origin,direction);const hit=ray.intersectObjects(obstacles,true)[0];
+  if(!entry){entry={origin:new THREE.Vector3(),direction:new THREE.Vector3()};cache.set(fixture,entry);}
+  entry.origin.copy(origin);entry.direction.copy(direction);entry.hit=hit;return hit;
+ };
+}
+
 // A low-opacity shell is only a haze preview, not a volumetric transport solve.
 // Fade its silhouette and emitter end instead of drawing a hard transparent tube.
 function softenBeam(material){
@@ -31,9 +44,8 @@ diffuseColor.a = min(0.12, diffuseColor.a * hazeEdge * hazeSource * hazeFalloff)
 
 // Clip the outer rays individually. An oblique beam ends along the floor or
 // furniture surface, rather than at a disk perpendicular to its centre line.
-export function createBeamClipper(obstacles){
+export function createBeamClipper(obstacles,{segments=48}={}){
  const ray=new THREE.Raycaster(),axis=new THREE.Vector3(),u=new THREE.Vector3(),v=new THREE.Vector3(),radial=new THREE.Vector3(),start=new THREE.Vector3(),direction=new THREE.Vector3();
- const segments=48;
  return (beam,aim,slope)=>{
   const signature=[...aim.toArray(),slope].map(x=>x.toFixed(5)).join(',');if(beam.clipSignature===signature)return;beam.clipSignature=signature;
   if(!beam.clippedGeometry){

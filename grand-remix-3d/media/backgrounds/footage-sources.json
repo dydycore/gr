@@ -1,0 +1,169 @@
+{
+  "provider": "Mixkit",
+  "verifiedOn": "2026-10-08",
+  "license": {
+    "name": "Mixkit Stock Video Free License",
+    "url": "https://mixkit.co/license/#videoFree",
+    "fullTextUrl": "https://mixkit.co/license/modal/videoFree/",
+    "termsUrl": "https://mixkit.co/terms/",
+    "commercialProjectUse": true,
+    "modificationAllowed": true,
+    "publicPerformanceAllowed": true,
+    "attributionRequired": false,
+    "attributionSuggested": "Vidéo source : Mixkit",
+    "notes": "Utiliser dans la composition du projet. Ne pas republier les sources brutes en bibliothèque de stock ; ne pas vendre les copies non transformées."
+  },
+  "deployment": "Fichiers sources de travail, à exclure de la publication. Seuls les dérivés intégrés à la composition sont destinés au site.",
+  "clips": [
+    {
+      "scene": "dream",
+      "id": 5016,
+      "title": "Waves coming to the beach",
+      "description": "Mer et écume filmées",
+      "sourcePage": "https://mixkit.co/free-stock-video/waves-coming-to-the-beach-5016/",
+      "downloadPage": "https://mixkit.co/free-stock-video/download/5016/?context=sidebar&type=1080p",
+      "downloadUrl": "https://assets.mixkit.co/videos/5016/5016-1080.mp4",
+      "localSource": "dream-source.mp4",
+      "license": "Mixkit Stock Video Free License",
+      "attributionRequired": false,
+      "bytes": 28175280,
+      "sha256": "34f6919aade3de12d025fb08643b4a7c11b609da62caa48a7a163cfc1209b2b5",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30000/1001",
+          "duration": "8.975633",
+          "nb_frames": "269"
+        }
+      ],
+      "validation": {
+        "fullDecodePassed": true,
+        "differentFrameHashesAt1sAnd3s": true
+      },
+      "nativeSeamlessLoop": false
+    },
+    {
+      "scene": "warm",
+      "id": 2168,
+      "title": "Bright orange sunset on beach",
+      "description": "Plage et coucher de soleil filmés",
+      "sourcePage": "https://mixkit.co/free-stock-video/bright-orange-sunset-on-beach-2168/",
+      "downloadPage": "https://mixkit.co/free-stock-video/download/2168/?context=sidebar&type=1080p",
+      "downloadUrl": "https://assets.mixkit.co/videos/2168/2168-1080.mp4",
+      "localSource": "warm-source.mp4",
+      "license": "Mixkit Stock Video Free License",
+      "attributionRequired": false,
+      "bytes": 39161144,
+      "sha256": "7ab97cc990ae86bdd371d9a973ffb64c56c95376ff325dd1c0bc664737aaf21e",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "24000/1001",
+          "duration": "13.596917",
+          "nb_frames": "326"
+        }
+      ],
+      "validation": {
+        "fullDecodePassed": true,
+        "differentFrameHashesAt1sAnd3s": true
+      },
+      "nativeSeamlessLoop": false
+    },
+    {
+      "scene": "pinky",
+      "id": 100900,
+      "title": "Droplets Falling on Blooming Pink Roses",
+      "description": "Roses roses filmées ; gouttes faisant trembler les pétales",
+      "sourcePage": "https://mixkit.co/free-stock-video/droplets-falling-on-blooming-pink-roses-100900/",
+      "downloadPage": "https://mixkit.co/free-stock-video/download/100900/?context=sidebar&type=1080p",
+      "downloadUrl": "https://assets.mixkit.co/371u2p8f4he41wlc5vijlp4xybwj",
+      "localSource": "pinky-source.mp4",
+      "license": "Mixkit Stock Video Free License",
+      "attributionRequired": false,
+      "bytes": 82626452,
+      "sha256": "b522a74f70e0d660bf16a0655eaedff198828e456fc890177b6d6b9dc879cca9",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "24/1",
+          "duration": "22.208333",
+          "nb_frames": "533"
+        }
+      ],
+      "validation": {
+        "fullDecodePassed": true,
+        "differentFrameHashesAt1sAnd3s": true
+      },
+      "nativeSeamlessLoop": false
+    },
+    {
+      "scene": "red_alert",
+      "id": 3754,
+      "title": "Fire on black background",
+      "description": "Flammes vives montant sur fond noir",
+      "sourcePage": "https://mixkit.co/free-stock-video/fire-on-black-background-3754/",
+      "downloadPage": "https://mixkit.co/free-stock-video/download/3754/?context=sidebar&type=1080p",
+      "downloadUrl": "https://assets.mixkit.co/videos/3754/3754-1080.mp4",
+      "localSource": "red_alert-source.mp4",
+      "license": "Mixkit Stock Video Free License",
+      "attributionRequired": false,
+      "bytes": 34236195,
+      "sha256": "edafc35b6ed8a51e68b8f0c212db10c3b9dd1d52d2c27cc14abfc7426323e694",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "24000/1001",
+          "duration": "10.260250",
+          "nb_frames": "246"
+        }
+      ],
+      "validation": {
+        "fullDecodePassed": true,
+        "differentFrameHashesAt1sAnd3s": true
+      },
+      "nativeSeamlessLoop": false
+    },
+    {
+      "scene": "hiphop",
+      "id": 40741,
+      "title": "Sunset in the distance walking through the city",
+      "description": "Marche urbaine en première personne, au coucher du soleil. Ville non identifiée.",
+      "contributor": "Edgar Fernandez",
+      "contributorUrl": "https://mixkit.co/@edgarfernandez/",
+      "sourcePage": "https://mixkit.co/free-stock-video/sunset-in-the-distance-walking-through-the-city-40741/",
+      "downloadPage": "https://mixkit.co/free-stock-video/download/40741/?context=sidebar&type=1080p",
+      "localSource": "hiphop-source.mp4",
+      "license": "Mixkit Stock Video Free License",
+      "attributionRequired": false,
+      "bytes": 24071736,
+      "sha256": "c55f65b026527cd5d8c0075ca3f03a787be9112e7b917c01ff12ef28cdd42115",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1080,
+          "height": 1920,
+          "r_frame_rate": "24000/1001",
+          "duration": "7.173833",
+          "nb_frames": "172"
+        }
+      ],
+      "validation": {
+        "fullDecodePassed": true
+      },
+      "nativeSeamlessLoop": false
+    }
+  ]
+}

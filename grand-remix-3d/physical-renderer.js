@@ -3,12 +3,13 @@ import {FXAAShader} from 'three/addons/shaders/FXAAShader.js';
 
 // Accumulate direct lights in linear HDR batches. Each light can cast a real
 // shadow without exhausting WebGL's per-fragment texture sampler limit.
-export function createPhysicalRenderer(renderer,scene,camera,lights){
+export function createPhysicalRenderer(renderer,scene,camera,lights,{fog=null}={}){
  const batchSize=6,batchCount=Math.ceil(lights.length/batchSize);
  // Avoid multisampled floating-point resolves: some WebGL drivers produce
  // black tiles where transparent beam volumes overlap. Full-float buffers
  // also keep bright near-field samples from overflowing during subtraction.
  const targets=Array.from({length:batchCount+1},()=>new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,depthBuffer:true,samples:0}));
+ if(fog)targets[0].depthTexture=new THREE.DepthTexture(1,1,THREE.UnsignedIntType);
  const uniforms={base:{value:targets[0].texture},toneMappingExposure:{value:1}};
  for(let i=0;i<batchCount;i++)uniforms['batch'+i]={value:targets[0].texture};
  const material=new THREE.ShaderMaterial({uniforms,depthTest:false,depthWrite:false,toneMapped:false,
@@ -36,6 +37,14 @@ export function createPhysicalRenderer(renderer,scene,camera,lights){
  });
  let width=0,height=0;
  return (navigating=false)=>{
+  // All animated transforms are prepared before this synchronous multipass
+  // render. Reuse identical world matrices across lighting/depth/haze passes;
+  // shadow cameras still update independently inside Three's shadow renderer.
+  const sceneAutoUpdate=scene.matrixWorldAutoUpdate,cameraAutoUpdate=camera.matrixWorldAutoUpdate;
+  if(sceneAutoUpdate)scene.updateMatrixWorld();
+  if(camera.parent===null&&cameraAutoUpdate)camera.updateMatrixWorld();
+  scene.matrixWorldAutoUpdate=false;camera.matrixWorldAutoUpdate=false;
+  try{
   // Keep the same lighting/shadow pipeline when navigating or selecting a
   // fixture. Keep full resolution throughout motion: no visible softening.
   renderer.getDrawingBufferSize(size);
@@ -63,10 +72,11 @@ export function createPhysicalRenderer(renderer,scene,camera,lights){
    for(const l of batch)l.visible=false;
   }
   lights.forEach((l,i)=>l.visible=visible[i]);renderer.toneMapping=mapping;
-  // Transparent haze billboards and beam shells are not additive light data.
+  // Transparent beam shells are not additive light data.
   // Draw them only once, after the opaque lighting accumulation. Rebuild the
   // screen depth first so haze cannot show through the DJ booth or the floor.
   renderer.setRenderTarget(composited);renderer.render(output,outputCamera);
+  fog?.render(renderer,targets[0].depthTexture,camera);
   renderer.setRenderTarget(null);
   if(!hasVisibleOverlay()){
    // Without haze there is nothing to depth-test after the composite. The
@@ -80,5 +90,10 @@ export function createPhysicalRenderer(renderer,scene,camera,lights){
   quad.material=antialias;renderer.render(output,outputCamera);quad.material=material;
   scene.background=null;camera.layers.set(1);renderer.render(scene,camera);
   camera.layers.set(0);scene.background=background;renderer.autoClear=true;
+  }finally{
+   // Keep controls, picking, exports and the next animation frame unchanged,
+   // including when the no-haze path returns early or WebGL rendering fails.
+   scene.matrixWorldAutoUpdate=sceneAutoUpdate;camera.matrixWorldAutoUpdate=cameraAutoUpdate;
+  }
  };
 }

@@ -1,0 +1,156 @@
+{
+  "dream": {
+    "file": "dream.mp4",
+    "source": "dream-source.mp4",
+    "speed": 0.65,
+    "duration": "11.791667",
+    "frames": "283",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "fps": 24,
+    "bytes": 4717710,
+    "sha256": "da694e2c0337c3041ecffa7c24510a3a424d3cbf7c93c13ccb9186e66ce81c16",
+    "full_decode": "pass",
+    "crossfade_seconds": 2,
+    "head_frames": 49,
+    "loop": "2-second wrap dissolve; adjacent source frames at boundary, endpoint guard on gentle loops",
+    "loop_measurement": {
+      "previous_one_second": {
+        "seam_mae": 3.8437,
+        "adjacent_p95": 3.0673,
+        "seam_over_p95": 1.253
+      },
+      "current_two_seconds": {
+        "measurement": "mean absolute RGB difference on decoded128x128 frames",
+        "frames": 283,
+        "seam_mae": 3.5233,
+        "adjacent_p95": 2.9137,
+        "seam_over_p95": 1.209,
+        "minimum_frame_mean_rgb": 145.07,
+        "source_frame_indices_at_wrap": [
+          48,
+          49
+        ],
+        "expected_source_neighbour_difference": 2.5094,
+        "first_frame_vs_expected_body_start": 0.9636,
+        "last_frame_vs_expected_head_end": 2.053
+      }
+    }
+  },
+  "warm": {
+    "file": "warm.mp4",
+    "source": "warm-source.mp4",
+    "speed": 0.65,
+    "duration": "18.916667",
+    "frames": "454",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "fps": 24,
+    "bytes": 5263457,
+    "sha256": "72aa89ffef20ca33a94649de076bd479050a3510a9d539cca5798b73439e216a",
+    "full_decode": "pass",
+    "crossfade_seconds": 2,
+    "head_frames": 49,
+    "loop": "2-second wrap dissolve; adjacent source frames at boundary, endpoint guard on gentle loops",
+    "loop_measurement": {
+      "previous_one_second": {
+        "seam_mae": 2.2613,
+        "adjacent_p95": 1.105,
+        "seam_over_p95": 2.047
+      },
+      "current_two_seconds": {
+        "measurement": "mean absolute RGB difference on decoded128x128 frames",
+        "frames": 454,
+        "seam_mae": 1.4694,
+        "adjacent_p95": 1.1252,
+        "seam_over_p95": 1.306,
+        "minimum_frame_mean_rgb": 65.87,
+        "source_frame_indices_at_wrap": [
+          48,
+          49
+        ],
+        "expected_source_neighbour_difference": 0.6935,
+        "first_frame_vs_expected_body_start": 0.551,
+        "last_frame_vs_expected_head_end": 1.2119
+      }
+    }
+  },
+  "pinky": {
+    "file": "pinky.mp4",
+    "source": "pinky-source.mp4",
+    "speed": 0.65,
+    "duration": "22.000000",
+    "frames": "528",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "fps": 24,
+    "bytes": 5442597,
+    "sha256": "cc52dbb48f3fd4321f513e756c7835db5453c0f4cae73222d54013f1841791ae",
+    "full_decode": "pass",
+    "crossfade_seconds": 2,
+    "head_frames": 49,
+    "loop": "2-second wrap dissolve; adjacent source frames at boundary, endpoint guard on gentle loops",
+    "loop_measurement": {
+      "previous_one_second": {
+        "seam_mae": 2.107,
+        "adjacent_p95": 5.7196,
+        "seam_over_p95": 0.368
+      },
+      "current_two_seconds": {
+        "measurement": "mean absolute RGB difference on decoded128x128 frames",
+        "frames": 528,
+        "seam_mae": 4.772,
+        "adjacent_p95": 5.7317,
+        "seam_over_p95": 0.833,
+        "minimum_frame_mean_rgb": 88.48,
+        "source_frame_indices_at_wrap": [
+          48,
+          49
+        ],
+        "expected_source_neighbour_difference": 4.4765,
+        "first_frame_vs_expected_body_start": 0.7097,
+        "last_frame_vs_expected_head_end": 1.0523
+      }
+    }
+  },
+  "red_alert": {
+    "file": "red_alert.mp4",
+    "source": "red_alert-source.mp4",
+    "speed": 1.15,
+    "duration": "7.916667",
+    "frames": "190",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "fps": 24,
+    "bytes": 2114324,
+    "sha256": "9dd4e6ac64f8e61078cfb55d932e802182d2d1403c5a92ae0256ce4ff825fd29",
+    "full_decode": "pass",
+    "loop": "one-second dissolve into first second"
+  },
+  "hiphop": {
+    "file": "hiphop.mp4",
+    "source": "hiphop-source.mp4",
+    "speed": 0.9,
+    "duration": "6.708008",
+    "frames": "161",
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "fps": 24,
+    "bytes": 1005692,
+    "sha256": "92ba70a012dbd05d04b92926ae9933cf189323956c36b00fa4b4b226536eaf85",
+    "full_decode": "pass",
+    "crossfade_seconds": 1.25,
+    "head_frames": 31,
+    "loop": "1.25-second wrap dissolve; adjacent source frames at boundary, endpoint guard on gentle loops"
+  }
+}

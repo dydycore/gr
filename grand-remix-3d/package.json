@@ -1,6 +1,14 @@
 {
   "dependencies": {
     "esbuild": "^0.25.10",
+    "mediabunny": "1.61.3",
     "three": "^0.180.0"
+  },
+  "scripts": {
+    "preview:optim": "node preview-performance.cjs",
+    "test:fps": "node check-frame-limiter.mjs",
+    "test:ux": "node check-site-ux.mjs",
+    "test:public": "node check-published-lighting.mjs",
+    "prepare:netlify": "node prepare-netlify.cjs"
   }
 }
