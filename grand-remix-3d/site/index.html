@@ -119,17 +119,17 @@ header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);heigh
 #panel-maquette .model-open svg{width:19px;height:19px;flex:0 0 19px}
 @media(max-width:850px){#panel-maquette .model-frame{height:560px}}
 @media(max-width:700px){#panel-maquette .section-head .actions{width:100%;gap:9px}#panel-maquette .model-open{flex:1;min-width:210px}#panel-maquette .section-head .actions>.button:not(.primary){flex:1;text-align:center}}
+/* Keep the original transparent logo whole, directly on the page. */
+#panel-projet .reference-hero .hero-logo-card{display:grid;align-items:center;justify-self:start;width:100%;max-width:610px;margin-left:-14px;min-width:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+#panel-projet .reference-hero .hero-logo-wrap{display:block;width:100%;min-width:0;min-height:0;aspect-ratio:auto;background:transparent;overflow:visible}
+#panel-projet .reference-hero .hero-logo-wrap::before{content:none;display:none}
+#panel-projet .reference-hero .hero-logo-wrap img{display:block;width:100%;max-width:100%;height:auto;min-height:0;max-height:none;object-fit:contain;transform:none;filter:none}
 
 /* Hero centered as a single editorial composition on desktop. */
 @media(max-width:760px){
  #panel-projet .reference-hero{max-width:none;margin-inline:0}
  #panel-projet .reference-hero .hero-logo-card{margin-left:0;justify-self:center}
 }
-/* Keep the original transparent logo whole, directly on the page. */
-#panel-projet .reference-hero .hero-logo-card{display:grid;align-items:center;justify-self:start;width:100%;max-width:610px;margin-left:-14px;min-width:0;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
-#panel-projet .reference-hero .hero-logo-wrap{display:block;width:100%;min-width:0;min-height:0;aspect-ratio:auto;background:transparent;overflow:visible}
-#panel-projet .reference-hero .hero-logo-wrap::before{content:none;display:none}
-#panel-projet .reference-hero .hero-logo-wrap img{display:block;width:100%;max-width:100%;height:auto;min-height:0;max-height:none;object-fit:contain;transform:none;filter:none}
 .sources-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:22px}.sources-group{padding:18px 20px;background:#f5f9fa;border:1px solid #dde8ed;border-radius:9px;min-width:0}.sources-group>p:first-child{margin-top:0;color:#123642;font-size:15px}.source-list{padding-left:19px;margin:10px 0;color:#536b78;font-size:13px;line-height:1.65}.source-list li{margin:0 0 10px}.sources-group a{overflow-wrap:anywhere}@media(max-width:760px){.sources-grid{grid-template-columns:1fr}}
 
 /* DT: one reading path, four decisions, supporting sources on demand. */
