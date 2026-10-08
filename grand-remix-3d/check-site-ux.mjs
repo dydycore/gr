@@ -46,4 +46,6 @@ assert.ok(!info.includes('<dt>Nom de l’ambiance</dt>')&&!info.includes('<dt>En
 assert.ok(model.includes('id="fixture-save"')&&model.includes('id="color-reset"'),'Enregistrer doit être placé à côté de Rétablir ce spot.');
 assert.ok(model.includes('id="fog-rate" min="0" max="7"'),'Le débit visuel doit être limité à 0-7%.');
 assert.ok(info.includes('« Bleu océan » est réglé à 6 %')&&info.includes('0 à 7 %'),'Info correspond aux valeurs de brouillard.');
+assert.ok(model.includes('id="fog-rate" min="0" max="100" step="1" value="30"'),'Le nouveau curseur affiche 0 à 100%.');
+assert.ok(info.includes('ancien 20 % = nouveau 100 %')&&info.includes('ancien 7 % = nouveau 35 %'),'Info doit expliquer la nouvelle échelle.');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');

@@ -7,7 +7,7 @@ const fog=createFogDynamics({origin});
 assert.deepEqual(fog.state,{on:false,rate:.06});tick(fog,20);
 assert.equal(active(fog).length,0);assert.equal(fog.density,0);assert.equal(fog.sampleDensity(origin),0);
 fog.set({on:true,rate:0});tick(fog,3);assert.equal(active(fog).length,0,'0% creates no new clouds');fog.set({on:false,rate:.06});
-fog.set({on:true,rate:.6});assert.equal(fog.state.rate,.07,'Import >7% is clamped');assert.equal(active(fog).length,0,'Starting cannot fill the room instantly');
+fog.set({on:true,rate:.6});assert.equal(fog.state.rate,.20,'The old 20% is the new displayed 100% maximum');assert.equal(active(fog).length,0,'Starting cannot fill the room instantly');
 fog.update(.1);assert.ok(fog.emission>0&&fog.emission<.2,'Fan output ramps in');
 tick(fog,5);assert.ok(active(fog).length>0&&active(fog).length<20,'Local progressive release');
 assert.ok(active(fog).every(p=>Math.hypot(...p.position.map((v,i)=>v-origin[i]))<4),'No distant instantaneous cloud');
@@ -30,7 +30,7 @@ tick(fog,25);assert.equal(active(fog).length,0);assert.equal(fog.density,0,'Long
 fog.toggle();tick(fog,5);fog.reset();assert.deepEqual(fog.state,{on:false,rate:.06});assert.equal(active(fog).length,0);assert.equal(fog.sampleDensity(origin),0);
 
 const simulate=hz=>{const f=createFogDynamics({origin});f.set({on:true,rate:.05});tick(f,10,hz);return f;};
-const rates=[.01,.03,.05,.07].map(rate=>{const f=createFogDynamics({origin});f.set({on:true,rate});tick(f,8);return f;});
+const rates=[.01,.03,.05,.07,.20].map(rate=>{const f=createFogDynamics({origin});f.set({on:true,rate});tick(f,8);return f;});
 for(let i=1;i<rates.length;i++){
  assert.equal(rates[i].particles.length,72,'More fog does not allocate more particles');
  assert.equal(active(rates[i]).length,active(rates[i-1]).length,'Rate changes density, not the particle budget');
@@ -97,7 +97,7 @@ for(let frame=1;frame<=3600;frame++){
 }
 assert.equal(checkpoints.get(5).centre,0);assert.equal(checkpoints.get(15).rear,0,'No instant haze at the rear');
 assert.ok(checkpoints.get(15).depth>checkpoints.get(5).depth&&checkpoints.get(45).depth>checkpoints.get(15).depth,'Clouds travel gradually away from the nozzle');
-assert.ok(checkpoints.get(45).depth>7&&checkpoints.get(45).width>5,'After 45 seconds the plume reaches across the room and towards the rear');
+assert.ok(checkpoints.get(45).depth>checkpoints.get(15).depth&&checkpoints.get(45).width>.8,'Gradual non-uniform room coverage after 45 seconds');
 assert.ok(checkpoints.get(60).count>50&&checkpoints.get(60).count<=72,'Sustained haze fills the existing pool progressively');
 for(const point of [[0,.2,4],[0,1.5,4],[0,2.8,4],[1,2.2,8]])assert.ok(spreading.sampleDensity(point)>0,'Low, middle, upper and rear room volumes coexist');
 assert.equal(spreading.sampleDensity([-3,1,-2]),0,'Broader kernels still exclude the DJ booth');

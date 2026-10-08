@@ -26,6 +26,10 @@ jobs:
         run: npm ci
       - name: Tester le limiteur FPS
         run: npm run test:fps
+      - name: Compiler la maquette avant de vérifier les commandes
+        run: |
+          node build.cjs
+          node build_site.cjs
       - name: Contrôler l'accueil, le logo et les liens
         run: npm run test:ux
       - name: Tester les ambiances partagées et la sauvegarde locale
