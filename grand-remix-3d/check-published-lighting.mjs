@@ -19,10 +19,10 @@ for(const preset of Object.values(publicLighting.presetOverrides)){
  assert.equal(preset.duration,30);
  assert.ok(preset.prefs&&preset.colors&&preset.timelines);
 }
-assert.equal(publicLighting.presetOverrides.dream.fog.rate,.15);
+assert.equal(publicLighting.presetOverrides.dream.fog.rate,.06);
 assert.equal(publicLighting.presetOverrides.red_alert.timelines.SL1.steps.filter(s=>s.flashHz===8).length,4);
-assert.equal(publicLighting.presetOverrides.hiphop.fog.rate,.17);
-for(const p of Object.values(publicLighting.presetOverrides))if(p.fog.on)assert.ok(p.fog.rate<=.2,'Public fog presets follow the approved 20% ceiling');
+assert.equal(publicLighting.presetOverrides.hiphop.fog.rate,.07);
+for(const p of Object.values(publicLighting.presetOverrides))assert.ok(p.fog.rate>=0&&p.fog.rate<=.07,'All published fog presets capped at 7%');
 const published=publicLighting.migration.promotedScenes.map(source=>{
  const p=publicLighting.presetOverrides[source.presetId];
  return {name:source.name,duration:p.duration,prefs:p.prefs,colors:p.colors,timelines:p.timelines,view:source.previousView};

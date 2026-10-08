@@ -136,7 +136,8 @@ for(const id of ['opening','dream','warm']){
 assert.equal(scenes.dj.prefs['101'].dimmer,100,'DJ transition has full coloured spot');
 for(const id of ['202','207'])assert.equal(scenes.dj.prefs[id].dimmer,85,'Strong coloured DJ wash');
 for(const id of ['dream','warm'])for(const f of fixtures.filter(f=>active(scenes[id],f.id)))assert.notEqual(color(scenes[id],f.id),'#ffffff',id+': no white source');
-assert.equal(scenes.dream.fog.rate,.15);assert.equal(scenes.red_alert.fog.rate,.11);assert.equal(scenes.warm.fog.rate,.05);
+assert.equal(scenes.dream.fog.rate,.06);assert.equal(scenes.red_alert.fog.rate,.07);assert.equal(scenes.warm.fog.rate,.05);
+for(const scene of Object.values(scenes))assert.ok(scene.fog.rate>=0&&scene.fog.rate<=.07,'All ambiences capped at 7%');
 for(const id of ['102','103','104','105','111','112'])assert.ok(scenes.red_alert.prefs[id].period<scenes.warm.prefs[id].period,'Red faster than warm');
 for(const [id,gobo] of Object.entries({dream:6,red_alert:7,warm:2})){
  const scene=scenes[id],moving=fixtures.filter(f=>f.kind==='moving'&&active(scene,f.id));

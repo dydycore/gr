@@ -42,4 +42,8 @@ assert.ok(model.includes('id="scene-update">Remplacer</button>'),'Remplacer rest
 assert.ok(sidebar.includes('display.el,imports.el,exports.el,technical.el'),'Importer doit précéder Exporter dans le panneau.');
 assert.ok(info.indexOf('id="guide-import"')<info.indexOf('id="guide-export"'),'Importer doit précéder Exporter dans Info.');
 assert.ok(!info.includes('<dt>Nom de l’ambiance</dt>')&&!info.includes('<dt>Enregistrer / Enregistrer sous…</dt>')&&!info.includes('<dt>Flashs</dt>'),'Info doit correspondre à la nouvelle interface.');
+
+assert.ok(model.includes('id="fixture-save"')&&model.includes('id="color-reset"'),'Enregistrer doit être placé à côté de Rétablir ce spot.');
+assert.ok(model.includes('id="fog-rate" min="0" max="7"'),'Le débit visuel doit être limité à 0-7%.');
+assert.ok(info.includes('« Bleu océan » est réglé à 6 %')&&info.includes('0 à 7 %'),'Info correspond aux valeurs de brouillard.');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');
