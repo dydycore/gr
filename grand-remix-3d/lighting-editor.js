@@ -3,6 +3,7 @@ import {profiles,wheel,sanitizeFx} from './fixture-profiles.js';
 import {createGoboPreview} from './gobo-preview.js';
 import {sanitizeFixtureTimeline,sampleFixtureTimeline} from './fixture-timeline.js';
 import {createTimelineEditor} from './timeline-editor.js';
+import {FOG_REFERENCE_MAX} from './fog-scale.mjs';
 import {ambienceDefinitions,createAmbience} from './ambiences.js';
 import publishedLighting from './published-lighting.json';
 import {mergeSceneCatalogue,keepLocalSceneChanges,keepLocalPresetChanges,replaceLocalScene,uniqueSceneName,migratePromotedLighting} from './published-lighting-state.mjs';
@@ -27,7 +28,7 @@ export function createLightingEditor({fixtures,colors,getColors,setColors,apply,
  const cleanColors=raw=>Object.fromEntries(fixtures.filter(f=>hex(raw?.[f.id])).map(f=>[f.id,profiles[f.kind].color==='gel'?(raw[f.id]==='#000000'?'#000000':'#ffffff'):f.kind==='moving'&&!wheel.some(w=>w[1]===raw[f.id])&&raw[f.id]!=='#000000'?'#ffffff':raw[f.id].toLowerCase()]));
  const emptyTimelines=Object.fromEntries(fixtures.map(f=>[f.id,sanitizeFixtureTimeline(null,f.kind)]));
  const cleanTimelines=raw=>Object.fromEntries(fixtures.filter(f=>raw?.[f.id]).map(f=>[f.id,sanitizeFixtureTimeline({...raw[f.id],enabled:!f.notUsed&&raw[f.id].enabled===true},f.kind)]));
- const cleanFog=raw=>raw&&typeof raw==='object'?{on:raw.on===true,rate:Number.isFinite(raw.rate)?Math.max(0,Math.min(.07,raw.rate)):.06}:null;
+ const cleanFog=raw=>raw&&typeof raw==='object'?{on:raw.on===true,rate:Number.isFinite(raw.rate)?Math.max(0,Math.min(FOG_REFERENCE_MAX,raw.rate)):.06}:null;
  // Preserve retired overrides in exports without bringing retired buttons back.
  const overrideDefinitions=[...ambienceDefinitions,{id:'slam_blue',name:'Slam · nuit bleue'},{id:'slam_amber',name:'Slam · ambre et rythme'},{id:'artist',name:'Premier artiste'},{id:'slam_white',name:'Slam · pulsation blanche'},{id:'dance',name:'Danse · duo contrasté'}];
  const cleanOverrides=raw=>Object.fromEntries(overrideDefinitions.filter(p=>raw?.[p.id]&&typeof raw[p.id]==='object').map(p=>{const saved=raw[p.id];return [p.id,{name:typeof saved.name==='string'?saved.name.slice(0,70):p.name,duration:sanitizeSceneDuration(saved.duration),prefs:cleanPrefs(saved.prefs),colors:cleanColors(saved.colors),timelines:cleanTimelines(saved.timelines),fog:cleanFog(saved.fog),artistVisible:typeof saved.artistVisible==='boolean'?saved.artistVisible:undefined,videoOn:typeof saved.videoOn==='boolean'?saved.videoOn:undefined,flashes:typeof saved.flashes==='boolean'?saved.flashes:undefined,videoMode:videoMode(saved.videoMode,p.id),...(saved.view?{view:cleanScene({...saved,name:saved.name||p.name}).view}:{})}];}));
