@@ -97,7 +97,7 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
  };
 }
 
-export function createFogPreview({scene,origin,projectionSource}){
+export function createFogPreview({scene,origin,projectionSource,mobile=false}){
  const floor=scene.getObjectByName('Sol_salle'),ceiling=scene.getObjectByName('Plafond');
  let bounds=null;const solids=[];
  if(floor){floor.updateWorldMatrix(true,false);const box=new THREE.Box3().setFromObject(floor);bounds={min:[box.min.x,box.max.y,box.min.z],max:[box.max.x,ceiling?ceiling.position.y-.06:origin.y+3,box.max.z]};}
@@ -138,7 +138,7 @@ export function createFogPreview({scene,origin,projectionSource}){
   return [ambient+.52*red/safe*illumination,ambient+.52*green/safe*illumination,ambient+.003+.52*blue/safe*illumination].map(v=>Math.pow(Math.max(0,v),1/2.2));
  }
  let lit=[];
- const volume=createFogVolume({projectionSource,bounds:bounds||{min:[origin.x-5,0,origin.z-3],max:[origin.x+5,origin.y+4,origin.z+15]},solids,particles:dynamics.particles,colour:p=>illuminate(p,lit),compact:typeof matchMedia==='function'&&matchMedia('(pointer: coarse)').matches});
+ const volume=createFogVolume({projectionSource,mobile,bounds:bounds||{min:[origin.x-5,0,origin.z-3],max:[origin.x+5,origin.y+4,origin.z+15]},solids,particles:dynamics.particles,colour:p=>illuminate(p,lit),compact:typeof matchMedia==='function'&&matchMedia('(pointer: coarse)').matches});
  return {
   reset(){dynamics.reset();volume.reset();},
   clear(){const rate=dynamics.state.rate;this.reset();dynamics.set({on:false,rate});},

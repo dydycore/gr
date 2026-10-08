@@ -1,3 +1,4 @@
+import {createRenderProfile,previewPixelRatio,createMobileQuality} from './mobile-rendering.mjs';
 import {batchStaticSurfaces} from './static-batching.js';
 import {createAudienceMaterials,batchAudience} from './audience-batching.js';
 import {createFrameLimiter} from './frame-limiter.mjs';
@@ -19,7 +20,7 @@ import {createLightingEditor} from './lighting-editor.js';
 import {profiles,wheel,sanitizeFx,motionAngles,coneHitsSphere} from './fixture-profiles.js';
 import {createGoboPreview} from './gobo-preview.js';
 import atmosphere from './atmosphere.json';
-import {createBeamClipper} from './beam-volume.js';
+import {createBeamClipper,createStaticLightRay} from './beam-volume.js';
 import {distributionFor,distributionTexture} from './optical-distributions.js';
 import {createPhysicalRenderer} from './physical-renderer.js';
 import {createFogPreview} from './fog-preview.js';
@@ -32,6 +33,9 @@ import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
 
 const $=s=>document.querySelector(s),host=$('#viewport');
 const exportVideoMode=isVideoExportDocument();let backgroundExportBusy=false,exportPrepared=!exportVideoMode;
+const renderProfile=createRenderProfile(navigator,{exporting:exportVideoMode});
+const mobileQuality=createMobileQuality(renderProfile.mobile);
+host.dataset.renderProfile=renderProfile.mobile?'mobile':'desktop';
 let exportTimelineTime=0;
 let renderScheduler=null,viewportVisible=true,viewportHasSize=true;
 function invalidateRender(){renderScheduler?.invalidate();}
@@ -45,8 +49,8 @@ const scene=new THREE.Scene();scene.background=new THREE.Color('#151c24');
 const model=new THREE.Group();model.name='Grand_Remix_V18_Metres';scene.add(model);
 model.userData={units:'metres',revision:'V18',date:'2026-10-07',coordinates:'X droite public ; Y hauteur ; Z vers public. Pour le plan : x=X, y=-Z, z=Y.',status:'Implantation proposee ; pas un releve ni une validation technique'};
 const camera=new THREE.PerspectiveCamera(46,1,.10,80);camera.position.set(0,2.43,9.9);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance',preserveDrawingBuffer:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
+const renderer=new THREE.WebGLRenderer({antialias:renderProfile.antialias,alpha:false,powerPreference:'high-performance',preserveDrawingBuffer:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,renderProfile.mobile?1:1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.appendChild(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.14;controls.rotateSpeed=.45;controls.zoomSpeed=.8;controls.panSpeed=.65;controls.enablePan=true;controls.enableZoom=true;controls.mouseButtons={LEFT:THREE.MOUSE.ROTATE,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.PAN};controls.target.set(0,1.4,.3);controls.maxDistance=32;controls.minDistance=1.2;controls.maxPolarAngle=Math.PI*.497;
@@ -68,7 +72,7 @@ function point(x,y,z){return new THREE.Vector3(x,z,-y);}
 function clickable(obj,data){obj.userData.details=data;pickables.push(obj);return obj;}
 function label(text,pos,proposed=false,small=false){let e=document.createElement('div');e.textContent=text;e.className='overlay-label'+(proposed?' proposed':'')+(small?' small':'');$('#labels').appendChild(e);let item={e,pos};labelItems.push(item);return item;}
 const hemi=new THREE.HemisphereLight('#dcecf5','#605e62',2.1);scene.add(hemi);
-const sun=new THREE.DirectionalLight('#ffecd2',2.2);sun.position.set(-5,13,7);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10,near:.5,far:35});sun.shadow.bias=-.0008;sun.shadow.autoUpdate=false;sun.shadow.needsUpdate=true;scene.add(sun);
+const sun=new THREE.DirectionalLight('#ffecd2',2.2);sun.position.set(-5,13,7);sun.castShadow=true;sun.shadow.mapSize.set(renderProfile.sunShadowSize,renderProfile.sunShadowSize);Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10,near:.5,far:35});sun.shadow.bias=-.0008;sun.shadow.autoUpdate=false;sun.shadow.needsUpdate=true;scene.add(sun);
 const room=group('Salle_dimensions_documentees');
 box(W,.16,ROOM+D,0,-.08,(ROOM-D)/2,floor,room,'Sol_salle');
 const stage=box(W,H,D,0,H/2,-D/2,stageMat,room,'Scene_8.5344x3.6576_h0.6096');
@@ -95,7 +99,7 @@ for(let y of [1.38,1.80,2.22]){box(.26,.035,2.2,4.00,y,4.65,wood,bar);box(.018,.
 for(let z of [2.0,2.85,3.70,4.55,5.4,6.25]){cylinder(.17,.05,new THREE.Vector3(2.84,.73,z),wood,bar);for(let dz of [-.11,.11])for(let x of [2.74,2.94])rod(new THREE.Vector3(x,.70,z+dz),new THREE.Vector3(x,.02,z+dz*1.35),.014,metal,bar);}
 for(const col of layout.columns){box(col.width,CEILING,col.depth,col.x,CEILING/2,-col.y,wood,decor,'Colonne_bois_repere_photo');}
 for(let z of [2.4,3.55,4.7,5.85]){rod(new THREE.Vector3(3.45,CEILING,z),new THREE.Vector3(3.45,2.45,z),.006,black,bar);let shade=new THREE.Mesh(new THREE.ConeGeometry(.17,.14,24,1,true),bronze);shade.position.set(3.45,2.43,z);bar.add(shade);let bulb=new THREE.Mesh(new THREE.SphereGeometry(.032,10,8),new THREE.MeshBasicMaterial({color:'#ffe5b2'}));bulb.position.set(3.45,2.39,z);bar.add(bulb);}
-const barGlow=new THREE.PointLight('#ffc078',4.5,7,2);barGlow.castShadow=true;barGlow.shadow.mapSize.set(1024,1024);barGlow.shadow.autoUpdate=false;barGlow.shadow.needsUpdate=true;barGlow.position.set(3.05,1.65,4.4);scene.add(barGlow);
+const barGlow=new THREE.PointLight('#ffc078',4.5,7,2);barGlow.castShadow=true;barGlow.shadow.mapSize.set(renderProfile.shadowSize,renderProfile.shadowSize);barGlow.shadow.autoUpdate=false;barGlow.shadow.needsUpdate=true;barGlow.position.set(3.05,1.65,4.4);scene.add(barGlow);
 // Painted brick rear, black acoustic absorbers and the left-side door seen from stage.
 for(let x of [-2.9,-.8,1.4])box(1.45,1.05,.12,x,2.75,ROOM-.03,black,shell,'Absorbeur_mur_fond');
 for(let z of [1.5,4.3,7.1,9.1])box(.08,1.1,1.55,-W/2+.06,2.75,z,black,shell,'Absorbeur_mur_lateral');
@@ -141,7 +145,7 @@ box(.42,.035,.20,0,atmosphere.height+.018,0,metal,fogMachine,'Poignee_F1');
 box(.17,.075,.008,.16,.17,atmosphere.depth/2+.005,mat('#11151b'),fogMachine,'Sortie_brouillard');
 const fogLed=box(.023,.012,.01,-.20,.23,atmosphere.depth/2+.009,new THREE.MeshBasicMaterial({color:'#75282b'}),fogMachine);
 clickable(fogMachine,{title:'F1 · Machine à brouillard',status:'Au sol entre enceinte gauche et booth DJ reculé de 30 cm',type:'proposed',fog:true,text:atmosphere.status,measure:'Antari F-1W inventoriée. Centre x −3,62 ; y +1,43 m. Posée sur scène. Encombrement indicatif 60,8 × 27,5 × 28,6 cm.'});
-const fogPreview=createFogPreview({scene,projectionSource:()=>state.videoOn?{screen:[EX,E.z,EZ,E.contentDiameter/2],origin:[PX,PY-P.lensDown,PZ-P.lensForward],texture:vjTexture}:null,origin:fogMachine.position.clone().add(new THREE.Vector3(.16,.17,atmosphere.depth/2+.04))});
+const fogPreview=createFogPreview({scene,mobile:renderProfile.mobile,projectionSource:()=>state.videoOn?{screen:[EX,E.z,EZ,E.contentDiameter/2],origin:[PX,PY-P.lensDown,PZ-P.lensForward],texture:vjTexture}:null,origin:fogMachine.position.clone().add(new THREE.Vector3(.16,.17,atmosphere.depth/2+.04))});
 function syncFog(){const s=fogPreview.state,rateDisplay=fogDisplayPercent(s.rate);$('#fog-toggle').textContent=s.on?'Arrêter la machine':'Démarrer la machine';$('#fog-toggle').setAttribute('aria-pressed',s.on);$('#fog-rate').value=rateDisplay;$('#fog-value').textContent=rateDisplay+' %';$('#fog-status').textContent=s.on?'Émission en cours · diffusion illustrative':'Émission arrêtée · dissipation progressive';const hint=document.querySelector('#fog-settings .disclosure-hint');if(hint)hint.textContent=s.on?'Émission · '+rateDisplay+' %':'Machine arrêtée';fogLed.material.color.set(s.on?'#7beec4':'#75282b');invalidateRender();}
 const slam=group('Zone_slam');slam.position.x=layout.slam.x;const slamLine=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([[-.75,H+.005,-.35],[.75,H+.005,-.35],[.75,H+.005,-1.85],[-.75,H+.005,-1.85]].map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:'#62bda8'}));slam.add(slamLine);
 rod(new THREE.Vector3(-.23,H,-1.1),new THREE.Vector3(-.23,H+1.46,-1.1),.012,metal,slam);cylinder(.14,.025,new THREE.Vector3(-.23,H+.012,-1.1),black,slam);
@@ -149,7 +153,7 @@ rod(new THREE.Vector3(-.23,H+1.44,-1.1),new THREE.Vector3(-.23,H+1.50,-.92),.021
 const artistLabel=label('Artiste',new THREE.Vector3(layout.slam.x,H+.20,-.6));
 // Shared screen position: brought inward from the wall; front plane retained.
 const screen=group('E1_ecran_avant_droit_ecarte_du_mur');screen.position.set(EX,E.z,EZ);
-const vjCanvas=document.createElement('canvas');vjCanvas.width=1024;vjCanvas.height=1024;const ctx=vjCanvas.getContext('2d');const vjTexture=new THREE.CanvasTexture(vjCanvas);vjTexture.colorSpace=THREE.SRGBColorSpace;vjTexture.anisotropy=renderer.capabilities.getMaxAnisotropy();
+const vjCanvas=document.createElement('canvas');vjCanvas.width=renderProfile.visualSize;vjCanvas.height=renderProfile.visualSize;const ctx=vjCanvas.getContext('2d');const vjTexture=new THREE.CanvasTexture(vjCanvas);vjTexture.colorSpace=THREE.SRGBColorSpace;vjTexture.anisotropy=renderer.capabilities.getMaxAnisotropy();
 const circle=new THREE.Mesh(new THREE.CircleGeometry(E.diameter/2,96),new THREE.MeshStandardMaterial({color:'#f5f5f2',roughness:1,metalness:0,side:THREE.DoubleSide}));circle.castShadow=true;circle.receiveShadow=true;screen.add(circle);
 const visibleImage=new THREE.Mesh(new THREE.CircleGeometry(E.contentDiameter/2,96),new THREE.MeshBasicMaterial({color:'#ffffff',map:vjTexture,side:THREE.FrontSide,transparent:true,depthWrite:false}));visibleImage.position.z=.003;visibleImage.receiveShadow=false;screen.add(visibleImage);
 const rim=new THREE.Mesh(new THREE.TorusGeometry(E.diameter/2+.006,.018,10,96),metal);screen.add(rim);
@@ -245,15 +249,16 @@ const danceLights=[];for(let i=1;i<=6;i++){let f=fixtures.find(f=>f.id===`S${i}`
 for(const f of fixtures){
  if(!f.actualLight)focusSpot(f,f.focus.slamTarget,fixtureColor(f),f.kind==='moving'?110:22);
  f.optics=distributionFor(f.kind);f.previewPower=f.optics.power;f.actualLight.penumbra=f.optics.penumbra;const distribution=distributionTexture(f.kind);if(distribution)f.actualLight.map=distribution;
- f.actualLight.decay=2;f.actualLight.distance=20;f.actualLight.castShadow=true;f.actualLight.shadow.mapSize.set(1024,1024);f.actualLight.shadow.camera.near=.08;f.actualLight.shadow.bias=-.00005;f.actualLight.shadow.normalBias=.005;f.actualLight.shadow.autoUpdate=false;f.actualLight.shadow.needsUpdate=true;
- if(f.kind==='moving'){f.goboPreview=createGoboPreview();f.actualLight.map=f.goboPreview.texture;f.actualLight.castShadow=true;f.actualLight.penumbra=.08;}
+ f.actualLight.decay=2;f.actualLight.distance=20;f.actualLight.castShadow=true;f.actualLight.shadow.mapSize.set(renderProfile.shadowSize,renderProfile.shadowSize);f.actualLight.shadow.camera.near=.08;f.actualLight.shadow.bias=-.00005;f.actualLight.shadow.normalBias=.005;f.actualLight.shadow.autoUpdate=false;f.actualLight.shadow.needsUpdate=true;
+ if(f.kind==='moving'){f.goboPreview=createGoboPreview({size:renderProfile.goboSize});f.actualLight.map=f.goboPreview.texture;f.actualLight.castShadow=true;f.actualLight.penumbra=.08;}
  f.beam.patch.visible=false;
 }
 const audienceBatchStats=batchAudience(audience);
 const staticBatchStats=batchStaticSurfaces([room,bar,rig]);host.dataset.staticDrawCallsSaved=String(staticBatchStats.reduced+audienceBatchStats.reduced);host.dataset.audienceMeshes=String(audienceBatchStats.after);
 const renderRoom=createPhysicalRenderer(renderer,scene,camera,spots,{fog:fogPreview});
 const volumeSolids=[...room.children,...shell.children,...bar.children,...dj.children,...decor.children].filter(o=>o.isMesh&&o.geometry.type==='BoxGeometry');
-const clipBeam=createBeamClipper(volumeSolids);
+const clipBeam=createBeamClipper(volumeSolids,{segments:renderProfile.beamSegments});
+const mobileLightRay=renderProfile.mobile?createStaticLightRay([room,shell,bar,dj]):null;
 const lightRay=new THREE.Raycaster();const screenCenter=new THREE.Vector3(EX,E.z,EZ),hazeSample=new THREE.Vector3();
 function baseAngles(f){const cue=state.mode==='dance'?'dance':'slam',d=point(...f.focus[cue+'Target']).sub(f.g.position).normalize();return {pan:THREE.MathUtils.radToDeg(Math.atan2(d.x,d.z)),tilt:THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(-d.y,-1,1)))};}
 function renderFixtures(time){
@@ -267,10 +272,10 @@ function renderFixtures(time){
   if(f.kind==='moving'){
    const p=THREE.MathUtils.degToRad(displayed.pan),t=THREE.MathUtils.degToRad(displayed.tilt);
    direction.set(Math.sin(p)*Math.sin(t),-Math.cos(t),Math.cos(p)*Math.sin(t));
-   lightRay.set(f.g.position.clone().addScaledVector(direction,.24),direction);const hit=lightRay.intersectObjects([room,shell,bar,dj],true)[0];length=hit?hit.distance+.24:15;target=f.g.position.clone().addScaledVector(direction,length);
+   lightRay.set(f.g.position.clone().addScaledVector(direction,.24),direction);const hit=mobileLightRay?mobileLightRay(f,lightRay.ray.origin,lightRay.ray.direction):lightRay.intersectObjects([room,shell,bar,dj],true)[0];length=hit?hit.distance+.24:15;target=f.g.position.clone().addScaledVector(direction,length);
   }
   const originalLength=length;
-  if(f.kind!=='moving'){lightRay.set(f.g.position.clone().addScaledVector(direction,.08),direction);const hit=lightRay.intersectObjects([room,shell,bar,dj],true)[0];if(hit&&hit.distance+.08<length){length=hit.distance+.08;target=f.g.position.clone().addScaledVector(direction,length);}}
+  if(f.kind!=='moving'){lightRay.set(f.g.position.clone().addScaledVector(direction,.08),direction);const hit=mobileLightRay?mobileLightRay(f,lightRay.ray.origin,lightRay.ray.direction):lightRay.intersectObjects([room,shell,bar,dj],true)[0];if(hit&&hit.distance+.08<length){length=hit.distance+.08;target=f.g.position.clone().addScaledVector(direction,length);}}
   const optics=distributionFor(f.kind,fx.zoom);const radius=Math.tan(THREE.MathUtils.degToRad(optics.field/2))*length;
   const intersects=coneHitsSphere(f.g.position.toArray(),direction.toArray(),length,radius/length,screenCenter.toArray(),E.reservationDiameter/2+.15);
   f.previewBlocked=f.notUsed||!f.focus[cue+'On']||intersects;
@@ -282,7 +287,7 @@ function renderFixtures(time){
   let localHaze=0;
   if(active&&state.beams&&fogPreview.density>.001)for(let sample=1;sample<=5;sample++){hazeSample.copy(f.g.position).addScaledVector(direction,length*(sample-.5)/5);localHaze+=fogPreview.sampleDensity(hazeSample)/5;}
   const beamVisible=state.beams&&active&&localHaze>.003&&optics.haze>0;
-  // Clipping casts 49 outer rays. Hidden haze shells need no geometry update;
+  // Clipping casts 49 outer rays (21 on mobile). Hidden haze shells need no geometry update;
   // the clipper's direction/zoom cache refreshes them when they reappear.
   if(beamVisible)clipBeam(f.beam,direction,radius/length);
   f.beam.g.visible=beamVisible;f.beam.patch.visible=false;
@@ -330,7 +335,7 @@ function drawVJ(t){
  const visualMode=state.videoMode||state.ambience||'opening';
  const key=visualMode+':'+t+':'+eventLogo.complete+':'+getVideoBackgroundRevision()+':'+getVisualFontRevision()+':'+fade;
  if(key===lastVideoKey)return;
- lastVideoKey=key;drawEventVisual(ctx,eventLogo,t,1024,visualMode);
+ lastVideoKey=key;drawEventVisual(ctx,eventLogo,t,vjCanvas.width,visualMode);
  if(old&&fade<1){
   const opacity=Math.max(.00001,visibleImage.material.opacity),newWeight=fade/opacity,oldWeight=(1-fade)*ambienceFade.opacity/opacity;
   ctx.save();ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1-newWeight;ctx.fillStyle='#000000';ctx.fillRect(0,0,vjCanvas.width,vjCanvas.height);ctx.globalCompositeOperation='lighter';ctx.globalAlpha=oldWeight;ctx.drawImage(old,0,0);ctx.restore();
@@ -377,7 +382,7 @@ $('#export-glb').onclick=async()=>{const b=$('#export-glb');b.disabled=true;b.te
 let viewportWidth=1,viewportHeight=1,lastLabelKey='',viewportPixelRatio=0,resizeRequest=null;
 function resize(){
  const r=host.getBoundingClientRect();viewportHasSize=r.width>0&&r.height>0;
- if(viewportHasSize){const ratio=exportVideoMode?1:Math.min(window.devicePixelRatio||1,2,Math.sqrt(4800000/Math.max(1,r.width*r.height)));
+ if(viewportHasSize){const ratio=previewPixelRatio(renderProfile,r.width,r.height,window.devicePixelRatio,mobileQuality.scale);
   if(viewportWidth!==r.width||viewportHeight!==r.height||viewportPixelRatio!==ratio){const ratioChanged=viewportPixelRatio!==ratio;viewportWidth=r.width;viewportHeight=r.height;viewportPixelRatio=ratio;lastLabelKey='';camera.aspect=r.width/r.height;camera.updateProjectionMatrix();if(ratioChanged)renderer.setPixelRatio(ratio);renderer.setSize(r.width,r.height,false);invalidateRender();}
  }
  renderScheduler?.reconcile();
@@ -432,8 +437,8 @@ if(frameLimiter.fps<=30||now-lastLightingFrame>40){renderFixtures(elapsed);lastL
 if(now-screenFrame>=1000/30-1){drawVJ(elapsed);screenFrame=now;}if(ambienceFade&&ambienceFadeProgress()>=1)cancelAmbienceFade();controls.update();cameraCutaway();renderRoom(!!transition||performance.now()-lastCameraChange<220);
 const labelKey=camera.matrixWorld.elements.join(',')+'|'+state.labels+'|'+state.rigFocus+'|'+performer.visible+'|'+viewportWidth+'x'+viewportHeight;if(labelKey!==lastLabelKey){lastLabelKey=labelKey;const r={width:viewportWidth,height:viewportHeight};for(const l of labelItems){let p=l.pos.clone().project(camera),visible=state.labels&&(l!==artistLabel||performer.visible)&&(!l.rigOnly||state.rigFocus)&&p.z<1&&p.z>-1&&Math.abs(p.x)<.99&&Math.abs(p.y)<.96;l.e.style.display=visible?'block':'none';if(visible){const halfWidth=l.e.offsetWidth/2+4,halfHeight=l.e.offsetHeight/2+4;l.e.style.left=Math.max(halfWidth,Math.min(r.width-halfWidth,(p.x*.5+.5)*r.width))+'px';l.e.style.top=Math.max(halfHeight,Math.min(r.height-halfHeight,(-p.y*.5+.5)*r.height))+'px';}}}
 const workMs=performance.now()-frameStarted;host.dataset.renderActivity=continuous?'active':'idle';host.dataset.renderCap=String(frameLimiter.fps);
-if(continuous){if(!exportVideoMode&&adaptiveCadence.record(now,workMs))frameLimiter.setFps(adaptiveCadence.fps);perfFrames++;perfWork+=workMs;if(now-perfStart>=2000){host.dataset.renderFps=(perfFrames*1000/(now-perfStart)).toFixed(1);host.dataset.renderCpuMs=(perfWork/perfFrames).toFixed(1);host.dataset.renderPixels=renderer.domElement.width+'x'+renderer.domElement.height;const status=document.getElementById('render-rate');if(status)status.textContent='FPS mesurés : '+host.dataset.renderFps+' · Résolution : '+host.dataset.renderPixels;perfStart=now;perfFrames=0;perfWork=0;}}
-else{adaptiveCadence.reset();perfStart=now;perfFrames=0;perfWork=0;}
+if(continuous){if(mobileQuality.record(now,workMs,frameLimiter.fps))queueResize();if(!exportVideoMode&&adaptiveCadence.record(now,workMs))frameLimiter.setFps(adaptiveCadence.fps);perfFrames++;perfWork+=workMs;if(now-perfStart>=2000){host.dataset.renderFps=(perfFrames*1000/(now-perfStart)).toFixed(1);host.dataset.renderCpuMs=(perfWork/perfFrames).toFixed(1);host.dataset.renderPixels=renderer.domElement.width+'x'+renderer.domElement.height;const status=document.getElementById('render-rate');if(status)status.textContent='FPS mesurés : '+host.dataset.renderFps+' · Résolution : '+host.dataset.renderPixels;perfStart=now;perfFrames=0;perfWork=0;}}
+else{adaptiveCadence.reset();mobileQuality.reset();perfStart=now;perfFrames=0;perfWork=0;}
 return true;
 }
 renderScheduler=createRenderScheduler({
@@ -442,7 +447,7 @@ renderScheduler=createRenderScheduler({
  revision:()=>getVideoBackgroundRevision()+':'+getVisualFontRevision()+':'+eventLogo.complete,
  onSuspend:()=>{host.dataset.renderActivity='suspended';clockRunning=false;syncRenderVideo();},
  onResume:(duration,now)=>{
-  last=now;clockRunning=false;frameLimiter.reset();adaptiveCadence.reset();perfStart=now;perfFrames=0;perfWork=0;lastLabelKey='';
+  last=now;clockRunning=false;frameLimiter.reset();adaptiveCadence.reset();mobileQuality.reset();perfStart=now;perfFrames=0;perfWork=0;lastLabelKey='';
   if(transition)transition.start+=duration;if(entrance)entrance.start+=duration;if(ambienceFade&&ambienceFade.started!==null)ambienceFade.started+=duration;
   lightingEditor?.shiftPlaybackClock?.(duration);syncRenderVideo();
  }
@@ -460,7 +465,7 @@ $('#fog-clear').onclick=()=>{fogPreview.clear();syncFog();$('#fog-status').textC
 $('#fog-toggle').onclick=()=>{fogPreview.toggle();syncFog();};$('#fog-rate').oninput=e=>{fogPreview.set({...fogPreview.state,rate:fogStoredRate(e.target.value)});syncFog();};syncFog();
 function syncAmbienceName(force=false){const input=$('#scene-name');if(!input)return;const identity=state.savedAmbience?'saved-'+state.savedAmbience.index:state.ambience||'free';if(force||input.dataset.identity!==identity){input.dataset.identity=identity;input.value=state.savedAmbience?.name||lightingEditor?.presetName(state.ambience,ambienceDefinitions.find(p=>p.id===state.ambience)?.name)||'';lightingEditor?.setSceneName(input.value);}}
 simplifySidebar();
-// Both options preserve the exact same lighting, shadow maps, fog and draw resolution.
+// Desktop keeps its original quality; mobile precision adapts independently of cadence.
 const performanceSettings=document.querySelector('#view-settings .sidebar-detail-body');
 if(performanceSettings){
  const rateRow=document.createElement('div');rateRow.className='row';
@@ -472,7 +477,7 @@ if(performanceSettings){
  rateSelect.value=String(preferredFps);
  rateSelect.addEventListener('change',()=>{adaptiveCadence.setFps(Number(rateSelect.value));frameLimiter.setFps(adaptiveCadence.fps);invalidateRender();try{localStorage.setItem(fpsLimitKey,rateSelect.value);}catch{}});
  rateRow.append(rateLabel,rateSelect);performanceSettings.prepend(rateRow);
- const qualityNote=document.createElement('p');qualityNote.className='note';qualityNote.textContent='Les deux modes gardent la même résolution, les ombres, les gobos et le brouillard.';
+ const qualityNote=document.createElement('p');qualityNote.className='note';qualityNote.textContent=renderProfile.mobile?'Sur téléphone et tablette, la précision du rendu 3D s’adapte à l’appareil. Tous les réglages restent accessibles.':'Les deux modes gardent la même résolution, les ombres, les gobos et le brouillard.';
  rateRow.after(qualityNote);
  const perfStatus=document.createElement('p');perfStatus.id='render-rate';perfStatus.className='note';perfStatus.textContent='FPS mesurés : en cours…';
  qualityNote.after(perfStatus);

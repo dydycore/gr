@@ -40,8 +40,8 @@ export function createFogField({bounds,solids=[],size=[36,20,56]}){
  }};
 }
 
-export function createFogVolume({bounds,solids,particles,colour,compact=false,projectionSource=()=>null}){
- const field=createFogField({bounds,solids,size:compact?[28,18,44]:[36,24,56]});
+export function createFogVolume({bounds,solids,particles,colour,compact=false,mobile=false,projectionSource=()=>null}){
+ const field=createFogField({bounds,solids,size:mobile?[24,16,40]:compact?[28,18,44]:[36,24,56]});
  const textures=[0,1].map(()=>{const t=new THREE.Data3DTexture(new Uint8Array(field.bytes.length),...field.size);t.format=THREE.RGBAFormat;t.type=THREE.UnsignedByteType;t.minFilter=t.magFilter=THREE.LinearFilter;t.unpackAlignment=1;t.needsUpdate=true;return t;});
  const uniforms={previous:{value:textures[0]},current:{value:textures[1]},blend:{value:1},depthMap:{value:null},inverseProjection:{value:new THREE.Matrix4()},cameraWorld:{value:new THREE.Matrix4()},boxMin:{value:new THREE.Vector3(...bounds.min)},boxMax:{value:new THREE.Vector3(...bounds.max)},clock:{value:0}};
  uniforms.projection={value:new THREE.Vector4()};
@@ -60,7 +60,7 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
    vec3 uv=(p-boxMin)/(boxMax-boxMin);if(any(lessThan(uv,vec3(0)))||any(greaterThan(uv,vec3(1))))return 0.;
    float density=mix(texture(previous,uv).a,texture(current,uv).a,blend)*3.;
    float eddy=noise3(p*1.15-vec3(clock*.045,clock*.025,clock*.06));
-   float fine=noise3(p*2.8+vec3(clock*.019,-clock*.04,0));
+   float fine=${mobile?'0.5':'noise3(p*2.8+vec3(clock*.019,-clock*.04,0))'};
    vec3 edge=min(p-boxMin,boxMax-p);
    return density*(.55+.65*eddy+.16*fine)*smoothstep(0.,.25,min(edge.x,edge.z));
   }
@@ -68,7 +68,7 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
   // world-space field affects the projected image and the viewer's sightline.
   float projectorTransmission(vec3 point){
    vec3 delta=point-projectorOrigin;float opticalDepth=0.;
-   const int LIGHT_STEPS=${compact?8:12};
+   const int LIGHT_STEPS=${mobile?4:compact?8:12};
    for(int j=0;j<LIGHT_STEPS;j++)opticalDepth+=densityAt(projectorOrigin+delta*((float(j)+.5)/float(LIGHT_STEPS)));
    return exp(-opticalDepth*length(delta)*.8/float(LIGHT_STEPS));
   }
@@ -94,7 +94,7 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
    bool projectedSurface=projection.w>0.&&origin.z>projection.z&&abs(surface.z-projection.z)<.02&&length(surface.xy-projection.xy)<projection.w;
    if(sceneDepth<.999999)exit=min(exit,length(worldAt(sceneDepth)-origin));
    if(exit<=entry){discard;}
-   const int STEPS=${compact?32:48};float stepSize=(exit-entry)/float(STEPS),transmission=1.;vec3 accumulated=vec3(0.);
+   const int STEPS=${mobile?24:compact?32:48};float stepSize=(exit-entry)/float(STEPS),transmission=1.;vec3 accumulated=vec3(0.);
    for(int i=0;i<STEPS;i++){
     vec3 p=origin+ray*(entry+(float(i)+.5)*stepSize),uv=(p-boxMin)/(boxMax-boxMin);
     vec4 f0=texture(previous,uv),f1=texture(current,uv);
@@ -112,8 +112,8 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
    fogColour=vec4(accumulated/max(alpha,.001),alpha);
   }`});
  const pass=new THREE.Scene(),quad=new THREE.Mesh(new THREE.PlaneGeometry(2,2),material),camera=new THREE.Camera();pass.add(quad);
- // Only the soft volume is calculated at half resolution. A depth-aware
- // upscale keeps silhouettes sharp; lighting, gobos and video stay native.
+ // The soft volume uses half resolution (one third on mobile). Depth-aware
+ // upscaling preserves silhouettes; extinction still uses the same 3D field.
  const target=new THREE.WebGLRenderTarget(1,1,{depthBuffer:false});
  const outputUniforms={fog:{value:target.texture},depthMap:{value:null},resolution:{value:new THREE.Vector2(1,1)},nearFar:{value:new THREE.Vector2()}};
  const composite=new THREE.ShaderMaterial({uniforms:outputUniforms,transparent:true,depthTest:false,depthWrite:false,toneMapped:false,
@@ -130,12 +130,12 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
    result/=max(total,.00001);gl_FragColor=vec4(result.rgb/max(result.a,.001),result.a);
   }`});
  const screenSize=new THREE.Vector2(),clearColour=new THREE.Color();
- const interval=compact?.25:.2;let age=interval,time=0,visible=true,hasDensity=false;
+ const interval=mobile?.3:compact?.25:.2;let age=interval,time=0,visible=true,hasDensity=false;
  return {
   reset(){for(const t of textures){t.image.data.fill(0);t.needsUpdate=true;}age=interval;time=0;hasDensity=false;uniforms.blend.value=1;},
   setVisible(value){visible=value;},
   update(dt){time+=Math.max(0,dt||0);age+=Math.max(0,dt||0);uniforms.clock.value=time;
-   if(age>=interval){
+   if(age>=interval&&(!mobile||hasDensity||particles.some(p=>p.active&&p.opacity>.001))){
     const old=uniforms.previous.value;uniforms.previous.value=uniforms.current.value;uniforms.current.value=old;
     old.image.data.set(field.build(particles,colour));old.needsUpdate=true;age=0;
     hasDensity=particles.some(p=>p.active&&p.opacity>.001);
@@ -147,7 +147,7 @@ export function createFogVolume({bounds,solids,particles,colour,compact=false,pr
    if(source){uniforms.projectorOrigin.value.set(...source.origin);uniforms.projectedImage.value=source.texture;}
    uniforms.depthMap.value=depth;uniforms.inverseProjection.value.copy(viewCamera.projectionMatrixInverse);uniforms.cameraWorld.value.copy(viewCamera.matrixWorld);
    const previousTarget=renderer.getRenderTarget(),clear=renderer.autoClear,clearAlpha=renderer.getClearAlpha();renderer.getClearColor(clearColour);
-   renderer.getDrawingBufferSize(screenSize);const w=Math.ceil(screenSize.x/2),h=Math.ceil(screenSize.y/2);
+   renderer.getDrawingBufferSize(screenSize);const w=Math.ceil(screenSize.x/(mobile?3:2)),h=Math.ceil(screenSize.y/(mobile?3:2));
    if(target.width!==w||target.height!==h){target.setSize(w,h);outputUniforms.resolution.value.set(w,h);}
    renderer.autoClear=true;renderer.setClearColor(0,0);renderer.setRenderTarget(target);quad.material=material;renderer.render(pass,camera);
    renderer.setClearColor(clearColour,clearAlpha);renderer.setRenderTarget(previousTarget);renderer.autoClear=false;

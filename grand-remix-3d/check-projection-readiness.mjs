@@ -22,7 +22,7 @@ const context={
  invalidateRender(){},projectionEnabled:()=>context.state.videoOn,backgroundExportBusy:false,
  syncVideoBackgroundPlayback(){},getVideoBackgroundStatus:()=>({mode:'dream',frameReady:decoded}),
  ambienceFadeProgress:()=>1,getVideoBackgroundRevision:()=>0,getVisualFontRevision:()=>0,
- visibleImage:{visible:true,material:{opacity:1}},ctx:{},vjTexture:{},eventLogo:{complete:true},
+ visibleImage:{visible:true,material:{opacity:1}},ctx:{},vjCanvas:{width:1024},vjTexture:{},eventLogo:{complete:true},
  drawEventVisual(){draws++;},barGlow:{shadow:{}},sun:{shadow:{}},fixtures:[],hemi:{},renderer:{},
  scene:{background:{set(){}}},decorative:[],rigHighlight:{},reserveRing:{},renderFixtures(){},projectionGuide:{},
  audience:{},shell:{},cutaway:{},route:{},$:element,lightingEditor:null,ambienceDefinitions:[],syncAmbienceName(){},syncVideo(){}

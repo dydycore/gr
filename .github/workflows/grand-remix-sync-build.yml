@@ -9,6 +9,10 @@ on:
       - "grand-remix-3d/ambiences.js"
       - "grand-remix-3d/published-lighting.json"
       - "grand-remix-3d/fog-preview.js"
+      - "grand-remix-3d/fog-volume.js"
+      - "grand-remix-3d/beam-volume.js"
+      - "grand-remix-3d/gobo-preview.js"
+      - "grand-remix-3d/mobile-rendering.mjs"
       - "grand-remix-3d/lighting-editor.js"
       - "grand-remix-3d/scene.js"
       - "grand-remix-3d/index.template.html"
@@ -59,6 +63,7 @@ jobs:
           node check-fog-scale.mjs
           node check-fog.mjs
           node check-fog-volume.mjs
+          node check-mobile-rendering.mjs
           node check-ambiences.mjs
           node check-published-lighting.mjs
           node check-timeline.mjs
