@@ -2688,7 +2688,7 @@
       },
       "fog": {
         "on": true,
-        "rate": 0.15
+        "rate": 0.06
       },
       "artistVisible": true,
       "videoOn": true,
@@ -5779,7 +5779,7 @@
       },
       "fog": {
         "on": true,
-        "rate": 0.11
+        "rate": 0.07
       },
       "artistVisible": true,
       "videoOn": true,
@@ -10662,7 +10662,7 @@
       },
       "fog": {
         "on": true,
-        "rate": 0.15
+        "rate": 0.07
       },
       "artistVisible": false,
       "videoOn": true,
@@ -14180,7 +14180,7 @@
       },
       "fog": {
         "on": true,
-        "rate": 0.17
+        "rate": 0.07
       },
       "artistVisible": true,
       "videoOn": true,
@@ -14219,7 +14219,7 @@
           "beams": true,
           "fog": {
             "on": true,
-            "rate": 0.85
+            "rate": 0.07
           }
         }
       },
@@ -14251,7 +14251,7 @@
           "beams": true,
           "fog": {
             "on": false,
-            "rate": 0.35
+            "rate": 0.07
           }
         }
       }
@@ -14746,7 +14746,7 @@
         },
         "fog": {
           "on": false,
-          "rate": 0.35
+          "rate": 0.07
         },
         "artistVisible": true,
         "videoOn": true,

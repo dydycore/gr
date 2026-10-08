@@ -478,6 +478,24 @@ if(performanceSettings){
  qualityNote.after(perfStatus);
 }
 renderSavedAmbiences(lightingEditor.sceneSummaries());
+$('#fixture-save').onclick=()=>{
+ const custom=state.savedAmbience,preset=ambienceDefinitions.find(p=>p.id===state.ambience);
+ let saved=false;
+ if(custom)saved=lightingEditor.updateSaved(custom.index,custom.name);
+ else if(preset)saved=lightingEditor.savePresetOverride(preset.id,lightingEditor.presetName(preset.id,preset.name));
+ else{
+  const item=lightingEditor.saveAs($('#scene-name')?.value.trim()||'Mon ambiance');
+  if(item)state.savedAmbience=item;
+  saved=!!item;
+ }
+ if(saved){
+  state.ambienceCustomized=false;
+  renderSavedAmbiences(lightingEditor.sceneSummaries());
+  applyMode();
+  $('#fixture-edit-status').textContent='Ambiance et réglages du spot enregistrés.';
+  toast('Ambiance enregistrée dans ce navigateur.');
+ }else $('#fixture-edit-status').textContent='Sauvegarde impossible : vérifiez le stockage du navigateur.';
+};
 const artistControls=document.createElement('div');artistControls.className='studio-actions';artistControls.innerHTML='<button id="artist-enter">Entrée de l’artiste</button><button id="artist-exit">Sortie de l’artiste</button>';$('#quick-controls').appendChild(artistControls);
 const artistStatus=document.createElement('p');artistStatus.id='artist-status';artistStatus.className='note';artistStatus.setAttribute('role','status');$('#quick-controls').appendChild(artistStatus);$('#artist-enter').onclick=()=>startArtistMovement(false);$('#artist-exit').onclick=()=>startArtistMovement(true);$('#entrance').hidden=true;syncArtistControls();
 $('label[for="fog-rate"]').textContent='Quantité de brouillard';

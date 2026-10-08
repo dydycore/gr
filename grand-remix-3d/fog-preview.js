@@ -28,7 +28,7 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
   p.velocity[0]=.025+(random()-.5)*.03;p.velocity[1]=.035;p.velocity[2]=.8+(random()-.5)*.12;
  }
  function advance(dt){
-  time+=dt;pump+=(Number(on)-pump)*(1-Math.exp(-dt/(on?1.05:.38)));
+  time+=dt;pump+=(Number(on&&rate>0)-pump)*(1-Math.exp(-dt/(on?1.05:.38)));
   if(!on&&pump<.001)pump=0;
   // Longer-lived parcels fill the room gradually. The lower birth rate keeps
   // the same bounded pool, including at sustained maximum output.
@@ -77,7 +77,7 @@ export function createFogDynamics({origin,capacity=72,seed=91,bounds=null,solids
   particles,
   reset(){on=false;rate=.06;pump=0;credit=0;time=0;remainder=0;density=0;emitted=0;for(const p of particles){p.active=false;p.opacity=0;}},
   get state(){return {on,rate};},get density(){return density;},get emission(){return pump;},
-  set(value){on=!!value?.on;const n=Number(value?.rate);if(Number.isFinite(n))rate=clamp(n,.05,1);},
+  set(value){on=!!value?.on;const n=Number(value?.rate);if(Number.isFinite(n))rate=clamp(n,0,.07);},
   toggle(){on=!on;},
   update(dt){if(!Number.isFinite(dt)||dt<=0)return;remainder+=Math.min(dt,.25);while(remainder>=1/60-1e-10){advance(1/60);remainder-=1/60;}},
   sampleDensity(point){
