@@ -45,7 +45,8 @@ assert.ok(!info.includes('<dt>Nom de l’ambiance</dt>')&&!info.includes('<dt>En
 
 assert.ok(model.includes('id="fixture-save"')&&model.includes('id="color-reset"'),'Enregistrer doit être placé à côté de Rétablir ce spot.');
 assert.ok(sidebar.includes("disclosure('selected-equipment'")&&sidebar.includes("selected.body.appendChild(selectedDetail)"),'Les descriptions des objets cliqués doivent rester visibles dans la barre latérale.');
-assert.ok(model.includes('selectedPanel.hidden=false')&&model.includes('selectedPanel.open=true'),'Un clic 3D doit ouvrir les informations de l’élément.');
+const source3d=fs.readFileSync(path.join(root,'scene.js'),'utf8');
+assert.ok(source3d.includes('selectedPanel.hidden=false')&&source3d.includes('selectedPanel.open=true'),'Un clic 3D doit ouvrir les informations de l’élément.');
 assert.ok(model.includes('id="fog-rate" min="0" max="100" step="1" value="30"'),'Le nouveau curseur affiche 0 à 100%.');
 assert.ok(info.includes('ancien 20 % = nouveau 100 %')&&info.includes('ancien 7 % = nouveau 35 %'),'Info doit expliquer la nouvelle échelle.');
 console.log('Accueil vérifié : logo original, 4 rubriques, liens, médias, maquette et plans présents.');
