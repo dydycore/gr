@@ -1,0 +1,73 @@
+name: Prévisualisation mise en page Grand Remix
+
+on:
+  push:
+    branches: [optimisation-performance-v1]
+    paths:
+      - ".github/workflows/preview-slam-design.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "grand-remix-preview-design"
+  cancel-in-progress: true
+
+jobs:
+  publish-preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Récupérer la nouvelle interface non fusionnée
+        uses: actions/checkout@v4
+        with:
+          ref: amelioration-accueil-slam-v1
+
+      - name: Préparer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: grand-remix-3d/package-lock.json
+
+      - name: Installer les dépendances
+        working-directory: grand-remix-3d
+        run: npm ci
+
+      - name: Vérifier l'accueil, le logo et les liens
+        working-directory: grand-remix-3d
+        run: npm run test:ux
+
+      - name: Tester le limiteur de FPS
+        working-directory: grand-remix-3d
+        run: npm run test:fps
+
+      - name: Générer la maquette sans perte d'effet
+        working-directory: grand-remix-3d
+        run: npm run preview:optim
+
+      - name: Préparer les fichiers de prévisualisation
+        working-directory: grand-remix-3d
+        run: |
+          mkdir -p _github_pages_preview
+          cp -a site/. _github_pages_preview/
+          cp Grand_Remix_3D_optimise.html _github_pages_preview/maquette.html
+          test -s _github_pages_preview/media/Grand_Slam_Logo_Transparent.png
+          test -s _github_pages_preview/maquette.html
+
+      - name: Configurer Pages
+        uses: actions/configure-pages@v5
+
+      - name: Envoyer l'aperçu
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./grand-remix-3d/_github_pages_preview
+
+      - name: Publier cet aperçu sur GitHub Pages seulement
+        id: deployment
+        uses: actions/deploy-pages@v4
