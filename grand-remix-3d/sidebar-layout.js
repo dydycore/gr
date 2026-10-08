@@ -34,12 +34,12 @@ export function simplifySidebar(){
  quick.appendChild(find('room-reset').closest('.studio-actions'));
  const videoActions=document.createElement('div');videoActions.className='video-actions';videoActions.appendChild(find('video-toggle'));quick.appendChild(videoActions);
  const spots=disclosure('spot-settings','Régler un spot','Cliquez sur un spot dans la salle');
- const ambienceEdit=section('ambience-edit');ambienceEdit.appendChild(saveShortcut);spots.body.appendChild(ambienceEdit);
+ const ambienceEdit=document.createElement('div');ambienceEdit.id='ambience-edit';ambienceEdit.style.cssText='display:grid;gap:8px;margin:10px 0 16px';ambienceEdit.appendChild(saveShortcut);
  spots.body.appendChild(spot);spot.querySelector('.eyebrow')?.remove();
  const fogSection=disclosure('fog-settings','Brouillard','Arrêté au départ');
  if(fog){fogSection.body.appendChild(fog);fog.querySelector('.eyebrow')?.remove();}
  const scenes=disclosure('saved-scenes','Mes ambiances','Enregistrer et retrouver vos réglages');
- if(saved){scenes.body.appendChild(saved);saved.querySelector('.eyebrow')?.remove();}
+ if(saved){scenes.body.appendChild(saved);saved.querySelector('.eyebrow')?.remove();saved.insertBefore(ambienceEdit,find('scene-list'));}
  const display=disclosure('view-settings','Vue et repères','Intensité, faisceaux et affichage');
  // The ambience row now contains only the optional display controls and notes.
  ambience.querySelector('.eyebrow')?.remove();
@@ -58,7 +58,7 @@ export function simplifySidebar(){
  // Detailed operating help lives under the model on the site. Do not repeat
  // the room/reset paragraphs here; retain the hidden live projection status.
  const videoStatus=find('video-status');if(videoStatus){videoStatus.hidden=true;technical.body.appendChild(videoStatus);}
- side.replaceChildren(top,spots.el,fogSection.el,commands.el,scenes.el,display.el,exports.el,imports.el,technical.el);
+ side.replaceChildren(top,spots.el,fogSection.el,commands.el,scenes.el,display.el,imports.el,exports.el,technical.el);
  const help=document.createElement('a');help.id='maquette-info-link';help.href='index.html#maquette-info';help.target='_top';help.textContent='Info';help.setAttribute('aria-label','Info : comment utiliser la maquette');side.appendChild(help);
  help.onclick=event=>{if(window.parent!==window){event.preventDefault();window.parent.postMessage({type:'grand-remix-open-help'},location.origin);}};
  saveShortcut.onclick=()=>{scenes.el.open=true;find('scene-name')?.focus();};
