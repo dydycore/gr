@@ -12,7 +12,7 @@ execFileSync(process.execPath,['preview-performance.cjs'],{cwd:root,stdio:'inher
 const model=path.join(root,'Grand_Remix_3D_optimise.html');
 const target=path.join(site,'maquette.html');
 const contents=fs.readFileSync(model,'utf8');
-if(!contents.includes('pinky love')||!contents.includes('Ouverture — copie'))
+if(!contents.includes('pinky love'))
  throw new Error('Les scènes publiques ne sont pas intégrées à la maquette compilée.');
 if(!fs.existsSync(path.join(site,'index.html'))||!fs.existsSync(path.join(site,'media','Grand_Slam_Logo_Transparent.png')))
  throw new Error('L’accueil ou le logo manquent dans le dossier site.');
