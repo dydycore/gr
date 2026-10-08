@@ -278,16 +278,14 @@ header nav a,.button,.page-menu button,.view-switch button,summary{white-space:n
 <dt>Flèches tactiles</dt><dd>Les flèches discrètes en bas de la vue permettent d’avancer et de reculer. Toucher pour un petit pas, maintenir pour continuer, relâcher pour arrêter.</dd>
 <dt>Ouvrir en grand</dt><dd>Agrandit la maquette dans le même onglet. Sur téléphone, les réglages se trouvent sous la vue 3D. Retour au site ramène aux informations.</dd>
 </dl></details>
-<p class="guide-index-hint">Ouvrir une rubrique pour voir ses paramètres, dans le même ordre que le panneau de commandes.</p>
+<p class="guide-index-hint">Ouvrir une rubrique pour consulter les explications, regroupées par thème.</p>
 <details class="guide-topic" id="guide-ambiences"><summary><span>01</span>Ambiances</summary><dl>
 <dt>Les huit ambiances</dt><dd>Cliquer sur une ambiance pour la charger. Ce sont des suggestions à adapter au spectacle ; le passage se fait avec un fondu de 1,5 seconde, sans déplacer la caméra.</dd>
 <dt>Rejouer</dt><dd>Relance l’ambiance sélectionnée depuis le début.</dd>
 <dt>Lire les ambiances / Arrêter le défilement</dt><dd>Enchaîne les huit propositions dans l’ordre, avec leurs durées enregistrées ; le second clic arrête l’enchaînement.</dd>
 <dt>Compteur et état</dt><dd>Indiquent la position dans le cycle, sa durée et si l’ambiance a été ajustée.</dd></dl></details>
 <details class="guide-topic" id="guide-spot"><summary><span>02</span>Régler un spot</summary>
-<h4>Choisir, modifier et enregistrer</h4><dl>
-<dt>Nom de l’ambiance</dt><dd>Le nom utilisé pour votre sauvegarde.</dd>
-<dt>Enregistrer / Enregistrer sous…</dt><dd>Enregistrer met à jour l’ambiance sélectionnée et son nom. Enregistrer sous… crée une copie personnelle. Les sauvegardes restent dans ce navigateur.</dd>
+<h4>Choisir et modifier un spot</h4><dl>
 <dt>Flashs</dt><dd>Autorise ou coupe tous les flashs de l’ambiance.</dd>
 <dt>Spot à régler</dt><dd>Choisir un numéro dans la liste ou cliquer sur un spot en 3D. Seuls les paramètres disponibles sur ce type d’appareil apparaissent.</dd>
 <dt>Annuler / Rétablir</dt><dd>Annule ou rétablit une modification dans l’ambiance en cours, y compris une copie à plusieurs lampes. Raccourcis : Ctrl+Z et Ctrl+Maj+Z.</dd>
@@ -327,6 +325,8 @@ header nav a,.button,.page-menu button,.view-switch button,summary{white-space:n
 <dt>Allumer / Éteindre le projecteur</dt><dd>Affiche ou coupe l’image projetée.</dd>
 <dt>Entrée / Sortie de l’artiste</dt><dd>Anime le trajet entre la coulisse et la scène. L’état affiché indique sa position ; les boutons sont momentanément indisponibles pendant le déplacement.</dd></dl></details>
 <details class="guide-topic" id="guide-scenes"><summary><span>05</span>Mes ambiances</summary><dl>
+<dt>Nom de l’ambiance</dt><dd>Le nom utilisé pour votre sauvegarde.</dd>
+<dt>Enregistrer / Enregistrer sous…</dt><dd>Enregistrer met à jour l’ambiance sélectionnée et son nom. Enregistrer sous… crée une copie personnelle. Les sauvegardes restent dans ce navigateur.</dd>
 <dt>Nom du thème / Ajouter une ambiance</dt><dd>Saisir un nom de thème pour activer Ajouter une ambiance. Crée une sauvegarde personnelle des réglages et de la vue actuelle.</dd>
 <dt>Ambiances personnelles enregistrées</dt><dd>Choisit la sauvegarde à afficher, remplacer ou prendre comme départ de lecture.</dd>
 <dt>Afficher / Remplacer</dt><dd>Afficher charge la sauvegarde avec sa vue. Remplacer la met à jour avec les réglages et la vue actuels.</dd>
@@ -345,15 +345,15 @@ header nav a,.button,.page-menu button,.view-switch button,summary{white-space:n
 <dt>Murs et plafond</dt><dd>Affiche ou masque l’enveloppe de la salle.</dd>
 <dt>Trajet depuis la coulisse</dt><dd>Affiche ou masque le repère du passage de l’artiste.</dd>
 <dt>Animation des effets</dt><dd>Met en pause ou relance les mouvements, les séquences et le visuel.</dd></dl></details>
-<details class="guide-topic" id="guide-export"><summary><span>07</span>Exporter</summary><dl>
+<details class="guide-topic" id="guide-import"><summary><span>07</span>Importer</summary><dl>
+<dt>Importer des ambiances</dt><dd>Charger un fichier JSON de cette maquette. Les ambiances connues sont mises à jour, les nouvelles ajoutées et les identiques conservées sans doublon. Les autres ambiances restent présentes. Un bilan indique les mises à jour et les ajouts ; un fichier incompatible est refusé.</dd>
+<dt>Télécharger mes réglages</dt><dd>Permet de conserver une sauvegarde de l’état actuel avant l’import.</dd></dl></details>
+<details class="guide-topic" id="guide-export"><summary><span>08</span>Exporter</summary><dl>
 <dt>Créer une vidéo d’ambiance</dt><dd>Calcule un aperçu depuis les paramètres choisis, en arrière-plan, sans devoir le faire jouer à l’écran. Une ambiance seule dure jusqu’à 30 secondes. Si Lire les ambiances est activé, exporte les huit dans l’ordre, depuis le début, avec leurs durées et leurs fondus : jusqu’à 4 minutes.</dd>
 <dt>Création de la vidéo / Annuler / Télécharger</dt><dd>L’aperçu se met en pause et la progression apparaît à l’écran. Annuler interrompt le calcul. Le fichier final se télécharge sans son en MP4, ou en WebM selon le navigateur ; le lien permet de le télécharger à nouveau.</dd>
 <dt>Enregistrer la vue</dt><dd>Télécharge une image de la vue 3D actuelle.</dd>
 <dt>Exporter en GLB</dt><dd>Télécharge la géométrie 3D pour un logiciel compatible. Les séquences et les vidéos n’y sont pas exportées comme animations.</dd>
 <dt>Télécharger mes réglages</dt><dd>Sauvegarde toutes les ambiances, les scènes personnelles, les séquences et les changements en cours dans un fichier JSON à conserver ou transférer.</dd></dl></details>
-<details class="guide-topic" id="guide-import"><summary><span>08</span>Importer</summary><dl>
-<dt>Importer des ambiances</dt><dd>Charger un fichier JSON de cette maquette. Les ambiances connues sont mises à jour, les nouvelles ajoutées et les identiques conservées sans doublon. Les autres ambiances restent présentes. Un bilan indique les mises à jour et les ajouts ; un fichier incompatible est refusé.</dd>
-<dt>Télécharger mes réglages</dt><dd>Permet de conserver une sauvegarde de l’état actuel avant l’import.</dd></dl></details>
 
 </div></details></section>
 <section id="panel-plans" aria-label="Plans PDF" hidden><div class="section-head"><div><p class="kicker">Plans pour préparer le montage</p><h2>Les plans techniques</h2><p>9 planches · A3 paysage. Implantation : 1–6 · Appareils et ambiances : 7–8 · Brouillard et validation : 9.</p></div><div class="actions"><a class="button" href="documents/Grand-Remix-Plan-Technique-V18.pdf" target="_blank" rel="noopener">Ouvrir le PDF ↗</a><a class="button primary" href="documents/Grand-Remix-Plan-Technique-V18.pdf" download>Télécharger le dossier</a></div></div><div class="plans-layout"><aside class="page-menu" aria-label="Sommaire du PDF"><h3>CHOISIR UNE PLANCHE</h3><button data-page="1" aria-pressed="true"><b>01</b><span>Vue de dessus<br>Implantation et lumière</span></button><button data-page="2" aria-pressed="false"><b>02</b><span>Face et coupe<br>Écran, scène et hauteurs</span></button><button data-page="3" aria-pressed="false"><b>03</b><span>Vue d’ensemble<br>Équipements et cotes</span></button><button data-page="4" aria-pressed="false"><b>04</b><span>Projection<br>Calculs et réserves</span></button><button data-page="5" aria-pressed="false"><b>05</b><span>Barres d’accroche<br>Repérage et priorités</span></button><button data-page="6" aria-pressed="false"><b>06</b><span>Focus lumière<br>Protection de l’écran</span></button><button data-page="7" aria-pressed="false"><b>07</b><span>Appareils et capacités<br>Couleurs, gobos et mouvements</span></button><button data-page="8" aria-pressed="false"><b>08</b><span>Huit ambiances suggérées<br>Pistes lumière et brouillard</span></button><button data-page="9" aria-pressed="false"><b>09</b><span>Brouillard et validation<br>Machine F1 et points à confirmer</span></button></aside><div class="document"><div class="document-tools"><strong id="page-title" aria-live="polite">01 — Vue de dessus</strong></div><div class="plan-zoom-tools" role="group" aria-label="Zoom de l’aperçu du plan"><span class="plan-zoom-label">Agrandir le plan</span><div class="plan-zoom-buttons"><button id="plan-zoom-out" type="button" aria-label="Réduire le plan" aria-controls="plan-viewport" disabled>−</button><output id="plan-zoom-value" aria-live="polite" aria-atomic="true" aria-label="Agrandissement de l’aperçu">100 %</output><button id="plan-zoom-in" type="button" aria-label="Agrandir le plan" aria-controls="plan-viewport">+</button><button id="plan-zoom-reset" type="button" aria-label="Ajuster le plan à la largeur du lecteur" aria-controls="plan-viewport">Ajuster</button></div></div><div id="plan-viewport" class="plan-viewport" tabindex="0" role="region" aria-label="Aperçu du plan, défilable après agrandissement"><img id="plan-preview" src="previews/plan-1.png" width="1250" height="884" alt="Planche 1 — Vue de dessus"></div><p class="reader-help">Pour consulter le document, <a id="page-link" href="documents/Grand-Remix-Plan-Technique-V18.pdf#page=1" target="_blank" rel="noopener">ouvrir cette planche dans le PDF ↗</a>. Le fichier téléchargé contient les neuf planches.</p></div></div></section>
