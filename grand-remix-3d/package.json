@@ -7,6 +7,7 @@
     "preview:optim": "node preview-performance.cjs",
     "test:fps": "node check-frame-limiter.mjs",
     "test:ux": "node check-site-ux.mjs",
-    "test:public": "node check-published-lighting.mjs"
+    "test:public": "node check-published-lighting.mjs",
+    "prepare:netlify": "node prepare-netlify.cjs"
   }
 }
