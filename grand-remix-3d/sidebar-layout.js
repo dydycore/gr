@@ -21,10 +21,7 @@ export function simplifySidebar(){
  };
  const top=section('show-ambiences');heading(top,'Ambiances');
  top.appendChild(find('ambience-buttons'));
- // Personal saves are managed in Mes ambiances; keep the main list to eight ambiences.
- const savedCatalogue=document.createElement('div');savedCatalogue.hidden=true;top.appendChild(savedCatalogue);
- const savedHeading=heading(savedCatalogue,'Mes ambiances');savedHeading.id='saved-ambience-heading';savedHeading.hidden=true;
- const savedButtons=document.createElement('div');savedButtons.id='saved-ambience-buttons';savedButtons.className='ambience-buttons';savedCatalogue.appendChild(savedButtons);
+ // Personal saves already have an accessible editor in « Mes ambiances ».
  const actions=find('ambience-play').closest('.studio-actions');
  top.appendChild(actions);
   top.appendChild(find('ambience-time'));top.appendChild(find('ambience-status'));
