@@ -57,6 +57,33 @@ export function timelineDuration(timeline){
  return clean.steps.reduce((sum,step)=>sum+step.duration,0);
 }
 
+// Inserting never drops existing blocks to make room. A full 30-second track
+// shares its time proportionally, retaining minimum-length blocks unchanged.
+export function insertFixtureTimelineStep(raw,step,insertAt,kind='moving'){
+ const timeline=sanitizeFixtureTimeline(raw,kind);
+ if(timeline.steps.length>=TIMELINE_LIMITS.maxSteps)return {timeline,inserted:false,index:-1,redistributed:false};
+ const added=sanitizeFixtureTimeline({enabled:true,steps:[{...step,duration:2}]},kind).steps[0];
+ const index=Number.isInteger(insertAt)?bounded(insertAt,0,timeline.steps.length):timeline.steps.length;
+ const steps=timeline.steps.map(s=>({...s})),budget=TIMELINE_LIMITS.maxTotalDuration-added.duration;
+ const redistributed=timelineDuration(timeline)>budget;
+ if(redistributed){
+  let open=steps.map((_,i)=>i),remaining=budget;
+  while(open.length){
+   const scale=remaining/open.reduce((sum,i)=>sum+timeline.steps[i].duration,0);
+   const pinned=open.filter(i=>timeline.steps[i].duration*scale<TIMELINE_LIMITS.minDuration);
+   if(!pinned.length){for(const i of open)steps[i].duration=timeline.steps[i].duration*scale;break;}
+   for(const i of pinned){steps[i].duration=TIMELINE_LIMITS.minDuration;remaining-=TIMELINE_LIMITS.minDuration;}
+   open=open.filter(i=>!pinned.includes(i));
+  }
+  // Leave a numerical guard so sanitising cannot truncate a final .25s block
+  // because floating-point addition overshoots the 30-second boundary.
+  const longest=steps.reduce((best,s,i)=>s.duration>steps[best].duration?i:best,0);
+  steps[longest].duration-=1e-9;
+ }
+ steps.splice(index,0,added);
+ return {timeline:sanitizeFixtureTimeline({enabled:true,steps},kind),inserted:true,index,redistributed};
+}
+
 const channels=color=>[1,3,5].map(index=>parseInt(color.slice(index,index+2),16));
 const interpolate=(a,b,fraction)=>a+(b-a)*fraction;
 const mixColor=(a,b,fraction)=>{

@@ -11,33 +11,36 @@
     "roomDepth": 10.668
   },
   "screen": {
-    "x": 2.35,
-    "y": 0.807,
+    "x": 0,
+    "y": 3.2976,
     "z": 2.05,
-    "diameter": 2.0,
-    "imageWidth": 3.392,
-    "imageHeight": 2.12,
+    "diameter": 1.940417,
+    "imageWidth": 3.296667,
+    "imageHeight": 2.060417,
     "coverageMarginEachSide": 0.06,
-    "contentDiameter": 1.98,
+    "contentDiameter": 1.920417,
     "visibleBorder": 0.01,
-    "mounting": "Premiere barre a y +0.807 m ; accroche proposee a valider par DT",
+    "mounting": "Centre au fond de scene, devant les plis du rideau, a lemplacement de la toile existante ; suspension au plafond a valider avec le DT",
     "reservationDiameter": 2.1,
-    "diameterStatus": "Estime depuis photo ; non mesure",
-    "surface": "Toile blanche diffuse ; noir du contenu video uniquement"
+    "diameterStatus": "Circonference communiquee : 20 pi (6,096 m) ; diametre calcule 1,94 m, a mesurer monte",
+    "surface": "Tissu blanc leger traite ignifuge, cerceau PVC 3/4 po ; masque circulaire",
+    "circumference": 6.096
   },
   "projector": {
-    "x": 1.95,
-    "y": -4.25,
-    "z": 2.75,
+    "x": 0,
+    "y": 2.338767,
+    "z": 3.4,
     "bodyWidth": 0.5,
-    "bodyDepth": 0.5,
-    "bodyHeight": 0.18,
-    "lensForward": 0.28,
-    "lensDown": 0.01,
-    "lensReference": "INCONNUE",
+    "bodyDepth": 0.538,
+    "bodyHeight": 0.2,
+    "lensForward": -0.435,
+    "lensDown": 0.065,
+    "lensReference": "ET-DLE03S (reference communiquee ; ET-DLE035 a confirmer)",
     "bodyDimensionsStatus": "enveloppe indicative",
-    "mountBar": "B4",
-    "mounting": "Option sur barre salle reperee graphiquement ; adaptateur, charge et lentille a confirmer"
+    "mountBar": null,
+    "mounting": "Support Chief VCMU existant conserve ; emplacement repris du plan LX original de la salle",
+    "id": "P0",
+    "positionStatus": "x/y releves graphiquement du plan LX ; hauteur et reference optique exacte a verifier"
   },
   "dj": {
     "x": -3,
@@ -47,7 +50,7 @@
     "height": 0.9
   },
   "slam": {
-    "x": -0.375,
+    "x": 0,
     "y": 1.1,
     "width": 1.5,
     "depth": 1.5
@@ -66,11 +69,11 @@
       0.55
     ],
     [
-      -0.375,
+      0,
       0.55
     ],
     [
-      -0.375,
+      0,
       1.28
     ]
   ],
@@ -134,7 +137,7 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
@@ -146,8 +149,6 @@
         "radius": 0.45,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.1199,
-        "danceClearance": 2.9145,
         "role": "ARTISTE / PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -162,7 +163,7 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
@@ -174,8 +175,6 @@
         "radius": 0.45,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.1199,
-        "danceClearance": 2.4173,
         "role": "ARTISTE / PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -190,7 +189,7 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
@@ -202,8 +201,6 @@
         "radius": 0.45,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.6215,
-        "danceClearance": 0.8928,
         "role": "ARTISTE / PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -218,7 +215,7 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
@@ -230,8 +227,6 @@
         "radius": 0.45,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.0169,
-        "danceClearance": 0.1806,
         "role": "ARTISTE / PISTE",
         "status": "105 reactive a la demande ; focus artiste et piste, coupure geometrique conservatrice autour ecran"
       },
@@ -246,7 +241,7 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
@@ -258,8 +253,6 @@
         "radius": 0.45,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.1197,
-        "danceClearance": 4.0426,
         "role": "ARTISTE / PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -287,7 +280,7 @@
         "slamOn": true,
         "danceOn": true,
         "role": "PISTE",
-        "status": "112 reactive vers les premiers rangs sous E1 ; pan -30 / tilt 58 / zoom 12 / balayage +/-12 maximum. Focus et parcours a valider par DT."
+        "status": "Vers les premiers rangs ; pan -30 / tilt 58 / zoom 12 / balayage +/-12 maximum. Focus et parcours a valider par DT."
       },
       "notUsed": false
     },
@@ -300,20 +293,18 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "radius": 0.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.9398,
-        "danceClearance": 0.9398,
         "role": "ARTISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -340,8 +331,6 @@
         "radius": 0.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 4.0863,
-        "danceClearance": 4.0863,
         "role": "DJ",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -356,25 +345,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "radius": 0.4,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -1.186,
-        "danceClearance": -1.186,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "10",
@@ -397,8 +384,6 @@
         "radius": 0.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 4.0879,
-        "danceClearance": 4.0879,
         "role": "DJ",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -413,25 +398,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "radius": 0.4,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -0.645,
-        "danceClearance": -0.645,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "12",
@@ -454,8 +437,6 @@
         "radius": 0.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 4.0879,
-        "danceClearance": 4.0879,
         "role": "DJ",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -470,25 +451,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "radius": 0.4,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -0.1473,
-        "danceClearance": -0.1473,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "201",
@@ -537,8 +516,6 @@
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 3.5052,
-        "danceClearance": 3.5052,
         "role": "DJ",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -553,22 +530,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.0095,
-        "danceClearance": 1.0095,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle vers le haut du corps de lartiste ; toile au fond hors du champ direct, a regler sur place"
       },
       "notUsed": false
     },
@@ -581,22 +556,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.7746,
-        "danceClearance": 0.7746,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle vers le haut du corps de lartiste ; toile au fond hors du champ direct, a regler sur place"
       },
       "notUsed": false
     },
@@ -609,25 +582,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "radius": 0.55,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": 0.3219,
-        "danceClearance": 0.3219,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Reactive ; focus vers artiste au centre, a regler sur place sans eclairer la toile"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "206",
@@ -638,25 +609,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
-          1.6096
+          2
         ],
         "radius": 0.55,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -0.0008,
-        "danceClearance": -0.0008,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle vers le haut du corps de lartiste ; toile au fond hors du champ direct, a regler sur place"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "207",
@@ -679,8 +648,6 @@
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 3.0253,
-        "danceClearance": 3.0253,
         "role": "DJ",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -695,20 +662,18 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.9784,
-        "danceClearance": 0.9784,
         "role": "ARTISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -723,20 +688,18 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
           1.6096
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.5397,
-        "danceClearance": 0.5397,
         "role": "ARTISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -751,12 +714,12 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
+          0,
           1.1,
           2.0
         ],
         "danceTarget": [
-          -0.375,
+          0,
           1.1,
           2.0
         ],
@@ -777,22 +740,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -2.2,
+          0.4,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -2.2,
+          0.4,
+          1
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.9958,
-        "danceClearance": 0.9958,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
       },
       "notUsed": false
     },
@@ -805,22 +766,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          2.2,
+          0.4,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          2.2,
+          0.4,
+          1
         ],
         "radius": 0.55,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.8029,
-        "danceClearance": 0.8029,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
       },
       "notUsed": false
     },
@@ -845,8 +804,6 @@
         "radius": 1.2,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 3.9364,
-        "danceClearance": 3.9364,
         "role": "DJ",
         "status": "Focus DJ demande ; reglage manuel de la decoupe, zoom propose 25 degres."
       },
@@ -861,22 +818,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -2.4,
+          0.4,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -2.4,
+          0.4,
+          1
         ],
         "radius": 0.5,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.0684,
-        "danceClearance": 1.0684,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
       },
       "notUsed": false
     },
@@ -889,22 +844,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -1.8,
+          0.4,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          -1.8,
+          0.4,
+          1
         ],
         "radius": 0.5,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.0141,
-        "danceClearance": 1.0141,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
       },
       "notUsed": false
     },
@@ -917,22 +870,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          1.8,
+          0.4,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          1.8,
+          0.4,
+          1
         ],
         "radius": 0.5,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.9213,
-        "danceClearance": 0.9213,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
       },
       "notUsed": false
     },
@@ -945,24 +896,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          0,
+          0.55,
+          1.25
         ],
         "radius": 0.5,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -0.3766,
-        "danceClearance": -0.3766,
+        "slamOn": true,
+        "danceOn": true,
         "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
-      "notUsed": false
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "SL1",
@@ -973,22 +923,20 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          2.0
+          -0.3,
+          0.2,
+          1.2
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          2.0
+          -0.3,
+          0.2,
+          1.2
         ],
         "radius": 0.85,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 0.6226,
-        "danceClearance": 0.6226,
-        "role": "ARTISTE",
-        "status": "Focus manuel haut du corps ; champ illustratif 90 deg, reserve E1 conservee ; diffusion reelle a valider"
+        "role": "AVANT-SCENE",
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
       "notUsed": false
     },
@@ -1002,21 +950,19 @@
       "focus": {
         "slamTarget": [
           -3,
-          2.1,
-          0.6096
+          1.1,
+          1
         ],
         "danceTarget": [
           -3,
-          2.1,
-          0.6096
+          1.1,
+          1
         ],
         "radius": 0.9,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 3.588,
-        "danceClearance": 3.588,
         "role": "DJ",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
       "notUsed": false
     },
@@ -1029,25 +975,23 @@
       "proposed": false,
       "focus": {
         "slamTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          2,
+          0,
+          1
         ],
         "danceTarget": [
-          -0.375,
-          1.1,
-          1.6096
+          2,
+          0,
+          1
         ],
         "radius": 0.9,
-        "slamOn": false,
-        "danceOn": false,
-        "slamClearance": -0.7502,
-        "danceClearance": -0.7502,
-        "role": "ARTISTE",
-        "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
+        "slamOn": true,
+        "danceOn": true,
+        "role": "AVANT-SCENE DROITE",
+        "status": "Orientation manuelle revue vers lavant pour proteger lecran au fond ; essai des bords du faisceau en salle"
       },
-      "notUsed": true,
-      "notUsedReason": "Non utilise durant evenement : derriere / bord ecran. Boitier rouge de reperage, aucune emission."
+      "notUsed": false,
+      "reactivated": true
     },
     {
       "id": "S1",
@@ -1070,8 +1014,6 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 2.917,
-        "danceClearance": 2.917,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -1098,8 +1040,6 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 5.2691,
-        "danceClearance": 5.2691,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -1126,8 +1066,6 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 4.4335,
-        "danceClearance": 4.4335,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -1154,8 +1092,6 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 3.5586,
-        "danceClearance": 3.5586,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -1182,8 +1118,6 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 4.032,
-        "danceClearance": 4.032,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
@@ -1210,15 +1144,11 @@
         "radius": 1.4,
         "slamOn": true,
         "danceOn": true,
-        "slamClearance": 1.0779,
-        "danceClearance": 1.0779,
         "role": "PISTE",
         "status": "Intentions de focus ; rayons illustratifs et decoupes a regler sur place"
       },
       "notUsed": false
-    }
-  ],
-  "removedFixtures": [
+    },
     {
       "id": "106",
       "kind": "moving",
@@ -1226,7 +1156,25 @@
       "y": 0.8079376328844792,
       "z": 3.4,
       "proposed": false,
-      "reason": "Depose proposee pour liberer accroche ecran ; reste dans inventaire salle"
+      "notUsed": false,
+      "reactivated": true,
+      "focus": {
+        "slamTarget": [
+          0,
+          1.1,
+          1.6096
+        ],
+        "danceTarget": [
+          1.8,
+          -5,
+          0
+        ],
+        "radius": 0.45,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "ARTISTE / PISTE",
+        "status": "Conserve au point du plan LX original ; depose annulee"
+      }
     },
     {
       "id": "5",
@@ -1235,9 +1183,28 @@
       "y": -4.252303330970943,
       "z": 3.38,
       "proposed": false,
-      "reason": "Depose proposee pour reserver P1 sur B4 ; aucune nouvelle accroche LX attribuee"
+      "notUsed": false,
+      "reactivated": true,
+      "focus": {
+        "slamTarget": [
+          2.4,
+          0.4,
+          1
+        ],
+        "danceTarget": [
+          2.4,
+          0.4,
+          1
+        ],
+        "radius": 0.5,
+        "slamOn": true,
+        "danceOn": true,
+        "role": "AVANT-SCENE",
+        "status": "Focus bas et lateral pour conserver la toile centree hors du champ direct ; decoupes a regler en salle"
+      }
     }
   ],
+  "removedFixtures": [],
   "rigBars": [
     {
       "id": "B1",
@@ -1352,7 +1319,7 @@
     "extraMargin": 0.15,
     "movingEffects": "PDF: focus fixes. Studio: mouvements simules avec coupure dynamique pres ecran. A programmer et tester par DT.",
     "scope": "Avant et arriere ecran ; orientation et blackout des faisceaux a risque, sans validation photometrique",
-    "projectorBoundary": "B4 reste une hypothese non retenue pour la lentille actuelle ; verifier les obstacles quand le point video reel sera fixe"
+    "projectorBoundary": "Projecteur P0 conserve au point du plan LX original ; trajet video a verifier sur place"
   },
   "atmosphere": {
     "id": "F1",
@@ -1366,7 +1333,8 @@
     "status": "Au sol entre enceinte gauche et booth DJ, recule de 30 cm pour degager la place. Position indicative ; sortie et ventilation a valider avec le DT. Diffusion illustrative."
   },
   "compatibleSceneGeometryIds": [
+    "294317811a38",
     "a2d4fc43e80c"
   ],
-  "geometryId": "294317811a38"
+  "geometryId": "fd718bda8bd5"
 }

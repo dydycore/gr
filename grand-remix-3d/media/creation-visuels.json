@@ -1,6 +1,6 @@
 {
   "tool": "imagegen built-in",
-  "output_directory": "C:\\Users\\VJs DMTeam\\Documents\\ChatGPT\\a\\output\\grand-remix-3d\\media",
+  "output_directory": "C:\\Users\\VJs DMTeam\\Documents\\ChatGPT\\a\\GRAND REMIX\\gr\\grand-remix-3d\\media",
   "assets": [
     {
       "files": [
@@ -14,7 +14,7 @@
         "Rouge_Conflit.png",
         "Rouge_Conflit.webp"
       ],
-      "prompt": "Fond carré anti-guerre non graphique : façades urbaines dévastées, collage de papier déchiré, charbon et rouge intense, grain de photographie rayée. Sans personne, corps, gore, arme, symbole ni texte."
+      "prompt": "Collage artistique anti-guerre fictif, architecture detruite rouge et noire, deux silhouettes de fusils, eclaboussures de sang stylisees sur papier dechire. Sans personne, corps, blessure, gore, insigne ni texte."
     },
     {
       "files": [
@@ -28,6 +28,14 @@
         "Grand_Slam_Logo_Transparent.png"
       ],
       "prompt": "Détourer uniquement le fond blanc du logo fourni. Préserver exactement le lettrage noir et turquoise GRAND SLAM INTERNATIONAL DE MONTRÉAL et les câbles. Transparence alpha réelle. Aucun flou, halo, ombre ni réinterprétation."
+    },
+    {
+      "files": [
+        "Pinky_Love.png",
+        "Pinky_Love.webp"
+      ],
+      "prompt": "Petales translucides photographiques ROSE franc, rose clair, fuchsia et rose perle, centre rose plus sombre. Sans rouge, bordeaux, orange, texte ni personne.",
+      "animation": "Boucle 30 s, trois cadrages en fondu, mots AMOUR / TENDRESSE / ENSEMBLE, mouvements distincts, rendu Canvas avec caches."
     }
   ],
   "web_encoding": "Original PNGs retained. WebP quality92, native1254-square dimensions. Logo RGBA retained and recoloured by runtime video effect."

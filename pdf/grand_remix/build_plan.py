@@ -13,8 +13,13 @@ ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT.parents[2] / 'tmp' / 'pdfs' / 'grand-remix' / 'Ministere23_Front.pdf'
 ROOT.mkdir(parents=True, exist_ok=True)
 FONT = Path('C:/Windows/Fonts')
-pdfmetrics.registerFont(TTFont('Arial', str(FONT / 'arial.ttf')))
-pdfmetrics.registerFont(TTFont('ArialB', str(FONT / 'arialbd.ttf')))
+def font_path(filename, fallbacks):
+    for candidate in [FONT / filename, *(Path(p) for p in fallbacks)]:
+        if candidate.exists():
+            return str(candidate)
+    raise FileNotFoundError(filename)
+pdfmetrics.registerFont(TTFont('Arial', font_path('arial.ttf', ['/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'])))
+pdfmetrics.registerFont(TTFont('ArialB', font_path('arialbd.ttf', ['/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'])))
 W, H = landscape(A3)
 INK = colors.HexColor('#172B3A')
 MUTED = colors.HexColor('#596B78')

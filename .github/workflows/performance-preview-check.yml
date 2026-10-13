@@ -1,0 +1,48 @@
+name: Vérifier l'aperçu 3D optimisé
+
+on:
+  pull_request:
+    paths:
+      - "grand-remix-3d/**"
+      - ".github/workflows/performance-preview-check.yml"
+  workflow_dispatch:
+
+jobs:
+  verify-performance-preview:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: grand-remix-3d
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: grand-remix-3d/package-lock.json
+      - name: Installer les dépendances
+        run: npm ci
+      - name: Tester le limiteur FPS
+        run: npm run test:fps
+      - name: Compiler la maquette avant de vérifier les commandes
+        run: |
+          node build.cjs
+          node build_site.cjs
+      - name: Vérifier les 30 tests de la maquette et des exports
+        run: |
+          for test in check-*.mjs; do
+            echo "Vérification de $test"
+            node "$test"
+          done
+      - name: Contrôler l'accueil, le logo et les liens
+        run: npm run test:ux
+      - name: Tester les ambiances partagées et la sauvegarde locale
+        run: npm run test:public
+      - name: Vérifier toute la préparation pour Netlify
+        run: npm run prepare:netlify
+      - name: Vérifier la maquette publiée
+        run: |
+          test -s site/maquette.html
+          grep -q 'pinky love' site/maquette.html

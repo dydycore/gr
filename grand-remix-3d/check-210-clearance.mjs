@@ -12,7 +12,7 @@ assert.ok(fixture,'Fixture 210 exists');
 assert.equal(fixture.kind,'colorado','210 remains the fixed COLORado');
 assert.equal(fixture.notUsed,false,'210 is explicitly reactivated');
 assert.notEqual(profiles.colorado.motorized,true,'Do not invent pan/tilt motors');
-const wantedTarget=[-.375,1.1,2.0];
+const wantedTarget=[0,1.1,2.0];
 for(const mode of ['slam','dance']){
  assert.equal(fixture.focus[mode+'On'],true,`210 is available in ${mode}`);
  assert.deepEqual(fixture.focus[mode+'Target'],wantedTarget,`${mode}: same manually focused upper-body target`);

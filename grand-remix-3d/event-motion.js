@@ -1,10 +1,10 @@
-import {drawOcean,drawConflict,drawHoliday} from './visual-scenes-colour.js';
+import {drawOcean,drawConflict,drawHoliday,drawLove} from './visual-scenes-colour.js';
+import {drawCalamine} from './calamine-visual.js';
 
 const TAU=Math.PI*2,LOOP=30,C=256;
 const clamp=(v,min=0,max=1)=>Math.max(min,Math.min(max,v));
 const smooth=v=>{const u=clamp(v);return u*u*(3-2*u);};
 const phaseAt=t=>t/LOOP*TAU;
-const artists=['LA VOIX','LE RYTHME','ENSEMBLE'];
 const greetings=['BIENVENUE','ENTREZ','DANSONS'];
 const logoCache=new WeakMap(),textWidths=new WeakMap();
 const mix=(a,b,u)=>'#'+[1,3,5].map(i=>Math.round(parseInt(a.slice(i,i+2),16)*(1-u)+parseInt(b.slice(i,i+2),16)*u).toString(16).padStart(2,'0')).join('');
@@ -136,25 +136,6 @@ function drawDJ(ctx,logo,t){
  type(ctx,'LE SON NOUS RASSEMBLE',C,359,302,12,'#9b85d1',600);
 }
 
-function drawHipHop(ctx,logo,t){
- const p=phaseAt(t),palette=[['#31ddcd','#cbf744'],['#cbf744','#e253bb'],['#e253bb','#31ddcd']],segment=Math.floor(t/10),blend=smooth((t%10-8.8)/1.2);
- const duo=palette[segment].map((color,index)=>mix(color,palette[(segment+1)%3][index],blend));
- ctx.fillStyle='#080a0d';ctx.fillRect(0,0,512,512);
- // Fixed seeds plus periodic motion keep every loop deterministic and clean.
- for(let i=0;i<22;i++){
-  const angle=i*2.399963,r=177+(i%4)*18,x=C+Math.cos(angle)*r,y=C+Math.sin(angle)*r,wave=Math.sin(p*3+i)*5;
-  ctx.save();ctx.translate(x,y);ctx.rotate(angle+.6+Math.sin(p*2+i)*.055);
-  ctx.strokeStyle=duo[i%2];ctx.lineWidth=i%3?2:5;ctx.globalAlpha=i%3?.26:.68;
-  ctx.beginPath();ctx.moveTo(-21,8+wave);ctx.lineTo(-4,-9);ctx.lineTo(16,7);ctx.lineTo(31,-5-wave);ctx.stroke();ctx.restore();
- }
- const passage=textPass(t,'hiphop');ctx.save();ctx.globalAlpha*=passage.alpha;ctx.translate(C+passage.x,235);ctx.rotate(Math.sin(p)*.013+passage.tilt);ctx.scale(passage.scale,passage.scale);
- type(ctx,'PAROLES',-passage.lineShift,-35,370,72,'#edfff8',900,'"Arial Black", sans-serif');
- type(ctx,'BRUTES',passage.lineShift,40,370,84,duo[0],900,'"Arial Black", sans-serif');ctx.restore();
- type(ctx,'GRAND REMIX',C,121,238,15,duo[1],700);
- wordCycle(ctx,artists,t,363,duo[1],42,'hiphop');
- type(ctx,'SLAM × HIP-HOP',C,390,245,13,'#a7bbba',600);
-}
-
 // All geometry is drawn in a 512-square coordinate system and cropped to the
 // circular screen. The only persistent state belongs to the caller's canvas.
 export function drawEventVisual(ctx,logo,t,size=512,ambience='opening'){
@@ -171,8 +152,9 @@ export function drawEventVisual(ctx,logo,t,size=512,ambience='opening'){
    case'dream':drawOcean(ctx,time);break;
    case'red_alert':drawConflict(ctx,time);break;
    case'warm':drawHoliday(ctx,time);break;
+   case'pinky':drawLove(ctx,time);break;
    case'dj':drawDJ(ctx,logo,time);break;
-   case'hiphop':drawHipHop(ctx,logo,time);break;
+   case'hiphop':drawCalamine(ctx,time);break;
    default:drawOpening(ctx,logo,time);
   }
  }finally{ctx.restore();}

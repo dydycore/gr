@@ -4,9 +4,10 @@ const origin=[-3.46,.7796,-1.2525];
 const tick=(fog,seconds,hz=60)=>{for(let i=0;i<Math.round(seconds*hz);i++)fog.update(1/hz);};
 const active=fog=>fog.particles.filter(p=>p.active);
 const fog=createFogDynamics({origin});
-assert.deepEqual(fog.state,{on:false,rate:.35});tick(fog,20);
+assert.deepEqual(fog.state,{on:false,rate:.06});tick(fog,20);
 assert.equal(active(fog).length,0);assert.equal(fog.density,0);assert.equal(fog.sampleDensity(origin),0);
-fog.set({on:true,rate:.6});assert.equal(active(fog).length,0,'Starting cannot fill the room instantly');
+fog.set({on:true,rate:0});tick(fog,3);assert.equal(active(fog).length,0,'0% creates no new clouds');fog.set({on:false,rate:.06});
+fog.set({on:true,rate:.6});assert.equal(fog.state.rate,.20,'The old 20% is the new displayed 100% maximum');assert.equal(active(fog).length,0,'Starting cannot fill the room instantly');
 fog.update(.1);assert.ok(fog.emission>0&&fog.emission<.2,'Fan output ramps in');
 tick(fog,5);assert.ok(active(fog).length>0&&active(fog).length<20,'Local progressive release');
 assert.ok(active(fog).every(p=>Math.hypot(...p.position.map((v,i)=>v-origin[i]))<4),'No distant instantaneous cloud');
@@ -26,10 +27,10 @@ assert.ok(residual>0);fog.update(.1);assert.ok(active(fog).length>0,'Stop leaves
 assert.ok(fog.emission>0,'Fan output ramps down');
 tick(fog,35);assert.ok(active(fog).length>0,'OFF leaves a slowly dissipating residual instead of clearing the room early');
 tick(fog,25);assert.equal(active(fog).length,0);assert.equal(fog.density,0,'Long-lived residual eventually dissipates');
-fog.toggle();tick(fog,5);fog.reset();assert.deepEqual(fog.state,{on:false,rate:.35});assert.equal(active(fog).length,0);assert.equal(fog.sampleDensity(origin),0);
+fog.toggle();tick(fog,5);fog.reset();assert.deepEqual(fog.state,{on:false,rate:.06});assert.equal(active(fog).length,0);assert.equal(fog.sampleDensity(origin),0);
 
-const simulate=hz=>{const f=createFogDynamics({origin});f.set({on:true,rate:.5});tick(f,10,hz);return f;};
-const rates=[.05,.35,.7,1].map(rate=>{const f=createFogDynamics({origin});f.set({on:true,rate});tick(f,8);return f;});
+const simulate=hz=>{const f=createFogDynamics({origin});f.set({on:true,rate:.05});tick(f,10,hz);return f;};
+const rates=[.01,.03,.05,.07,.20].map(rate=>{const f=createFogDynamics({origin});f.set({on:true,rate});tick(f,8);return f;});
 for(let i=1;i<rates.length;i++){
  assert.equal(rates[i].particles.length,72,'More fog does not allocate more particles');
  assert.equal(active(rates[i]).length,active(rates[i-1]).length,'Rate changes density, not the particle budget');
@@ -49,7 +50,7 @@ const stage={min:[-4.2672,0,-3.6576],max:[4.2672,.6096,0],support:true};
 const booth={min:[-3.9,.6096,-2.475],max:[-2.1,1.5096,-1.725]};
 function stageCloud(hz){
  const f=createFogDynamics({origin,bounds:{min:[-4.2672,0,-3.6576],max:[4.2672,3.81,10.668]},solids:[stage,booth]});
- const bands=new Map();f.set({on:true,rate:.6});
+ const bands=new Map();f.set({on:true,rate:.06});
  for(let frame=0;frame<15*hz;frame++){
   f.update(1/hz);
   for(const p of active(f)){
@@ -76,15 +77,15 @@ assert.ok(matureLow.every(p=>p.spread>p.vertical),'Low density kernels and rende
 assert.equal(layered.sampleDensity([-3.3,.4,-.5]),0,'No density inside the raised stage');
 assert.equal(layered.sampleDensity([-3,1,-2]),0,'No density inside the DJ booth');
 assert.equal(layered.sampleDensity([0,-.1,1]),0,'No density under the room floor');
-layered.set({on:false,rate:.6});tick(layered,1);
+layered.set({on:false,rate:.06});tick(layered,1);
 assert.ok(active(layered).some(p=>p.band==='low')&&active(layered).some(p=>p.band==='high'),'OFF preserves both residual components');
 tick(layered,60);assert.equal(active(layered).length,0,'Both long-lived residual components eventually dissipate');
-layered.reset();assert.equal(layered.density,0);assert.deepEqual(layered.state,{on:false,rate:.35});
+layered.reset();assert.equal(layered.density,0);assert.deepEqual(layered.state,{on:false,rate:.06});
 
 // Observe transport over a whole minute, with the actual stage/booth scale.
 // Detect gradual arrival at the centre and rear rather than uniform opacity.
 const roomCloud=()=>createFogDynamics({origin,bounds:{min:[-4.2672,0,-3.6576],max:[4.2672,3.81,10.668]},solids:[stage,booth]});
-const spreading=roomCloud(),checkpoints=new Map();spreading.set({on:true,rate:.6});
+const spreading=roomCloud(),checkpoints=new Map();spreading.set({on:true,rate:.06});
 for(let frame=1;frame<=3600;frame++){
  spreading.update(1/60);
  for(const p of active(spreading))for(const solid of [stage,booth])
@@ -96,14 +97,14 @@ for(let frame=1;frame<=3600;frame++){
 }
 assert.equal(checkpoints.get(5).centre,0);assert.equal(checkpoints.get(15).rear,0,'No instant haze at the rear');
 assert.ok(checkpoints.get(15).depth>checkpoints.get(5).depth&&checkpoints.get(45).depth>checkpoints.get(15).depth,'Clouds travel gradually away from the nozzle');
-assert.ok(checkpoints.get(45).depth>7&&checkpoints.get(45).width>5,'After 45 seconds the plume reaches across the room and towards the rear');
-assert.ok(checkpoints.get(60).count>50&&checkpoints.get(60).count<=72,'Sustained haze fills the existing pool progressively');
-for(const point of [[0,.2,4],[0,1.5,4],[0,2.8,4],[1,2.2,8]])assert.ok(spreading.sampleDensity(point)>.02,'Low, middle, upper and rear room volumes coexist');
+assert.ok(checkpoints.get(45).depth>checkpoints.get(15).depth&&checkpoints.get(45).width>.8,'Gradual non-uniform room coverage after 45 seconds');
+assert.ok(checkpoints.get(60).count>0&&checkpoints.get(60).count<=72,'Sustained low-level haze remains visible without exceeding the fixed pool');
+assert.ok([[0,.2,4],[0,1.5,4],[0,2.8,4],[1,2.2,8]].some(point=>spreading.sampleDensity(point)>0),'The plume remains localized, not a uniformly filled room');
 assert.equal(spreading.sampleDensity([-3,1,-2]),0,'Broader kernels still exclude the DJ booth');
-for(const hz of [30,120]){const f=roomCloud();f.set({on:true,rate:.6});tick(f,60,hz);assert.deepEqual(f.particles,spreading.particles,'Long-lived, recycled parcels stay frame-rate independent');}
+for(const hz of [30,120]){const f=roomCloud();f.set({on:true,rate:.06});tick(f,60,hz);assert.deepEqual(f.particles,spreading.particles,'Long-lived, recycled parcels stay frame-rate independent');}
 
 const constrained=createFogDynamics({origin:[0,.7,0],bounds:{min:[-1,0,-1],max:[1,2,2]},solids:[{min:[-.9,0,.5],max:[.9,1.5,.8]}]});
-constrained.set({on:true,rate:1});
+constrained.set({on:true,rate:.07});
 for(let i=0;i<3600;i++){
  constrained.update(1/60);
  for(const p of active(constrained)){

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {sanitizeFixtureTimeline,sampleFixtureTimeline,timelineDuration,TIMELINE_LIMITS} from './fixture-timeline.js';
+import {sanitizeFixtureTimeline,sampleFixtureTimeline,timelineDuration,TIMELINE_LIMITS,insertFixtureTimelineStep} from './fixture-timeline.js';
 import {wheel} from './fixture-profiles.js';
 
 const near=(actual,expected,label='')=>assert.ok(Math.abs(actual-expected)<1e-7,`${label}: ${actual} != ${expected}`);
@@ -45,6 +45,29 @@ const compiled=sanitizeFixtureTimeline(two);
 assert.ok(Object.isFrozen(compiled)&&Object.isFrozen(compiled.steps)&&Object.isFrozen(compiled.steps[0].fx));
 assert.deepEqual(sampleFixtureTimeline(compiled,2.2),sampleFixtureTimeline(two,2.2),'Frozen validated fast path matches raw sampling');
 assert.equal(timelineDuration(null),0);
+
+const complete=sanitizeFixtureTimeline(track([5,10,5,10].map((duration,i)=>block({id:'keep-'+i,duration,color:i%2?'#35dcff':'#ff3030',transition:'fade',fadeIn:duration*.3,fadeOut:duration*.2,fx:{dimmer:40+i,gobo:i+1,movement:'circle',period:12},flashHz:2,flashPattern:'random'}))));
+const completeBefore=JSON.stringify(complete),inserted=insertFixtureTimelineStep(complete,block({id:'inserted',color:'#ff40cb'}),2);
+assert.equal(inserted.inserted,true);assert.equal(inserted.redistributed,true);assert.equal(inserted.index,2);assert.equal(inserted.timeline.steps.length,5);
+assert.ok(timelineDuration(inserted.timeline)<=30);near(timelineDuration(inserted.timeline),30);assert.equal(inserted.timeline.steps[2].duration,2);
+for(const old of complete.steps){const kept=inserted.timeline.steps.find(s=>s.id===old.id);near(kept.duration,old.duration*28/30);for(const field of ['color','fx','transition','fadeIn','fadeOut','flashHz','flashPattern','flashOnly'])assert.deepEqual(kept[field],old[field],'Insertion retains '+field);}
+assert.equal(JSON.stringify(complete),completeBefore,'Insertion never mutates the source');
+const minimums=sanitizeFixtureTimeline(track([block({id:'tiny',duration:.25,transition:'fade',fadeIn:.2,fadeOut:.05}),block({id:'long',duration:29.75,transition:'fade',fadeIn:29,fadeOut:.75})]));
+const fitted=insertFixtureTimelineStep(minimums,block({id:'new'}),0).timeline;
+assert.equal(fitted.steps.length,3);assert.equal(fitted.steps.find(s=>s.id==='tiny').duration,.25);near(fitted.steps.find(s=>s.id==='long').duration,27.75);
+assert.ok(fitted.steps.every(s=>s.duration>=.25&&s.fadeIn+s.fadeOut<=s.duration),'Resizing respects minimums and clamps long fades');
+const shortInsert=insertFixtureTimelineStep(two,block({id:'new'}),1);assert.equal(shortInsert.redistributed,false);assert.equal(timelineDuration(shortInsert.timeline),7);assert.equal(shortInsert.timeline.steps[0].duration,2);assert.equal(shortInsert.timeline.steps[2].duration,3);
+const dupe=insertFixtureTimelineStep(complete,{...complete.steps[1],id:'duplicate'},2).timeline;
+assert.equal(dupe.steps[2].duration,2);assert.deepEqual(dupe.steps[2].fx,complete.steps[1].fx);assert.equal(dupe.steps[2].color,complete.steps[1].color);assert.equal(dupe.steps[2].transition,'fade');assert.ok(dupe.steps[2].fadeIn+dupe.steps[2].fadeOut<=2);
+let growing=complete;
+while(growing.steps.length<10){growing=insertFixtureTimelineStep(growing,block({id:'new-'+growing.steps.length}),growing.steps.length).timeline;assert.ok(timelineDuration(growing)<=30);assert.ok(growing.steps.every(s=>s.duration>=.25));}
+const full=insertFixtureTimelineStep(growing,block({id:'cannot-add'}),4);assert.equal(full.inserted,false);assert.deepEqual(full.timeline,growing,'Ten blocks remain the explicit maximum');
+for(let n=1;n<10;n++)for(let position=0;position<=n;position++){
+ const dense=sanitizeFixtureTimeline(track(Array.from({length:n},(_,i)=>block({id:'x'+i,duration:i===0?30-(n-1)*.25:.25}))));
+ const next=insertFixtureTimelineStep(dense,block({id:'added'}),position).timeline;
+ assert.equal(next.steps.length,n+1,'No minimum-length block is lost at any insertion position');assert.ok(timelineDuration(next)<=30);assert.ok(next.steps.every(s=>s.duration>=.25));
+}
+console.log('Timeline insertion: add/duplicate at30s, proportional fitting, minimums, retained effects, clamped fades, immutable data and10-block cap passed.');
 
 for(const kind of ['source','zoom','par','unrecognised']){
  const sample=sampleFixtureTimeline(track([block({color:'#ff3030',fx:{dimmer:80,pan:45,tilt:30,gobo:7,movement:'eight',rotation:20}})]),1,kind);
