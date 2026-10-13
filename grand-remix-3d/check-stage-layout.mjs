@@ -38,6 +38,13 @@ function checkBeam(f,fx,time,mode,label){
 for(const f of layout.fixtures)checkBeam(f,sanitizeFx({dimmer:100},f.kind),0,'slam','default');
 for(const [id,scene] of Object.entries(published.presetOverrides)){
  for(const fid of restoredFixtureIds)assert.ok(scene.prefs[fid].dimmer>0&&scene.colors[fid]!=='#000000',`${id}/${fid}: restored fixture active`);
+ if(!['arrival','opening'].includes(id)){
+  const track=scene.timelines['106'];assert.ok(track?.enabled,id+': editable movement on restored 106');
+  const fx=track.steps[0].fx;
+  assert.notEqual(fx.movement,'static');assert.ok(fx.amplitude>=4);
+  const angles=Array.from({length:33},(_,i)=>motionAngles(0,50,fx,fx.period*i/32));
+  assert.ok(Math.max(...angles.map(a=>a.pan))-Math.min(...angles.map(a=>a.pan))>4,id+': 106 really changes its angle over a cycle');
+ }
  for(const f of layout.fixtures)for(let i=0;i<600;i++){
   const time=i/20,fx=sampleFixtureTimeline(scene.timelines[f.id],time,f.kind,{flashes:true})?.fx||scene.prefs[f.id];
   checkBeam(f,fx,time,scene.mode, id);

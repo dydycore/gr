@@ -32,10 +32,10 @@
         "id": null
       },
       "verification": {
-        "date": "2026-10-08",
-        "method": "Document utilisé précédemment et toujours indexé sur le domaine constructeur ; accès direct non reconfirmé",
-        "limitation": "Timeout via navigateur de recherche et certificat TLS expiré lors de la revérification. Lien source conservé sans le déclarer disponible."
-      }
+        "date": "2026-10-13",
+        "method": "Téléchargement direct du PDF constructeur et vérification du contenu"
+      },
+      "localPdf": "reference-documents/Panasonic-PT-RZ770.pdf"
     },
     {
       "id": "chauvet-375z",
@@ -642,8 +642,9 @@
       "evidence": "../pdf/grand_remix/build_plan_v18.py; implantation.json",
       "verification": {
         "date": "2026-10-13",
-        "method": "Documentation primaire Panasonic, formules et repères de mesure"
-      }
+        "method": "Téléchargement direct du PDF constructeur et vérification du contenu"
+      },
+      "localPdf": "reference-documents/Panasonic-ET-DLE035.pdf"
     }
   ],
   "limitations": [

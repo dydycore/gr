@@ -146,7 +146,6 @@ for(const [id,gobo] of Object.entries({dream:6,red_alert:7,warm:2})){
  assert.deepEqual([...new Set(moving.map(f=>scene.prefs[f.id].gobo).filter(index=>index>0))],[gobo],id+': exactly one factory gobo motif');
  const sequenceGobos=new Set();
  for(const f of moving){
-  if(f.id==='106'){assert.equal(scene.prefs[f.id].gobo,0,'106: open stage fill');assert.equal(scene.prefs[f.id].movement,'static');continue;}
   const expectedGobo=f.id==='101'&&id!=='red_alert'?0:gobo;
   assert.equal(scene.prefs[f.id].gobo,expectedGobo,id+'/'+f.id+': scene motif or intentionally open DJ');
   const timeline=scene.timelines[f.id];assert.ok(timeline?.enabled,id+'/'+f.id+': editable sequence exists');

@@ -325,30 +325,34 @@ para(38,80,743,'<b>Sources :</b> fiche Audio-LX et plan LX du Ministère ; Panas
 c.linkURL('https://leministere.ca/assets/documents/Le-Minist%C3%A8re_Fiche-technique_Audio-LX.pdf',(38,57,420,85),relative=0,thickness=0)
 c.linkURL('https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/PT-RZ770G_STE_04%28sec%29.pdf',(430,57,783,85),relative=0,thickness=0)
 foot(3);c.showPage()
-head(4,'VIDÉOPROJECTION - INSTALLATION EXISTANTE CONSERVÉE')
-pane(28,395,1134,349,'ÉCRAN ROND AU FOND DE SCÈNE / PROJECTEUR AU POINT ORIGINAL')
-para(45,703,1090,'<b>Panasonic PT-RZ770 sur support Chief VCMU existant.</b> Écran rond centré à la place de la toile de la salle. Aucune relocalisation du projecteur sur B4.',12)
+head(4,'VIDÉOPROJECTION - COUVERTURE DE L’ÉCRAN ROND')
+pane(28,420,1134,324,'INSTALLATION EXISTANTE CONSERVÉE')
+para(45,703,1090,'<b>Écran : 20 pi de circonférence / 6,096 m ÷ pi = 1,940 m de diamètre.</b> P0 reste au point original, sur le support Chief VCMU. La hauteur de E1 reste à ajuster au cadrage.',12)
 diag=math.hypot(E['imageWidth'],E['imageHeight'])
 throw=.3205*diag+.0047
-rows=[['Élément','Donnée retenue','Vérification en salle'],
-['Écran E1','20 pi / 6,096 m de circonférence ; Ø 1,94 m calculé','Mesurer le cerceau monté ; vérifier planéité et suspension.'],
-['Emplacement','Fond de scène, axe x 0 ; y +3,30 m indicatif','Devant le rideau du fond ; hauteur à ajuster au cadrage.'],
-['Projecteur P0','Point du plan LX original conservé','Cotes graphiques : x 0 ; y +2,34 ; z +3,40 m indicatifs.'],
-['Optique annoncée','Panasonic ET-DLE03S - courte focale','Lire la référence exacte sur la lentille : ET-DLE035 à confirmer.'],
-['Installation documentée','Support Chief VCMU ; écran salle 16:9 de 150 pouces','Fiche salle : recul 5 pi / 1,52 m, repère de mesure non précisé.'],
-['Image visible',f'Cercle Ø {E["contentDiameter"]:.2f} m ; bord blanc 1 cm','Masquer le contenu hors cercle ; vérifier la netteté sur toute la toile.']]
-table(45,649,1097,[205,450,442],rows,rowheights=[27]+[34]*6,size=11)
-pane(28,56,1134,326,'CADRAGE À VALIDER - CALCUL CONDITIONNEL ET ESSAI')
-rows=[['Hypothèse ET-DLE035','Calcul pour le gabarit minimal','Portée'],
-['Image native 16:10',f'{E["imageWidth"]:.3f} x {E["imageHeight"]:.3f} m ; diagonale {diag:.3f} m','Gabarit minimal : cercle + marge de réglage.'],
-['Recul au miroir interne',f'0,3205 x {diag:.3f} + 0,0047 = {throw:.3f} m','Formule Panasonic ; approximation ±5 %, pas une cote de pose.'],
-['Projecteur maintenu en place','Mesurer l’image obtenue au point existant','Une image plus grande peut être masquée ; vérifier couverture, décalage vertical et focus.']]
-table(45,339,1097,[260,340,497],rows,rowheights=[27,38,38,46],size=11)
-para(45,167,1089,'<b>Essai requis :</b> afficher une mire, régler le centre puis les bords, ajuster le masque circulaire et la hauteur de la toile. '
-     'La maquette représente l’implantation demandée ; elle ne certifie pas le cadrage ni la netteté de l’installation réelle.',11)
-url='https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/ET-DLE035%28DPQX1334ZB_X1%29_EN-Appendix.pdf'
-para(45,88,1089,'<b>Sources :</b> plan LX et fiche Audio-LX du Ministère ; Panasonic ET-DLE035, annexe 9. Modèle exact à confirmer.',9)
-c.linkURL(url,(45,72,1130,99),relative=0,thickness=0)
+model_l1=E['y']-(P['y']+P['lensForward'])
+model_diag=(model_l1-.0047)/.3205
+model_h=model_diag/math.sqrt(1+1.6**2);model_w=model_h*1.6
+model_a1=.1977*model_diag-.0721
+ray_angle=math.degrees(math.atan2(P['z']-P['lensDown']-E['z'],model_l1))
+rows=[['Élément','Donnée retenue','Portée'],
+['E1 - écran rond','Ø 1,940 m ; centre x 0 ; y +3,30 m','Fond de scène, devant le rideau ; dimensions montées à mesurer.'],
+['Hauteur proposée','Centre +2,05 m ; bas +1,08 m ; haut +3,02 m','Position de travail, non validée par la projection réelle.'],
+['P0 - point original','x 0 ; y +2,34 ; z +3,40 m indicatifs','x/y repris graphiquement du plan LX ; hauteur et repère optique à relever.'],
+['Courte focale annoncée','Panasonic ET-DLE03S','Calcul ci-dessous sous hypothèse ET-DLE035 ; vérifier l’étiquette.'],
+['Écran actuel de la salle','150 pouces, 16:9 : env. 3,32 x 1,87 m','La toile actuelle ne définit pas à elle seule la taille maximale de l’image.'],
+['Recul publié par la salle','5 pi / 1,52 m','Repère de mesure non précisé : ne pas l’assimiler directement à L1.']]
+table(45,649,1097,[205,435,457],rows,rowheights=[27]+[32]*6,size=11)
+pane(28,56,1134,350,'CALCUL CONDITIONNEL - PT-RZ770 + ET-DLE035, FORMAT NATIF 16:10')
+rows=[['Vérification','Résultat','Interprétation'],
+['Image minimale avec marge',f'{E["imageWidth"]:.3f} x {E["imageHeight"]:.3f} m ; L1 ≈ {throw:.3f} m','Cercle de 1,940 m + 6 cm de marge par bord. L1 = 0,3205 x diagonale + 0,0047.'],
+['Au recul représenté',f'L1 ≈ {model_l1:.3f} m : image ≈ {model_w:.2f} x {model_h:.2f} m',f'Taille suffisante en théorie. Décalage vertical A1 ≈ {model_a1:.2f} m à la position de référence ; hauteur / lens shift à vérifier.'],
+['À largeur égale à la toile actuelle','3,32 m en 16:10 donnent environ 2,08 m de haut','Le cercle de 1,94 m peut entrer si toute la hauteur native est disponible et correctement placée.'],
+['Trajet vidéo dans la maquette',f'Rayon vers le centre : {ray_angle:.1f}° sous l’horizontale','Angle géométrique du trajet, PAS inclinaison du boîtier : l’optique courte focale dévie les rayons.']]
+table(45,367,1097,[255,365,477],rows,rowheights=[27,43,48,43,43],size=10.5)
+para(45,143,1089,'<b>Conclusion : taille potentiellement compatible ; cadrage et focus non confirmés.</b> Les cotes P0 sont indicatives et Panasonic annonce une approximation de ±5 %. Afficher une mire <b>1920 x 1200</b>, contrôler un cercle de 1,94 m, puis régler le centre et les bords. Si nécessaire, examiner un léger recul avec la salle avant de modifier l’accroche.',10.5)
+para(45,81,1089,'<b>Sources :</b> fiche et plan LX du Ministère ; Panasonic PT-RZ770 ; ET-DLE035, schéma p. 7 et annexe 9. PDF disponibles dans les sources du site.',9)
+for url,rect in [('https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/PT-RZ770G_STE_04%28sec%29.pdf',(45,65,500,93)),('https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/ET-DLE035%28DPQX1334ZB_X1%29_EN-Appendix.pdf',(505,65,1130,93))]:c.linkURL(url,rect,relative=0,thickness=0)
 foot(4);c.showPage()
 head(5,'BARRES ET PRIORITÉS D’ACCROCHE - REPÉRAGE DEPUIS LE PLAN SOURCE')
 pane(28,56,690,688,'GRILLE SEULE - SECTIONS VIDES VISIBLES - COTES GRAPHIQUES APPROXIMATIVES')
@@ -387,7 +391,7 @@ rows=[['Appareils','Destination','Slam + vidéo','Danse + vidéo']]
 for (role,slam,dance),ids in groups.items():rows.append([', '.join(i+'*' if i in ('112','S6') else i for i in ids),role,'DISPONIBLE' if slam else 'ÉTEINT','DISPONIBLE' if dance else 'ÉTEINT'])
 table(42,700,652,[310,108,117,117],rows,rowheights=[27]+[32]*(len(rows)-1),size=9)
 para(43,468,644,'<b>DISPONIBLE :</b> focus utilisable, selon l’ambiance. Les appareils éteints restent en place.<br/>'
-     '<b>112* :</b> OFF à l’accueil, à l’ouverture et dans Pinky love. <b>S6* :</b> selon ambiance.',11)
+     '<b>Au démarrage libre : 111 OFF.</b> <b>112* :</b> OFF à l’accueil, à l’ouverture et dans Pinky love. <b>S6* :</b> selon ambiance.',11)
 arrival_rows=[['ACCUEIL','Pan / tilt / zoom','Cible x / y / z (m)']]
 for label,focus in ARRIVAL_FOCUS.items():
     target=focus['target']
@@ -407,7 +411,18 @@ para(43,192,644,'<b>Cibles fixes x / y / z (m)</b><br/>'
 para(741,700,399,'<b>1. Protéger E1.</b><br/>Aucun éclairage direct sur la face ou le dos. Réserve de contrôle : rayon 1,20 m, soit Ø 2,10 m + 15 cm de marge radiale. Gabarit de conception, à vérifier par essai.<br/><br/>'
      '<b>2. Découpes et lyres.</b><br/>Régler couteaux et zoom ; calibrer les zéros. Contrôler les bords du faisceau sur tout le parcours et limiter les amplitudes. Garder le trajet vidéo libre.<br/><br/>'
      '<b>3. Lyre 112 vers le public.</b><br/>Base : pan -30°, tilt 58°, zoom 12°, balayage ±6°. Cible : x +2,6243 ; y -1,0457 ; z 0 m. Focus à valider sans débordement sur E1.<br/><br/>'
-     '<b>4. États et permanences.</b><br/>Bar maintenu ; platines lisibles avec 201, sans flash. 9, 11, 13, 205, 206, M2 et Zoom 6 réactivés ; 106 et Zoom 5 conservés. Ambiances suggérées : p. 8.<br/><br/>'
-     '<b>5. Essai de focus.</b><br/>Mire blanche puis noire ; chaque appareil séparément. Corriger orientation et découpe, puis tester les mouvements et le brouillard. Laisser éteint tout faisceau atteignant directement la toile.',12)
+     '<b>4. États et permanences.</b><br/>111 éteint au démarrage libre. 106 : mouvements en huit, cercles ou balayages dans les six ambiances dynamiques ; accueil et ouverture fixes. Bar maintenu ; platines lisibles avec 201, sans flash. 9, 11, 13, 205, 206, M2 et Zoom 6 réactivés ; 106 et Zoom 5 conservés. Ambiances suggérées : p. 8.<br/><br/>'
+     '<b>5. Essai de focus.</b><br/>Mire blanche puis noire ; chaque appareil séparément. Corriger orientation et découpe, puis tester les mouvements et le brouillard. Laisser éteint tout faisceau atteignant directement la toile.',11)
+txt(741,310,'POINTAGES DES APPAREILS RÉACTIVÉS',10,True,INK)
+restored_rows=[['Appareil','Pan / tilt','Cible x / y / z (m)']]
+for fid in ['9','11','13','205','206','M2','6','106','5']:
+    fixture=next(f for f in LAYOUT['fixtures'] if f['id']==fid)
+    target=fixture['focus']['slamTarget']
+    dx,dy,dz=target[0]-fixture['x'],target[1]-fixture['y'],target[2]-fixture['z']
+    length=math.sqrt(dx*dx+dy*dy+dz*dz)
+    pan=math.degrees(math.atan2(dx,-dy));tilt=math.degrees(math.acos(-dz/length))
+    restored_rows.append([fid,f'{pan:+.1f}° / {tilt:.1f}°',' / '.join(f'{v:+.2f}' for v in target)])
+table(740,294,407,[63,128,216],restored_rows,rowheights=[22]+[18]*9,size=8.5)
+para(741,95,399,'Repères géométriques, zéro vers le bas ; pas des valeurs DMX. Appareils fixes : réglage manuel. 106 : centre du mouvement.',8.5)
 foot(6);c.showPage();c.save()
 print(OUT)

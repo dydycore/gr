@@ -19,6 +19,8 @@ import layout from './implantation.json';
 import {createLightingEditor} from './lighting-editor.js';
 import {profiles,wheel,sanitizeFx,motionAngles,coneHitsSphere} from './fixture-profiles.js';
 import {createGoboPreview} from './gobo-preview.js';
+import {createMovingHead} from './moving-head.js';
+import {placeLabels} from './label-placement.mjs';
 import atmosphere from './atmosphere.json';
 import {createBeamClipper,createStaticLightRay} from './beam-volume.js';
 import {distributionFor,distributionTexture} from './optical-distributions.js';
@@ -55,6 +57,9 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.appendChild(renderer.domElement);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.14;controls.rotateSpeed=.45;controls.zoomSpeed=.8;controls.panSpeed=.65;controls.enablePan=true;controls.enableZoom=true;controls.mouseButtons={LEFT:THREE.MOUSE.ROTATE,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.PAN};controls.target.set(0,1.4,.3);controls.maxDistance=32;controls.minDistance=1.2;controls.maxPolarAngle=Math.PI*.497;
 const state={mode:'setup',ambience:null,ambienceCustomized:false,ambiencePlaying:false,savedAmbience:null,artistVisible:true,flashes:true,view:'overview',level:1,roomDark:false,videoOn:true,videoMode:'opening',beams:true,projectionGuides:false,people:false,labels:true,shell:true,motion:true,route:true,variant:'A',projectionProtection:true};
+state.fixtureLabels=true;
+try{if(!exportVideoMode)state.fixtureLabels=localStorage.getItem('grand-remix-fixture-labels-v1')!=='false';}catch{}
+$('#fixture-labels-check').checked=state.fixtureLabels;
 let ambienceFade=null;
 const mat=(color,roughness=.8,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
 const black=mat('#191e25'),metal=mat('#535f6c',.35,.65),wallmat=mat('#3b424a'),floor=mat('#ad8a65'),stageMat=mat('#171b20'),warmMetal=mat('#746958',.4,.35);
@@ -211,25 +216,30 @@ let material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.035,si
 let item={g,cone,patch,origin:origin.clone(),target:target.clone(),radius};beamItems.push(item);aim(item,target);return item;}
 const glowCanvas=document.createElement('canvas');glowCanvas.width=64;glowCanvas.height=64;const gc=glowCanvas.getContext('2d'),grad=gc.createRadialGradient(32,32,0,32,32,32);grad.addColorStop(0,'rgba(255,255,255,.8)');grad.addColorStop(.5,'rgba(255,255,255,.4)');grad.addColorStop(1,'rgba(255,255,255,0)');gc.fillStyle=grad;gc.fillRect(0,0,64,64);const glowTexture=new THREE.CanvasTexture(glowCanvas);
 function aim(item,t){let direction=t.clone().sub(item.origin),length=direction.length();item.g.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),direction.normalize());item.cone.scale.y=length;item.patch.position.set(t.x,t.y+.015,t.z);}
-for(const f of inventory){let g=group(`${f.id}_${names[f.kind]}`,fixtureLayer);g.position.copy(point(f.x,f.y,f.z));g.userData.plan={...f};const lensmat=new THREE.MeshBasicMaterial({color:colors[f.kind]});let head=group('Tete',g);
+for(const f of inventory){let g=group(`${f.id}_${names[f.kind]}`,fixtureLayer);g.position.copy(point(f.x,f.y,f.z));g.userData.plan={...f};const lensmat=new THREE.MeshBasicMaterial({color:colors[f.kind]});let head=group('Tete',g),mechanism=null;
 if(f.kind==='moving'){
- const standing=Number(f.id)>110;
- // Floor fixtures stand on their base. Keep the support below the complete
- // swept head volume, so it cannot clip the circular lens as the head turns.
- box(.24,.055,.19,0,standing?-.20:.18,0,black,g);
- for(let x of [-.115,.115])box(.027,.24,.045,x,standing?-.055:.05,0,metal,g);
- cylinder(.085,.21,new THREE.Vector3(0,0,0),black,head);
- cylinder(.066,.012,new THREE.Vector3(0,-.112,0),lensmat,head);
- head.position.y=standing?0:-.025;
+ g.remove(head);mechanism=createMovingHead(g,{bodyMaterial:black,yokeMaterial:metal,lensMaterial:lensmat,standing:Number(f.id)>110});head=mechanism.head;
 }
 else if(['source','zoom','par'].includes(f.kind)){let r=f.kind==='par'?.105:.065,len=f.kind==='source'?.38:.25;cylinder(r,len,new THREE.Vector3(0,0,0),black,head);cylinder(r*.85,.012,new THREE.Vector3(0,-len/2-.009,0),lensmat,head);box(r*2.5,.035,r*2.5,0,-len/2,0,black,head);for(let x of [-r*1.3,r*1.3])box(.016,.19,.035,x,.08,0,metal,g);}
 else if(f.kind==='colorado'){box(.16,.07,.16,0,0,0,black,head);for(let x of [-.045,.045])for(let z of [-.045,.045])cylinder(.024,.008,new THREE.Vector3(x,-.04,z),lensmat,head);}
 else{let w=f.kind==='sl1'?.6:.23;box(w,.07,.22,0,0,0,black,head);box(w*.9,.006,.19,0,-.04,0,lensmat,head);}
 if(f.kind==='moving'&&Number(f.id)>110)box(.40,.56,.40,0,-.51,0,black,g,'Base_indicative');else if(f.kind!=='mini')rod(g.position.clone().add(new THREE.Vector3(0,.17,0)),new THREE.Vector3(g.position.x,GRID,g.position.z),.006,metal,fixtureLayer);
 const initialTarget=point(...f.focus.slamTarget);
-head.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),initialTarget.clone().sub(g.position).normalize());
+const initialDirection=initialTarget.clone().sub(g.position).normalize();
+if(mechanism)mechanism.aim(THREE.MathUtils.radToDeg(Math.atan2(initialDirection.x,initialDirection.z)),THREE.MathUtils.radToDeg(Math.acos(-initialDirection.y)));
+else head.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),initialDirection);
 let b=beam(g.position,initialTarget,colors[f.kind],f.focus.radius);
-let item={...f,g,head,lensmat,beam:b,baseTarget:initialTarget};fixtures.push(item);
+let item={...f,g,head,mechanism,lensmat,beam:b,baseTarget:initialTarget};fixtures.push(item);
+const shortName={moving:'Lyre',source:'Découpe',zoom:'Zoom',colorado:'LED',sl1:'SL1',mini:'Mini',par:'PAR'}[f.kind];
+const fixtureLabel=label(f.id+' · '+shortName,g.position.clone().add(new THREE.Vector3(0,.19,0)),false,true);
+fixtureLabel.e.textContent=f.id;const fixtureType=document.createElement('span');fixtureType.className='fixture-label-type';fixtureType.textContent=' · '+shortName;fixtureLabel.e.appendChild(fixtureType);
+fixtureLabel.fixture=true;fixtureLabel.e.classList.add('fixture-label');fixtureLabel.e.dataset.fixtureId=f.id;
+fixtureLabel.e.title=f.id+' · '+names[f.kind];fixtureLabel.e.setAttribute('role','button');fixtureLabel.e.tabIndex=0;
+fixtureLabel.e.setAttribute('aria-label','Régler le spot '+f.id+' · '+names[f.kind]);
+const selectLabel=()=>{lightingEditor?.select(item);$('#spot-settings').open=true;invalidateRender();};
+fixtureLabel.e.onclick=event=>{event.stopPropagation();selectLabel();};
+fixtureLabel.e.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();selectLabel();}};
+const leader=document.createElement('span');leader.className='fixture-label-leader';$('#labels').appendChild(leader);fixtureLabel.leader=leader;
 if(f.notUsed){const redBody=mat('#ed7777',.7);g.traverse(o=>{if(o.isMesh&&o.material!==lensmat&&o.name!=='Base_indicative')o.material=redBody;});g.name+='__NON_UTILISE';}
 // Faint fixture-body locator, independent of illumination: it never lights
 // the floor, the artist, or the screen. Keep the off lens dark.
@@ -283,7 +293,8 @@ function renderFixtures(time){
   f.displayedAmbience={...displayed,fx:{...fx,dimmer:active?fx.dimmer:0}};
   const selectedFixture=$('#fixture-select')?.value===f.id;
   for(const edge of f.outlines){edge.visible=selectedFixture||active;edge.material.color.set(selectedFixture?'#62ef9b':'#b99adb');edge.material.opacity=selectedFixture ? .8 : .45;}
-  f.head.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),direction);
+  if(f.mechanism)f.mechanism.aim(displayed.pan,displayed.tilt);
+  else f.head.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),direction);
   let localHaze=0;
   if(active&&state.beams&&fogPreview.density>.001)for(let sample=1;sample<=5;sample++){hazeSample.copy(f.g.position).addScaledVector(direction,length*(sample-.5)/5);localHaze+=fogPreview.sampleDensity(hazeSample)/5;}
   const beamVisible=state.beams&&active&&localHaze>.003&&optics.haze>0;
@@ -293,7 +304,7 @@ function renderFixtures(time){
   f.beam.g.visible=beamVisible;f.beam.patch.visible=false;
   f.beam.cone.material.opacity=active?.10*optics.haze*fx.dimmer/100*cueLevel*Math.min(1,localHaze):0;
   f.lensmat.color.set(active?lightColor:'#252a30');f.beam.cone.material.color.copy(f.lensmat.color);
-  f.actualLight.position.copy(f.g.position).addScaledVector(direction,.24);f.actualLight.target.position.copy(target);f.actualLight.color.set(lightColor);f.actualLight.angle=Math.atan(radius/length);
+  f.actualLight.position.copy(f.g.position).addScaledVector(direction,f.mechanism?.124:.24);f.actualLight.target.position.copy(target);f.actualLight.color.set(lightColor);f.actualLight.angle=Math.atan(radius/length);
   if(!f.shadowTarget||f.shadowTarget.distanceToSquared(target)>1e-6||f.shadowRadius!==radius||entrance){f.actualLight.shadow.needsUpdate=true;f.shadowTarget=target.clone();f.shadowRadius=radius;}f.actualLight.visible=active;
   f.actualLight.intensity=active?optics.power*fx.dimmer/100*cueLevel:0;f.previewDimmer=fx.dimmer;
   // An open aperture does not visibly rotate. Keep its white mask, and draw
@@ -356,7 +367,7 @@ drawVJ(elapsed);rigHighlight.emissiveIntensity=state.roomDark?0:.4;reserveRing.v
 renderFixtures(elapsed);
 projectionGuide.visible=state.projectionGuides&&state.videoOn;audience.visible=state.people;shell.visible=state.shell;cutaway.visible=!state.shell;route.visible=state.route&&!state.roomDark;
 $('#caption').textContent=state.savedAmbience?.name||lightingEditor?.presetName(state.ambience,ambienceDefinitions.find(p=>p.id===state.ambience)?.name)||'La scène · DJ, artiste et projection';
-document.querySelectorAll('[data-ambience]').forEach(b=>{b.setAttribute('aria-pressed',!state.savedAmbience&&b.dataset.ambience===state.ambience);const p=ambienceDefinitions.find(p=>p.id===b.dataset.ambience);b.textContent=lightingEditor?.presetName(p.id,p.name)||p.name;});const description=ambienceDefinitions.find(p=>p.id===state.ambience)?.description;$('#ambience-status').textContent=description||'Réglage libre · blanc 100 % · S6 et 112 éteints';$('#ambience-restart').disabled=!state.ambience&&!state.savedAmbience;$('#ambience-play').textContent=state.ambiencePlaying?'Arrêter le défilement':'Lire les ambiances';$('#ambience-restart').textContent='Rejouer';syncAmbienceName();
+document.querySelectorAll('[data-ambience]').forEach(b=>{b.setAttribute('aria-pressed',!state.savedAmbience&&b.dataset.ambience===state.ambience);const p=ambienceDefinitions.find(p=>p.id===b.dataset.ambience);b.textContent=lightingEditor?.presetName(p.id,p.name)||p.name;});const description=ambienceDefinitions.find(p=>p.id===state.ambience)?.description;$('#ambience-status').textContent=description||'Réglage libre · blanc 100 % · S6, 111 et 112 éteints';$('#ambience-restart').disabled=!state.ambience&&!state.savedAmbience;$('#ambience-play').textContent=state.ambiencePlaying?'Arrêter le défilement':'Lire les ambiances';$('#ambience-restart').textContent='Rejouer';syncAmbienceName();
 lightingEditor?.sync();syncVideo();
 }
 const presets={overview:{p:[0,2.43,9.9],t:[0,1.4,.3]},public:{p:[-.65,1.75,7.8],t:[0,1.7,-1.1]},top:{p:[0,21,3.3],t:[0,0,3.3]},stage:{p:[0,2.26,-2.8],t:[0,1.4,7.0]},projection:{p:[-1.8,2.3,6.8],t:[2.25,2.35,1.7]},rig:{p:[7.8,9.8,10.5],t:[0,2.5,.7]}};
@@ -368,6 +379,7 @@ $('#ambience-restart').onclick=()=>{if(state.ambience||state.savedAmbience){canc
 $('#ambience-play').onclick=()=>{state.ambiencePlaying=!state.ambiencePlaying;if(state.ambiencePlaying)activateAmbience(ambienceDefinitions[0].id);else applyMode();};
 
 $('#light-level').oninput=e=>{cancelAmbienceFade();state.level=Number(e.target.value)/100;$('#level-value').textContent=e.target.value+' %';applyMode();};
+$('#fixture-labels-check').onchange=e=>{state.fixtureLabels=e.target.checked;try{localStorage.setItem('grand-remix-fixture-labels-v1',String(state.fixtureLabels));}catch{}invalidateRender();};
 for(const [id,key] of [['beams','beams'],['public','people'],['labels-check','labels'],['shell','shell'],['motion','motion'],['route','route']])$('#'+id).onchange=e=>{state[key]=e.target.checked;applyMode();};
 $('#entrance').onclick=()=>startArtistMovement(false);
 // Picking resolves a clicked component to its equipment parent.
@@ -435,7 +447,23 @@ if(entrance){let t=Math.min(1,(now-entrance.start)/7500),exiting=entrance.exitin
 lightingEditor?.tick(now);
 if(frameLimiter.fps<=30||now-lastLightingFrame>40){renderFixtures(elapsed);lastLightingFrame=now;}
 if(now-screenFrame>=1000/30-1){drawVJ(elapsed);screenFrame=now;}if(ambienceFade&&ambienceFadeProgress()>=1)cancelAmbienceFade();controls.update();cameraCutaway();renderRoom(!!transition||performance.now()-lastCameraChange<220);
-const labelKey=camera.matrixWorld.elements.join(',')+'|'+state.labels+'|'+state.rigFocus+'|'+performer.visible+'|'+viewportWidth+'x'+viewportHeight;if(labelKey!==lastLabelKey){lastLabelKey=labelKey;const r={width:viewportWidth,height:viewportHeight};for(const l of labelItems){let p=l.pos.clone().project(camera),visible=state.labels&&(l!==artistLabel||performer.visible)&&(!l.rigOnly||state.rigFocus)&&p.z<1&&p.z>-1&&Math.abs(p.x)<.99&&Math.abs(p.y)<.96;l.e.style.display=visible?'block':'none';if(visible){const halfWidth=l.e.offsetWidth/2+4,halfHeight=l.e.offsetHeight/2+4;l.e.style.left=Math.max(halfWidth,Math.min(r.width-halfWidth,(p.x*.5+.5)*r.width))+'px';l.e.style.top=Math.max(halfHeight,Math.min(r.height-halfHeight,(-p.y*.5+.5)*r.height))+'px';}}}
+const labelKey=camera.matrixWorld.elements.join(',')+'|'+state.labels+'|'+state.fixtureLabels+'|'+state.rigFocus+'|'+performer.visible+'|'+viewportWidth+'x'+viewportHeight;
+if(labelKey!==lastLabelKey){
+ lastLabelKey=labelKey;const projected=[];
+ // Write visibility first, measure once, then position in a separate pass.
+ for(const l of labelItems){
+  const p=l.pos.clone().project(camera),visible=(l.fixture?state.fixtureLabels:state.labels)&&(l!==artistLabel||performer.visible)&&(!l.rigOnly||state.rigFocus)&&p.z<1&&p.z>-1&&Math.abs(p.x)<.99&&Math.abs(p.y)<.96;
+  l.e.style.display=visible?'block':'none';if(l.leader)l.leader.style.display='none';
+  if(visible)projected.push({label:l,fixture:!!l.fixture,x:(p.x*.5+.5)*viewportWidth,y:(-p.y*.5+.5)*viewportHeight});
+ }
+ projected.sort((a,b)=>Number(a.fixture)-Number(b.fixture));
+ for(const p of projected){p.w=p.label.e.offsetWidth;p.h=p.label.e.offsetHeight;}
+ const positions=placeLabels(projected,viewportWidth,viewportHeight);
+ for(let i=0;i<positions.length;i++){
+  const p=positions[i],source=projected[i],l=p.label;l.e.style.left=p.x+'px';l.e.style.top=p.y+'px';
+  if(l.leader){const dx=p.x-source.x,dy=p.y-source.y,distance=Math.hypot(dx,dy);if(distance>10){l.leader.style.display='block';l.leader.style.left=source.x+'px';l.leader.style.top=source.y+'px';l.leader.style.width=distance+'px';l.leader.style.transform='rotate('+Math.atan2(dy,dx)+'rad)';}}
+ }
+}
 const workMs=performance.now()-frameStarted;host.dataset.renderActivity=continuous?'active':'idle';host.dataset.renderCap=String(frameLimiter.fps);
 if(continuous){if(mobileQuality.record(now,workMs,frameLimiter.fps))queueResize();if(!exportVideoMode&&adaptiveCadence.record(now,workMs))frameLimiter.setFps(adaptiveCadence.fps);perfFrames++;perfWork+=workMs;if(now-perfStart>=2000){host.dataset.renderFps=(perfFrames*1000/(now-perfStart)).toFixed(1);host.dataset.renderCpuMs=(perfWork/perfFrames).toFixed(1);host.dataset.renderPixels=renderer.domElement.width+'x'+renderer.domElement.height;const status=document.getElementById('render-rate');if(status)status.textContent='FPS mesurés : '+host.dataset.renderFps+' · Résolution : '+host.dataset.renderPixels;perfStart=now;perfFrames=0;perfWork=0;}}
 else{adaptiveCadence.reset();mobileQuality.reset();perfStart=now;perfFrames=0;perfWork=0;}

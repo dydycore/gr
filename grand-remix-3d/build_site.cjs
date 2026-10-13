@@ -14,6 +14,8 @@ for(const id of ['dream','red_alert','warm','pinky','hiphop']){
  if(fs.existsSync(source)){fs.mkdirSync(path.join(dist,'media','backgrounds'),{recursive:true});fs.copyFileSync(source,path.join(dist,'media','backgrounds',id+'.mp4'));}
 }
 const layout=JSON.parse(fs.readFileSync(path.join(root,'implantation.json'),'utf8'));
+const sourceDocs=path.join(dist,'documents','sources');fs.mkdirSync(sourceDocs,{recursive:true});
+for(const file of ['Panasonic-PT-RZ770.pdf','Panasonic-ET-DLE035.pdf'])fs.copyFileSync(path.join(root,'reference-documents',file),path.join(sourceDocs,file));
 if(layout.revision!=='V18')throw new Error('Mettre à jour les références de publication pour la nouvelle révision.');
 fs.writeFileSync(path.join(dist,'index.html'),fs.readFileSync(path.join(root,'portal.template.html'),'utf8').replace(/Géométrie commune : [a-f0-9]+/g,'Géométrie commune : '+layout.geometryId));
 let model=fs.readFileSync(path.join(root,'Grand_Remix_3D.html'),'utf8');

@@ -10,7 +10,7 @@ assert.equal(publicLighting.version,1);
 assert.equal(publicLighting.geometryId,layout.geometryId);
 assert.deepEqual(Object.keys(publicLighting.presetOverrides).sort(),expectedIds.sort());
 assert.deepEqual(publicLighting.scenes,[],'Promoted scenes occur only in the main ambience catalogue');
-assert.equal(publicLighting.catalogueVersion,3);
+assert.equal(publicLighting.catalogueVersion,4);
 assert.equal(publicLighting.holdDuration,30);
 for(const scene of publicLighting.scenes){
  assert.equal(scene.duration,30);

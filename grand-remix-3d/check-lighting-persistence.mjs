@@ -39,6 +39,7 @@ function openEditor({transient=false,captureState={}}={}){
 }
 
 const publicBefore=JSON.stringify(published),first=openEditor(),baseName=published.presetOverrides.pinky.name;
+assert.equal(first.editor.fx(layout.fixtures.find(f=>f.id==='111')).dimmer,0,'111 is off on a fresh start');
 const suspendedPlayer=openEditor({transient:true});
 suspendedPlayer.nodes.get('scene-hold').value=20;
 suspendedPlayer.editor.saveAs('A');suspendedPlayer.editor.saveAs('B');
@@ -60,7 +61,7 @@ assert.equal(first.selected.name,'Scène renommée');
 assert.equal(first.editor.updateSaved(first.selected.index,copy2.name),true);
 assert.equal(first.selected.name,copy2.name+' (2)','Rename collision keeps the existing scene');
 const persisted=JSON.parse(store.get('grand-remix-lighting-studio-v1'));
-assert.equal(persisted.catalogueVersion,3);assert.equal(persisted.scenes.length,2);
+assert.equal(persisted.catalogueVersion,4);assert.equal(persisted.scenes.length,2);
 assert.ok(persisted.scenes.every(s=>s.duration===30),'Save clamps duration to 30 seconds');
 assert.deepEqual(persisted.scenes.map(s=>s.name),[copy2.name,first.selected.name]);
 const reloaded=openEditor();
@@ -202,11 +203,30 @@ console.log('PASS : full JSON backup; preset updates, custom scene identity, rep
 // Group edits are a single reversible transaction, restricted to the same model.
 const groupEditor=openEditor({transient:true}),gn=groupEditor.nodes;
 const settings=()=>JSON.stringify(groupEditor.editor.captureCurrentScene('Test'));
+const applyToAll=()=>{gn.get('fixture-apply-kind').onclick();gn.get('fixture-copy-confirm').onclick();};
 const sourceFixture=layout.fixtures.find(f=>f.id==='102');
 groupEditor.editor.select(sourceFixture);
 gn.get('fixture-dimmer').listeners.input({target:{value:'61'}});
 gn.get('fixture-gobo').listeners.input({target:{value:'5'}});
-const beforeGroup=settings();gn.get('fixture-apply-kind').onclick();
+const beforeGroup=settings();
+// Opening the destination picker and cancelling cannot modify any light.
+gn.get('fixture-apply-kind').onclick();assert.equal(settings(),beforeGroup);
+assert.ok(gn.get('fixture-copy-source').textContent.includes('102'));
+gn.get('fixture-copy-cancel').onclick();assert.equal(settings(),beforeGroup);
+// Select only 106; every other head and all other models must be unchanged.
+gn.get('fixture-apply-kind').onclick();gn.get('fixture-copy-all').checked=false;gn.get('fixture-copy-all').onchange();
+assert.equal(gn.get('fixture-copy-confirm').disabled,true);
+gn.get('fixture-copy-target-106').checked=true;gn.get('fixture-copy-target-106').onchange();
+assert.equal(gn.get('fixture-copy-confirm').textContent,'Appliquer à 1 lampe');
+assert.equal(gn.get('fixture-copy-all').indeterminate,true);
+gn.get('fixture-copy-confirm').onclick();const partial=JSON.parse(settings()),beforePartial=JSON.parse(beforeGroup);
+assert.equal(partial.prefs['106'].dimmer,61);assert.equal(partial.prefs['106'].gobo,5);
+for(const f of layout.fixtures.filter(f=>f.id!=='106'))assert.deepEqual(partial.prefs[f.id],beforePartial.prefs[f.id],f.id+': unselected lamp unchanged');
+gn.get('lighting-undo').onclick();assert.equal(settings(),beforeGroup,'One undo reverts selected destinations');
+// Changing the reference closes the old picker; it cannot apply stale targets.
+gn.get('fixture-apply-kind').onclick();groupEditor.editor.select(layout.fixtures.find(f=>f.id==='202'));
+assert.equal(gn.get('fixture-copy-panel').hidden,true);gn.get('fixture-copy-confirm').onclick();assert.equal(settings(),beforeGroup);
+groupEditor.editor.select(sourceFixture);applyToAll();
 const afterGroup=settings();assert.notEqual(afterGroup,beforeGroup);
 for(const f of layout.fixtures.filter(f=>f.kind==='moving'&&!f.notUsed)){
  assert.equal(groupEditor.editor.fx(f).dimmer,61);assert.equal(groupEditor.editor.fx(f).gobo,5);
@@ -224,14 +244,14 @@ for(const value of ['40','31','23'])gn.get('fixture-dimmer').listeners.input({ta
 groupEditor.events.pointerup();gn.get('lighting-undo').onclick();assert.equal(settings(),afterGroup);
 // Real published timelines are copied independently, keeping target orientations.
 groupEditor.editor.applyPreset({id:'dream'});groupEditor.editor.select(sourceFixture);
-const timelineBefore=JSON.parse(settings());gn.get('fixture-apply-kind').onclick();const timelineAfter=JSON.parse(settings());
+const timelineBefore=JSON.parse(settings());applyToAll();const timelineAfter=JSON.parse(settings());
 for(const f of layout.fixtures.filter(f=>f.kind==='moving'&&!f.notUsed&&f.id!=='102')){
  assert.equal(timelineAfter.timelines[f.id].enabled,timelineAfter.timelines['102'].enabled);
  assert.equal(timelineAfter.timelines[f.id].steps.length,timelineAfter.timelines['102'].steps.length);
  assert.equal(timelineAfter.prefs[f.id].pan,timelineBefore.prefs[f.id].pan);
 }
 gn.get('lighting-undo').onclick();assert.deepEqual(JSON.parse(settings()),timelineBefore);
-groupEditor.editor.select(layout.fixtures.find(f=>f.id==='202'));const safeBefore=JSON.parse(settings());gn.get('fixture-apply-kind').onclick();const safeAfter=JSON.parse(settings());
+groupEditor.editor.select(layout.fixtures.find(f=>f.id==='202'));const safeBefore=JSON.parse(settings());applyToAll();const safeAfter=JSON.parse(settings());
 for(const id of ['205','206'])assert.equal(safeAfter.prefs[id].dimmer,safeAfter.prefs['202'].dimmer,'Restored COLORados receive same-model settings');
 groupEditor.editor.select(layout.fixtures.find(f=>f.id==='SL1'));assert.equal(gn.get('fixture-apply-kind').disabled,true);
 groupEditor.editor.applyPreset({id:'pinky'});assert.equal(gn.get('lighting-undo').disabled,true,'A new ambience starts a fresh history');

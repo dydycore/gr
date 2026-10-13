@@ -15,6 +15,12 @@ on:
       - "grand-remix-3d/mobile-rendering.mjs"
       - "grand-remix-3d/lighting-editor.js"
       - "grand-remix-3d/scene.js"
+      - "grand-remix-3d/moving-head.js"
+      - "grand-remix-3d/label-placement.mjs"
+      - "grand-remix-3d/stage-lighting.mjs"
+      - "grand-remix-3d/implantation.json"
+      - "grand-remix-3d/reference-documents/**"
+      - "grand-remix-3d/build_site.cjs"
       - "grand-remix-3d/index.template.html"
       - "grand-remix-3d/sidebar-layout.js"
       - "grand-remix-3d/portal.template.html"
@@ -66,6 +72,9 @@ jobs:
           node check-mobile-rendering.mjs
           node check-ambiences.mjs
           node check-published-lighting.mjs
+          node check-stage-layout.mjs
+          node check-moving-head.mjs
+          node check-lighting-persistence.mjs
           node check-timeline.mjs
           node check-timeline-editor.mjs
       - name: Reconstruire les neuf pages du PDF technique
@@ -89,6 +98,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Aucun changement compilé."
           else
-            git commit -m "build: synchroniser PDF et maquette - ancien 20% = nouveau 100%"
+            git commit -m "build: synchroniser les plans et la maquette Grand Remix"
             git push origin HEAD:codex/grand-remix-version-nettoyee
           fi

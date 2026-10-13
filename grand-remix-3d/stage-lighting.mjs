@@ -1,4 +1,5 @@
 import {sanitizeFx} from './fixture-profiles.js';
+import {sanitizeFixtureTimeline} from './fixture-timeline.js';
 
 // The screen is now behind the artist. Restore the formerly excluded lights
 // in each cue without replacing the user's videos, fog, colours or sequences.
@@ -37,5 +38,25 @@ export function applyStageLighting(input,fixtures,id=input.id||input.view?.ambie
   if(step.fx?.pan===-52&&step.fx?.tilt===42){step.fx.pan=-32;step.fx.tilt=62;}
  for(const step of scene.timelines['101']?.steps||[])
   if(step.fx?.pan==null&&step.fx?.amplitude>24)step.fx.amplitude=24;
+ // 106 is the restored motorized head. Its motion is visible and editable in
+ // the same timeline as the other heads; fixed fixtures never gain motors.
+ const movement106={
+  dream:{movement:'eight',amplitude:5,period:30,gobo:6,rotation:1.2},
+  red_alert:{movement:'circle',amplitude:9,period:4.5,gobo:7,rotation:22},
+  warm:{movement:'eight',amplitude:4,period:18,gobo:2,rotation:5},
+  pinky:{movement:'eight',amplitude:7,period:9,gobo:6,rotation:10},
+  dj:{movement:'sweep',amplitude:9,period:7,gobo:6,rotation:12},
+  hiphop:{movement:'circle',amplitude:10,period:5,gobo:6,rotation:18}
+ }[id];
+ if(scene.prefs['106']){
+  if(id==='opening')scene.colors['106']='#ffffff';
+  if(movement106){
+   scene.prefs['106']=sanitizeFx({...scene.prefs['106'],...movement106},'moving');
+   scene.timelines['106']=sanitizeFixtureTimeline({enabled:true,steps:[{
+    id:'106-stage',duration:30,transition:'fade',fadeIn:1,fadeOut:0,
+    color:scene.colors['106'],fx:scene.prefs['106'],flashHz:0
+   }]},'moving');
+  }
+ }
  return scene;
 }

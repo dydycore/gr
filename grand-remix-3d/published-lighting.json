@@ -1039,7 +1039,7 @@
         "11": "#ffffff",
         "13": "#ffffff",
         "101": "#ff40cb",
-        "106": "#ff40cb",
+        "106": "#ffffff",
         "201": "#a066ff",
         "202": "#ff40cb",
         "205": "#ff40cb",
@@ -1325,11 +1325,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 6,
+          "rotation": 1.2,
+          "movement": "eight",
+          "amplitude": 5,
+          "period": 30
         },
         "111": {
           "dimmer": 85,
@@ -1896,6 +1896,33 @@
                 "rotation": -1.2,
                 "movement": "eight",
                 "amplitude": 9,
+                "period": 30
+              },
+              "flashHz": 0,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#35dcff",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 6,
+                "rotation": 1.2,
+                "movement": "eight",
+                "amplitude": 5,
                 "period": 30
               },
               "flashHz": 0,
@@ -2994,11 +3021,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 7,
+          "rotation": 22,
+          "movement": "circle",
+          "amplitude": 9,
+          "period": 4.5
         },
         "111": {
           "dimmer": 85,
@@ -4029,6 +4056,33 @@
                 "movement": "circle",
                 "amplitude": 18,
                 "period": 4.32
+              },
+              "flashHz": 0,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#ff3030",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 7,
+                "rotation": 22,
+                "movement": "circle",
+                "amplitude": 9,
+                "period": 4.5
               },
               "flashHz": 0,
               "flashPattern": "steady",
@@ -6116,11 +6170,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 2,
+          "rotation": 5,
+          "movement": "eight",
+          "amplitude": 4,
+          "period": 18
         },
         "111": {
           "dimmer": 65,
@@ -6755,6 +6809,33 @@
                 "movement": "circle",
                 "amplitude": 12.6,
                 "period": 14.4
+              },
+              "flashHz": 0,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#ffe53b",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 2,
+                "rotation": 5,
+                "movement": "eight",
+                "amplitude": 4,
+                "period": 18
               },
               "flashHz": 0,
               "flashPattern": "steady",
@@ -7759,11 +7840,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 6,
+          "rotation": 10,
+          "movement": "eight",
+          "amplitude": 7,
+          "period": 9
         },
         "111": {
           "dimmer": 85,
@@ -8121,6 +8202,33 @@
         "105": {
           "enabled": false,
           "steps": []
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#ff40cb",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 6,
+                "rotation": 10,
+                "movement": "eight",
+                "amplitude": 7,
+                "period": 9
+              },
+              "flashHz": 0,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
         },
         "111": {
           "enabled": true,
@@ -9660,11 +9768,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 6,
+          "rotation": 12,
+          "movement": "sweep",
+          "amplitude": 9,
+          "period": 7
         },
         "111": {
           "dimmer": 85,
@@ -10362,6 +10470,33 @@
                 "period": 8.1
               },
               "flashHz": 2,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#ff40cb",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 6,
+                "rotation": 12,
+                "movement": "sweep",
+                "amplitude": 9,
+                "period": 7
+              },
+              "flashHz": 0,
               "flashPattern": "steady",
               "flashOnly": false
             }
@@ -11092,11 +11227,11 @@
           "pan": null,
           "tilt": null,
           "zoom": 15,
-          "gobo": 0,
-          "rotation": 0,
-          "movement": "static",
-          "amplitude": 0,
-          "period": 8
+          "gobo": 6,
+          "rotation": 18,
+          "movement": "circle",
+          "amplitude": 10,
+          "period": 5
         },
         "111": {
           "dimmer": 85,
@@ -12223,6 +12358,33 @@
                 "period": 5.4
               },
               "flashHz": 2,
+              "flashPattern": "steady",
+              "flashOnly": false
+            }
+          ]
+        },
+        "106": {
+          "enabled": true,
+          "steps": [
+            {
+              "id": "106-stage",
+              "duration": 30,
+              "transition": "fade",
+              "fadeIn": 1,
+              "fadeOut": 0,
+              "color": "#35dcff",
+              "fx": {
+                "dimmer": 45,
+                "pan": null,
+                "tilt": null,
+                "zoom": 15,
+                "gobo": 6,
+                "rotation": 18,
+                "movement": "circle",
+                "amplitude": 10,
+                "period": 5
+              },
+              "flashHz": 0,
               "flashPattern": "steady",
               "flashOnly": false
             }
@@ -14436,7 +14598,7 @@
     }
   },
   "scenes": [],
-  "catalogueVersion": 3,
+  "catalogueVersion": 4,
   "migration": {
     "promotedScenes": [
       {
