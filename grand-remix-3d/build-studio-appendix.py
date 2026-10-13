@@ -98,13 +98,13 @@ rows = [
     ['Appareil / inventaire', 'Fonctions envisagées pour le spectacle', 'Réalité du matériel / points à confirmer'],
     ['<b>Intimidator Spot 375Z IRC</b><br/>8 inventoriés',
      'Pan 540° ; tilt 270° ; zoom 10-23°. Roue : blanc, orange, lime, cyan, rouge, vert, magenta, jaune. Sept gobos rotatifs plus ouverture. Parcours de pan/tilt à programmer sur la console.',
-     'Sept lyres utilisables ; 106 en dépose proposée. Zéros, parcours et focus à valider. Motifs issus du manuel ; jeu installé à vérifier. Prismes non retenus dans cette étude. Accents proposés jusqu’à 2 Hz, distincts des capacités maximales du matériel.'],
+     'Huit lyres disponibles, dont 106 conservée à son point existant. Zéros, parcours et focus à valider. Motifs issus du manuel ; jeu installé à vérifier. Prismes non retenus dans cette étude. Accents proposés jusqu’à 2 Hz, distincts des capacités maximales du matériel.'],
     ['<b>ETC Source Four 36°</b><br/>8 inventoriés, 7 dessinés',
      'Intensité ; blanc ou noir (éteint).',
      '575 W selon la salle. Appareil fixe : orientation et couteaux manuels, aucun moteur. Gélatines non confirmées : aucune couleur ajoutée. Le huitième appareil reste non localisé.'],
     ['<b>ETC Source Four Zoom 25-50°</b><br/>6 inventoriés',
      'Intensité ; blanc ou noir (éteint).',
-     '750 W. Zoom, focus et couteaux manuels. Ouverture de référence : 25°, à adapter sur place. Zoom 5 en dépose proposée pour P1 ; Zoom 6 éteint pour la projection.'],
+     '750 W. Zoom, focus et couteaux manuels. Ouverture de référence : 25°, à adapter sur place. Zoom 5 conservé et Zoom 6 réactivé ; focus revus vers l’avant de scène.'],
     ['<b>COLORado 1-Tri Tour</b><br/>12 inventoriés',
      'Mélange RGB, intensité visuelle ; noir.',
      'Fixe, orientation manuelle. 210 orienté vers le haut du corps de l’artiste. Manuel v2 rev.4 : cœur 15°, champ doux 28° ; version/diffuseur à vérifier. ARC.1 : trois canaux RGB, sans dimmer séparé.'],
@@ -117,10 +117,10 @@ rows = [
 ]
 y = table(32, H - 100, [220, 365, W - 64 - 585], rows)
 y = para(32, y - 20, W - 64,
-         '<b><font color="#c54747">ROUGE CLAIR = APPAREIL NON UTILISÉ.</font></b> '
-         '9, 11, 13, 205, 206 et M2 restent en place, sans faisceau dans toutes les scènes. '
-         'Le boîtier rouge est un repère graphique : il ne produit pas de lumière rouge. '
-         'Seules déposes proposées : 106 pour E1 et Zoom 5 pour P1.', 11) - 22
+         '<b>Kit existant conservé.</b> 106 et Zoom 5 restent en place. '
+         '9, 11, 13, 205, 206, M2 et Zoom 6 sont réactivés dans les huit ambiances. '
+         'Orientations revues pour l’artiste au centre et la protection de l’écran au fond de scène. '
+         'Les découpes restent blanches : aucune gélatine supposée.', 11) - 22
 sources = [
     ('Chauvet - Intimidator Spot 375Z IRC, manuel rev.6 (gobos p.7)', 'https://fr.chauvetdj.com/wp-content/uploads/2017/07/Intimidator_Spot_375Z_IRC_UM_Rev6.pdf'),
     ('Chauvet - COLORado 1-Tri Tour, manuel v2 rev.4', 'https://storage.googleapis.com/web-congoblue/2016/01/COLORado-Tri-Tour-Manual-1.pdf'),
@@ -141,15 +141,15 @@ head(8, 'HUIT AMBIANCES SUGGÉRÉES')
 para(32, H - 99, W - 64,
      'Pistes artistiques à faire évoluer selon les morceaux et les besoins du spectacle. Elles illustrent la direction souhaitée ; '
      '<b>conduite et patch à finaliser avec la direction technique.</b> '
-     '<b>Nouvelle échelle : ancien 20 % = 100 % ; ancien 7 % = 35 % ; Bleu océan : 30 %.</b> '
+     'Écran rond au fond de scène ; artiste dans l’axe central. '
      'Les pourcentages décrivent la simulation, et non une consigne physique ou DMX. À valider avec le DT.', 12)
 rows = [
     ['Ambiance', 'Intention lumière', 'Brouillard F1<br/>Pourcentage indicatif'],
     ['<b>01<br/>Entrée du public</b>',
-     'Salle blanche à pleine intensité ; mouvements très discrets. DJ en couleur. Face artiste éteinte ; 112 OFF.',
+     'Salle blanche à pleine intensité ; mouvements très discrets. DJ en couleur. Appoint blanc modéré sur scène ; 112 OFF.',
      '<b>OFF</b>'],
     ['<b>02<br/>Ouverture</b>',
-     'DJ magenta/violet. Artiste éclairé de face en blanc. Salle éteinte ; bar maintenu.',
+     'DJ magenta/violet. Artiste éclairé de face en blanc. Piste éteinte ; bar et appoints de scène maintenus.',
      '<b>OFF</b>'],
     ['<b>03<br/>Bleu océan</b>',
      'Bleu/cyan avec passages blancs et violets. Gobo 6 - Ondes, mouvements lents. Sur les lyres : cyan de la roue, pas de bleu profond.',
@@ -158,7 +158,7 @@ rows = [
      'Fond rouge, gobo 7 - Anneaux, mouvements rapides. Accents blancs SL1 à 8 Hz ; réduction partielle des autres sources durant les accents.',
      fog_label('red_alert')],
     ['<b>05<br/>Jaune et rouge</b>',
-     'Jaune, rouge et orange, sans blanc. Gobo 2, mouvements souples et fondus.',
+     'Jaune, rouge et orange, avec un léger appoint blanc des découpes réactivées. Gobo 2, mouvements souples et fondus.',
      fog_label('warm')],
     ['<b>06<br/>Pinky love</b>',
      'Rose, magenta et violet ; gobos variés. Accents blancs des PAR et magenta de 111 jusqu’à 2 Hz. Artiste présent ; 112 OFF.',
@@ -173,8 +173,8 @@ rows = [
 y = table(32, H - 158, [200, 775, W - 64 - 975], rows, size=13.5, padding=14,
           first_colors=['#eaf1ed', '#f2e8ee', '#e6f1f8', '#f9e8e5', '#fbf1d9', '#fbe8f3', '#e9e8f5', '#e9f1df'])
 para(32, y - 16, W - 64,
-     '<b>Commandes maquette :</b> Enregistrer à côté de Rétablir ce spot ; scènes dans Mes ambiances. '
-     'Flash uniquement dans les séquences ; Importer avant Exporter dans le panneau de droite.', 10.5)
+     '<b>Focus :</b> appoints blancs modérés des découpes ; LED dans la palette de chaque ambiance. '
+     'Réglages et transitions proposés, à adapter aux morceaux et à vérifier sur la toile.', 10.5)
 c.showPage()
 
 # 9: Physical placement and validation, separated from app instructions.
@@ -220,7 +220,7 @@ text(left + 16, diagram_bottom + 10, 'S-G : enceinte. F1 : dégagement / ventila
 y = diagram_bottom - 24
 y = section(left, y, cw, 'Diffusion',
             '<b>Proposition : OFF à l’accueil et à l’ouverture.</b> Débits suggérés p. 8. '
-            '<b>Échelle revue : 100 % = ancien 20 % ; 35 % = ancien 7 % ; Bleu océan 30 % = ancien 6 %.</b> '
+            ''
              'La valeur visuelle de la maquette n’est pas une consigne DMX ; réduire si la brume diminue le contraste.')
 section(left, y, cw, 'Dégagements',
         '<b>Emplacement à valider.</b> Le manuel F-1 prescrit au moins <b>50 cm libres autour</b> ; '
@@ -229,14 +229,14 @@ section(left, y, cw, 'Dégagements',
 
 y = H - 108
 y = section(right, y, cw, 'À confirmer avant montage',
-            '<b>P1 :</b> lentille installée, décentrements, support et obstacles réels. '
-            'B4 reste une option non validée ; calcul p. 4.')
+            '<b>P0 : projecteur au point du plan LX original.</b> Support existant conservé. '
+            'Confirmer la référence exacte de la courte focale, le cadrage et la netteté sur l’écran rond ; p. 4.')
 y = section(right, y, cw, 'Écran E1 - construction proposée',
             '<b>Tissu blanc léger traité ignifuge</b>, tendu sur un cerceau en PVC de <b>¾ po</b>. '
             '<br/><br/>'
-            '<b>12 pi de tube annoncés (3,66 m)</b> : diamètre théorique du cerceau <b>environ 1,16 m</b>, hors raccord et épaisseur. '
-            'Mesurer l’écran monté avant de réviser le <b>gabarit de 2 m dessiné p. 1-6</b> et le calcul optique.<br/><br/>'
-            '<b>Poids indicatif : 1,4 à 1,8 kg.</b> Hypothèses : PVC ¾ po Schedule 40, tissu 100-180 g/m², assemblage inclus. '
+            '<b>Circonférence communiquée : 20 pi (6,096 m).</b> Diamètre calculé : <b>1,94 m</b>, à vérifier sur l’écran monté. '
+            'Écran centré au fond de scène, à la place de l’écran existant ; hauteur à régler au cadrage.<br/><br/>'
+            '<b>Poids indicatif : 2,4 à 2,9 kg.</b> Hypothèses : 20 pi de PVC ¾ po Schedule 40, tissu 100-180 g/m², assemblage inclus. '
             'À confirmer par pesée. <link href="https://www.charlottepipe.com/uploads/documents/technical/BR-PK.pdf#page=28" color="#215d4d">Masse du tube : Charlotte Pipe, p. 28</link>.<br/><br/>'
             '<b>Principe d’attache confirmé par l’organisation :</b> monofilament transparent (fil de pêche) vers le plafond. '
             'Points d’ancrage, caractéristiques du fil et sécurité secondaire à documenter avec le DT (p. 5).', size=12)

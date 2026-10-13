@@ -117,8 +117,8 @@ for(const b of layout.rigBars){
  const a=point(...b.a),end=point(...b.b),delta=end.clone().sub(a),middle=a.clone().add(end).multiplyScalar(.5);
  const mesh=box(.0508,delta.length(),.0508,0,0,0,metal,rig,b.id+'_barre_reperage_graphique');
  mesh.position.copy(middle);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());rigMeshes.push(mesh);
- clickable(mesh,{title:b.id+' · Barre repérée',status:'Cotes graphiques · charge non confirmée',type:'proposed',text:b.status+'. Sections sans appareil représentées aussi. Une place vide ne confirme pas une disponibilité. Priorité P1 sur B4 : dépose proposée du Zoom 5 ; priorité E1 sur B1 : dépose proposée de la lyre 106.',measure:'Tube carré 2 pouces selon dossier.\n'+b.a.map(v=>v.toFixed(2)).join(' ; ')+' → '+b.b.map(v=>v.toFixed(2)).join(' ; ')+' m'});
- const item=label(b.id+(b.id==='B4'?' · OPTION P1':''),middle.clone().add(new THREE.Vector3(0,.16,0)),true,true);item.rigOnly=true;rigLabels.push(item);
+ clickable(mesh,{title:b.id+' · Barre repérée',status:'Cotes graphiques · charge non confirmée',type:'proposed',text:b.status+'. Sections sans appareil représentées aussi. Une place vide ne confirme pas une disponibilité. Projecteur conservé sur son support existant ; écran centré au fond de scène. Les appareils 106 et Zoom 5 restent en place.',measure:'Tube carré 2 pouces selon dossier.\n'+b.a.map(v=>v.toFixed(2)).join(' ; ')+' → '+b.b.map(v=>v.toFixed(2)).join(' ; ')+' m'});
+ const item=label(b.id,middle.clone().add(new THREE.Vector3(0,.16,0)),true,true);item.rigOnly=true;rigLabels.push(item);
 }
 // Yellow curtain tracks are explicitly excluded from attachment options.
 const curtainTracks=group('Rails_rideaux_INTERDIT_ACCROCHE',rig);
@@ -147,31 +147,31 @@ const fogLed=box(.023,.012,.01,-.20,.23,atmosphere.depth/2+.009,new THREE.MeshBa
 clickable(fogMachine,{title:'F1 · Machine à brouillard',status:'Au sol entre enceinte gauche et booth DJ reculé de 30 cm',type:'proposed',fog:true,text:atmosphere.status,measure:'Antari F-1W inventoriée. Centre x −3,62 ; y +1,43 m. Posée sur scène. Encombrement indicatif 60,8 × 27,5 × 28,6 cm.'});
 const fogPreview=createFogPreview({scene,mobile:renderProfile.mobile,projectionSource:()=>state.videoOn?{screen:[EX,E.z,EZ,E.contentDiameter/2],origin:[PX,PY-P.lensDown,PZ-P.lensForward],texture:vjTexture}:null,origin:fogMachine.position.clone().add(new THREE.Vector3(.16,.17,atmosphere.depth/2+.04))});
 function syncFog(){const s=fogPreview.state,rateDisplay=fogDisplayPercent(s.rate);$('#fog-toggle').textContent=s.on?'Arrêter la machine':'Démarrer la machine';$('#fog-toggle').setAttribute('aria-pressed',s.on);$('#fog-rate').value=rateDisplay;$('#fog-value').textContent=rateDisplay+' %';$('#fog-status').textContent=s.on?'Émission en cours · diffusion illustrative':'Émission arrêtée · dissipation progressive';const hint=document.querySelector('#fog-settings .disclosure-hint');if(hint)hint.textContent=s.on?'Émission · '+rateDisplay+' %':'Machine arrêtée';fogLed.material.color.set(s.on?'#7beec4':'#75282b');invalidateRender();}
-const slam=group('Zone_slam');slam.position.x=layout.slam.x;const slamLine=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([[-.75,H+.005,-.35],[.75,H+.005,-.35],[.75,H+.005,-1.85],[-.75,H+.005,-1.85]].map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:'#62bda8'}));slam.add(slamLine);
+const slam=group('Zone_slam');slam.position.set(layout.slam.x,0,1.1-layout.slam.y);const slamLine=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([[-.75,H+.005,-.35],[.75,H+.005,-.35],[.75,H+.005,-1.85],[-.75,H+.005,-1.85]].map(p=>new THREE.Vector3(...p))),new THREE.LineBasicMaterial({color:'#62bda8'}));slam.add(slamLine);
 rod(new THREE.Vector3(-.23,H,-1.1),new THREE.Vector3(-.23,H+1.46,-1.1),.012,metal,slam);cylinder(.14,.025,new THREE.Vector3(-.23,H+.012,-1.1),black,slam);
 rod(new THREE.Vector3(-.23,H+1.44,-1.1),new THREE.Vector3(-.23,H+1.50,-.92),.021,black,slam);
-const artistLabel=label('Artiste',new THREE.Vector3(layout.slam.x,H+.20,-.6));
-// Shared screen position: brought inward from the wall; front plane retained.
-const screen=group('E1_ecran_avant_droit_ecarte_du_mur');screen.position.set(EX,E.z,EZ);
+const artistLabel=label('Artiste',new THREE.Vector3(layout.slam.x,H+.20,-layout.slam.y+.5));
+// Screen centred at the original upstage screen plane; all plans share this geometry.
+const screen=group('E1_ecran_centre_fond_de_scene');screen.position.set(EX,E.z,EZ);
 const vjCanvas=document.createElement('canvas');vjCanvas.width=renderProfile.visualSize;vjCanvas.height=renderProfile.visualSize;const ctx=vjCanvas.getContext('2d');const vjTexture=new THREE.CanvasTexture(vjCanvas);vjTexture.colorSpace=THREE.SRGBColorSpace;vjTexture.anisotropy=renderer.capabilities.getMaxAnisotropy();
 const circle=new THREE.Mesh(new THREE.CircleGeometry(E.diameter/2,96),new THREE.MeshStandardMaterial({color:'#f5f5f2',roughness:1,metalness:0,side:THREE.DoubleSide}));circle.castShadow=true;circle.receiveShadow=true;screen.add(circle);
 const visibleImage=new THREE.Mesh(new THREE.CircleGeometry(E.contentDiameter/2,96),new THREE.MeshBasicMaterial({color:'#ffffff',map:vjTexture,side:THREE.FrontSide,transparent:true,depthWrite:false}));visibleImage.position.z=.003;visibleImage.receiveShadow=false;screen.add(visibleImage);
 const rim=new THREE.Mesh(new THREE.TorusGeometry(E.diameter/2+.006,.018,10,96),metal);screen.add(rim);
 for(let dx of [-.40,.40])rod(new THREE.Vector3(EX+dx,E.z+Math.sqrt((E.diameter/2)**2-dx**2),EZ),new THREE.Vector3(EX+dx,GRID,EZ),.006,metal,model).name='Suspension_E1_proposee';
-clickable(screen,{title:'E1 · Écran rond',status:'Essai spatial V18',type:'proposed',text:'Écran estimé à 2 m, réserve de place Ø 2,10 m. Depuis V16 : écran seul décalé de 40 cm vers la droite vue public. Hauteur et recul conservés. Projecteur au repère provisoire précédent, décalage horizontal de 40 cm non validé avec la lentille de la salle. Écran sur la première barre : 80,7 cm derrière le nez de scène. Abaissé de 50 cm : bas 1,05 m, haut 3,05 m au-dessus du sol salle. Lyre 106 retirée de la maquette pour libérer le point d’accroche proposé. Suspension à faire valider par le DT. Image visible Ø 1,98 m : marge non projetée de 1 cm sur toile blanche sur l’écran Ø 2,00 m estimé. Le gabarit natif dépasse légèrement pour permettre le réglage du masque. Hauteur et accroches à valider.',measure:`Ø ${E.diameter.toFixed(2)} m · x +${EX.toFixed(2)} ; y ${E.y.toFixed(2)}
-Image native à produire : ${E.imageWidth.toFixed(3)} × ${E.imageHeight.toFixed(2)} m, masquée au cercle`});
-label('E1 · Ø 2 m ESTIMÉ',new THREE.Vector3(EX,E.z+E.diameter/2+.27,EZ),true);
+clickable(screen,{title:'E1 · Écran rond au fond de scène',status:'Implantation demandée · cotes à confirmer',type:'proposed',text:'Écran centré derrière l’artiste, à la place de l’écran existant de la salle. Circonférence annoncée : 20 pi (6,096 m), soit un diamètre calculé de 1,94 m. Tissu blanc léger traité ignifuge sur cerceau PVC de ¾ po. Projecteur conservé à son emplacement du plan LX original. Le masque, la hauteur et la netteté restent à régler sur place ; cette maquette ne valide pas l’optique.',measure:`Ø ${E.diameter.toFixed(2)} m · centre x ${EX.toFixed(2)} ; y ${E.y.toFixed(2)} m
+Bas ${(E.z-E.diameter/2).toFixed(2)} m / sol salle · hauteur proposée
+Gabarit minimal du contenu : ${E.imageWidth.toFixed(3)} × ${E.imageHeight.toFixed(2)} m`});
+label('E1 · Ø 1,94 m',new THREE.Vector3(EX,E.z+E.diameter/2+.20,EZ),true);
 const reservePts=Array.from({length:97},(_,i)=>new THREE.Vector3(EX+E.reservationDiameter/2*Math.cos(i*Math.PI/48),E.z+E.reservationDiameter/2*Math.sin(i*Math.PI/48),EZ+.008));
-const reserveRing=new THREE.Line(new THREE.BufferGeometry().setFromPoints(reservePts),new THREE.LineDashedMaterial({color:'#f3c575',dashSize:.055,gapSize:.055,transparent:true,opacity:.65}));reserveRing.computeLineDistances();reserveRing.name='Reserve_ecran_2.10m_non_mesuree';model.add(reserveRing);
-const projector=group('P1_Panasonic_PT_RZ770_position_proposee');projector.position.set(PX,PY,PZ);
+const reserveRing=new THREE.Line(new THREE.BufferGeometry().setFromPoints(reservePts),new THREE.LineDashedMaterial({color:'#f3c575',dashSize:.055,gapSize:.055,transparent:true,opacity:.65}));reserveRing.computeLineDistances();reserveRing.name='Reserve_ecran_2.10m' ;model.add(reserveRing);
+const projector=group('P0_Panasonic_PT_RZ770_emplacement_salle');projector.position.set(PX,PY,PZ);
 box(P.bodyWidth,P.bodyHeight,P.bodyDepth,0,0,0,mat('#bec7c9',.45),projector,'Corps_indicatif');
 let lens=cylinder(.057,.10,new THREE.Vector3(0,-P.lensDown,-P.lensForward),black,projector);lens.rotation.x=Math.PI/2;
 box(.12,.012,.12,0,.13,0,metal,projector);
-const mountA=rod(new THREE.Vector3(PX,PY+.12,PZ),new THREE.Vector3(PX,GRID,PZ),.013,warmMetal,model);mountA.name='Option_support_B4_adaptation_Chief_non_validee';
-clickable(projector,{title:'P1 · OPTION SUR B4',status:'B4 non retenu avec la lentille actuelle',type:'proposed',text:'Option sur la barre transversale salle, repérée à environ 4,25 m du nez de scène. Axe décalé de 40 cm par rapport à E1 ; Zoom 5 retiré de cette proposition pour réserver le montage. Support Chief VCMU documenté, adaptation au tube carré et capacité non confirmées. Recul compatible avec la plage du zoom ET-DLE150 pour ce gabarit, mais sa présence dans la salle n’est pas confirmée. La fiche décrit une optique ultra-courte non identifiée. Boîtier à 0,805 m du comptoir indicatif. Hauteur, enveloppe réelle, ventilation et décentrement restent à valider.',measure:`x +${PX.toFixed(2)} ; y ${P.y.toFixed(2)} ; z +${PY.toFixed(2)} m
-Repère lentille → écran : ${(PZ-P.lensForward-EZ).toFixed(3)} m
-Décalage horizontal : 0,40 m non validé ; écart vertical : 0,69 m`});
-const labelProjector=label('P1 · HYPOTHÈSE NON VALIDÉE',new THREE.Vector3(PX,PY+.32,PZ+.40),true);
+const mountA=rod(new THREE.Vector3(PX,PY+.12,PZ),new THREE.Vector3(PX,GRID,PZ),.013,warmMetal,model);mountA.name='Support_Chief_VCMU_existant_reperage' ;
+clickable(projector,{title:'P0 · Projecteur existant',status:'Emplacement du plan original conservé',type:'proposed',text:'Panasonic PT-RZ770 sur support Chief VCMU existant. Position centrée reprise graphiquement du plan LX de la salle ; aucune relocalisation sur B4. Courte focale annoncée ET-DLE03S : référence exacte à confirmer. Vérifier le cadrage, la hauteur et la netteté sur l’écran rond avant montage.',measure:`Repère graphique : x ${PX.toFixed(2)} ; y +${P.y.toFixed(2)} ; z +${PY.toFixed(2)} m
+Corps et sortie optique indicatifs ; cotes à relever en salle`});
+const labelProjector=label('P0 · EXISTANT',new THREE.Vector3(PX+.65,PY+.20,PZ+.20),true);
 const projectionGuide=group('Gabarit_16x10_a_produire_NON_simulation_optique',extras);
 const imageCorners=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,z])=>new THREE.Vector3(EX+x*E.imageWidth/2,E.z+z*E.imageHeight/2,EZ));
 function guideLine(pts){const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color:'#efc579',dashSize:.065,gapSize:.065,transparent:true,opacity:.65}));l.computeLineDistances();projectionGuide.add(l);}
@@ -205,7 +205,7 @@ for(const f of inventory)if(['source','zoom','par'].includes(f.kind)&&fixtureCol
 const fixtureColor=f=>fixtureColors[f.id]||colors[f.kind];
 for(const f of inventory)if(f.kind==='moving'&&fixtureColors[f.id]&&fixtureColors[f.id]!=='#000000'&&!wheel.some(w=>w[1]===fixtureColors[f.id]))delete fixtureColors[f.id];
 const danceTargets={'101':[2.3,0,2.2],'106':[-2.3,0,2.2],'102':[2.2,0,5],'105':[-2.2,0,5],'103':[2,0,8.3],'104':[-2,0,8.3],'111':[.8,.05,3.3],'112':[-.8,.05,3.3],S1:[-1.8,0,2.2],S6:[1.8,0,2.2],S3:[-1.8,0,5],S4:[1.8,0,5],S2:[-1.8,0,8.3],S5:[1.8,0,8.3]};
-const fixtureLayer=group('LX_40_dont_6_NON_UTILISES_ROUGES');
+const fixtureLayer=group('LX_42_APPAREILS_DISPONIBLES');
 function beam(origin,target,color,radius=.75){const len=origin.distanceTo(target),g=group('Faisceau_illustratif',extras),geo=new THREE.CylinderGeometry(.035,radius,1,24,1,true);geo.translate(0,-.5,0);
 let material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.035,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending});const cone=new THREE.Mesh(geo,material);g.add(cone);g.position.copy(origin);let patch=new THREE.Mesh(new THREE.PlaneGeometry(radius*2.7,radius*2.7),new THREE.MeshBasicMaterial({map:glowTexture,color,transparent:true,opacity:.23,depthWrite:false,blending:THREE.AdditiveBlending}));patch.rotation.x=-Math.PI/2;extras.add(patch);
 let item={g,cone,patch,origin:origin.clone(),target:target.clone(),radius};beamItems.push(item);aim(item,target);return item;}
@@ -454,7 +454,7 @@ renderScheduler=createRenderScheduler({
 });
 window.addEventListener('pagehide',()=>renderScheduler.dispose(),{once:true});
 // A narrow read-only diagnostic surface is kept for local verification and GLB export.
-const videoPanel=document.createElement('div');videoPanel.className='section';videoPanel.innerHTML='<p class="eyebrow">P1 · Vidéoprojecteur</p><button id="video-toggle">Éteindre le projecteur</button><p class="note" id="video-status"></p>';$('#color-editor').before(videoPanel);
+const videoPanel=document.createElement('div');videoPanel.className='section';videoPanel.innerHTML='<p class="eyebrow">P0 · Vidéoprojecteur existant</p><button id="video-toggle">Éteindre le projecteur</button><p class="note" id="video-status"></p>';$('#color-editor').before(videoPanel);
 function syncVideo(){const toggle=$('#video-toggle');if(!toggle)return;toggle.textContent=state.videoOn?'Éteindre le projecteur':'Allumer le projecteur';toggle.setAttribute('aria-pressed',String(state.videoOn));$('#video-status').textContent=state.videoOn?'Projection active.':'Projection éteinte.';}
 $('#video-toggle').onclick=()=>{cancelAmbienceFade();state.videoOn=!state.videoOn;applyMode();};syncVideo();
 window.grandRemix={state,inventory,dimensions:{width:W,stageDepth:D,stageHeight:H,roomDepth:ROOM,ceiling:CEILING},screen:E,projector:P,layout,renderer,scene,model,camera,controls,performer,routePoints,exportGLB:glb,getFrame:()=>renderer.info.render};

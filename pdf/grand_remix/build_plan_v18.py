@@ -9,14 +9,14 @@ c.setAuthor('DMTeam')
 MAGENTA=colors.HexColor('#F000DE'); GREEN=colors.HexColor('#12CD21')
 PINK=colors.HexColor('#E7ACD3'); ORANGE=colors.HexColor('#FF6B18')
 CYAN=colors.HexColor('#00CCD9'); BLUE=colors.HexColor('#446BFF')
-# Latest shared placement: screen on the first stage bar, inset from the
-# right-hand wall. implantation.json remains the geometric source of truth.
+# Shared placement: centred upstage screen and the original venue projector.
+# implantation.json remains the geometric source of truth.
 import json
 LAYOUT=json.loads((ROOT.parents[1]/'grand-remix-3d'/'implantation.json').read_text(encoding='utf-8'))
 ARRIVAL_FOCUS=json.loads((ROOT.parents[1]/'grand-remix-3d'/'arrival-focus.json').read_text(encoding='utf-8'))
 E=LAYOUT['screen']; P=LAYOUT['projector']; J=LAYOUT['dj']; BAR=LAYOUT['bar']
 SCREEN_X,SCREEN_Y,SCREEN_Z,SCREEN_D=E['x'],E['y'],E['z'],E['diameter']
-P1X,P1Y,P1Z=P['x'],P['y'],P['z']
+P0X,P0Y,P0Z=P['x'],P['y'],P['z']
 DJX,DJY=J['x'],J['y']
 SX,SY=LAYOUT['slam']['x'],LAYOUT['slam']['y']
 SW,SD,STAGE,GRID,RH=[LAYOUT['venue'][k] for k in ['width','stageDepth','stageHeight','grid','ceiling']]
@@ -84,7 +84,7 @@ def legend(x,y,w):
     for i,(kind,name,count,mode) in enumerate(rows):
         yy=y-27-i*26;fixture(x+22,yy,kind,k=.8)
         txt(x+56,yy+2,name,8);txt(x+w-54,yy+2,count,8,align='center');txt(x+w-23,yy+2,mode,7,align='center')
-    txt(x+8,y-200,'ROUGE = APPAREIL NON UTILISÉ',8,True,colors.HexColor('#E96666'))
+    txt(x+8,y-200,'KIT CONSERVÉ - APPAREILS RÉACTIVÉS',8,True,TEAL)
     return para(x+8,y-212,w-16,'* Source 36° : 8 inventoriés, 7 dessinés. PAR : implantation proposée.<br/>** SL1 : profil strobe à confirmer (p. 7).',8)
 
 def screen_circle(project,color=VIOLET):
@@ -106,7 +106,7 @@ def fixture(x,y,kind,label='',*args,**kwargs):
     else:_fixture_symbol(x,y,kind,label,*args,**kwargs)
 
 head(1,'PLAN LX ET SCÉNOGRAPHIE - VUE DE DESSUS / TOP')
-pane(28,56,765,688,'VUE PUBLIC : DJ À GAUCHE / ÉCRAN + VIDÉO À DROITE - TOP 1:65')
+pane(28,56,765,688,'DJ À GAUCHE / ARTISTE ET ÉCRAN AU CENTRE - TOP 1:65')
 pane(810,438,352,306,'LÉGENDE - APPAREILS DU MINISTÈRE')
 legend(820,704,332)
 pane(810,208,352,219,'IMPLANTATION DEMANDÉE - REPÈRES')
@@ -134,10 +134,6 @@ for label,kind,xyz in fixtures:fixture(*top(*xyz),kind,label,k=.82)
 F=LAYOUT['atmosphere']
 box(*top(F['x']-F['width']/2,F['y']-F['depth']/2),F['width']*s,F['depth']*s,TEAL_PALE,TEAL,.8)
 txt(*top(F['x'],F['y']-.25),'F1',7,True,TEAL,'center')
-# Existing projector shown separately from proposed installation.
-p0=coord(432,110,3.4);px,py=top(*p0)
-box(px-9,py-7,18,16,None,colors.HexColor('#7AA91A'),.7)
-txt(px,py+13,'P0',7,True,colors.HexColor('#5E8017'),'center')
 # Same bar and columns as 3D, explicitly approximate.
 box(*top(BAR['x']-BAR['width']/2,BAR['y']-BAR['depth']/2),BAR['width']*s,BAR['depth']*s,colors.HexColor('#F6E7D4'),MUTED,.7)
 for col in LAYOUT['columns']:
@@ -146,14 +142,14 @@ c.saveState();c.translate(*top(BAR['x'],BAR['y']));c.rotate(90);txt(0,0,'BAR IND
 # Proposed circular screen edge and short-throw video position.
 ex,ey=top(SCREEN_X,SCREEN_Y)
 line(ex-SCREEN_D/2*s,ey,ex+SCREEN_D/2*s,ey,VIOLET,3)
-tag(ex-.74*s,ey-18,'E1 Ø 2,00 m estimé',VIOLET,8)
-px,py=top(P1X,P1Y)
+tag(ex-.74*s,ey-18,'E1 Ø 1,94 m - fond de scène',VIOLET,8)
+px,py=top(P0X,P0Y)
 box(px-.25*s,py-.25*s,.5*s,.5*s,colors.white,VIOLET,1)
 box(px-5,py+8,10,4,VIOLET_PALE,VIOLET,.8)
 
-for edge in [-1,1]:line(*top(P1X,P1Y+P['lensForward']),*top(SCREEN_X+edge*E['imageWidth']/2,SCREEN_Y),VIOLET,.7,(3,3))
+for edge in [-1,1]:line(*top(P0X,P0Y+P['lensForward']),*top(SCREEN_X+edge*E['imageWidth']/2,SCREEN_Y),VIOLET,.7,(3,3))
 line(*top(SCREEN_X-E['imageWidth']/2,SCREEN_Y),*top(SCREEN_X+E['imageWidth']/2,SCREEN_Y),VIOLET,.6,(2,2))
-tag(px-32,py-3,'P1',VIOLET,9)
+tag(px-32,py-3,'P0',VIOLET,9)
 
 # Zones and arrows are aiming intentions, not new physical fixtures.
 for za,zb,key in [(-3.30,-1.10,'A - AVANT'),(-6.60,-3.50,'B - MILIEU'),(-9.90,-6.80,'C - FOND')]:
@@ -184,23 +180,23 @@ for a,b in zip(LAYOUT['artistRoute'],LAYOUT['artistRoute'][1:]):
 rx,ry=top(.20,-10.22);box(rx,ry,1.80*s,.72*s,None,colors.black,.7)
 txt(rx+.9*s,ry+.3*s,'RÉGIE',7,True,ORANGE,'center')
 # Leaders in the open margin.
-notes=[(669,'MODIFICATIONS DU KIT','Déposes proposées : 106 pour E1, Zoom 5 pour P1. F1 entre enceinte gauche et poste DJ ; table reculée de 30 cm.'),
+notes=[(669,'KIT CONSERVÉ','106 et Zoom 5 restent en place. 9, 11, 13, 205, 206, M2 et Zoom 6 réactivés ; orientations revues.'),
 (585,'DJ À GAUCHE VUE PUBLIC','Table 1,80 x 0,75 m. Centre x -3,00 ; y +2,10. Bord à 37 cm du mur. Passage artiste par le fond.'),
-(501,'ÉCRAN E1 SUR B1','Ø 2,00 m estimé ; réserve Ø 2,10 m. Centre x +2,35 ; y +0,807. Bord droit à 0,92 m du mur.'),
-(409,'PROJECTEUR P1 SUR B4 - OPTION','Corps x +1,95 ; y -4,25 ; z +2,75 m. Repère lentille à 4,78 m de E1. Optique et support à confirmer (p. 4). P0 : origine.'),
-(308,'ÉCLAIRAGE DU PUBLIC','PAR S1/S6 vers A ; S3/S4 vers B ; S2/S5 vers C. Flèches bleues : Accueil ; orange : autres focus. Pointages p. 6.'),
+(501,'ÉCRAN E1 AU FOND DE SCÈNE','Au centre, à la place de l’écran existant. Circonférence 20 pi : diamètre calculé 1,94 m. Centre x 0 ; y +3,30 m.'),
+(409,'PROJECTEUR P0 EXISTANT','Point du plan LX original conservé. Centre graphique x 0 ; y +2,34 m. Hauteur et cadrage à relever en salle.'),
+(308,'ARTISTE ET LUMIÈRE','Artiste dans l’axe x 0, devant l’écran. Focus latéraux et face ; toile protégée. PAR proposés pour la piste.'),
 (201,'COORDONNÉES / MÈTRES','Origine : centre du nez de scène. x : droite public ; y : fond de scène ; z : hauteur depuis le sol salle.')]
 for yy,title,body in notes:
     txt(526,yy,title,8.5,True,colors.black);para(526,yy-11,250,body,8)
 scalebar(526,89,s)
-para(820,389,332,'<b>E1 :</b> bas +1,05 m ; haut +3,05 m / sol salle. Suspension sur B1 à valider.<br/><br/><b>P1 :</b> enveloppe indicative 0,50 x 0,50 m ; bord à 0,805 m du comptoir dessiné. Bar et poteaux à relever.<br/><br/><b>S1-S6 :</b> six PAR proposés sur B4 à y -4,25 m ; disponibilité, gradateurs et charge à confirmer.<br/><br/><b>Rouge clair :</b> appareils conservés en place mais non utilisés ; aucune émission rouge.',9)
+para(820,389,332,'<b>E1 :</b> fond de scène ; bas +1,08 m, haut +3,02 m proposés. Suspension au plafond à valider.<br/><br/><b>P0 :</b> support Chief VCMU existant conservé. Position graphique, pas un relevé de pose.<br/><br/><b>S1-S6 :</b> six PAR proposés sur B4 ; disponibilité, gradateurs et charge à confirmer.<br/><br/><b>Lumière :</b> tous les appareils disponibles. Réglages selon les huit ambiances ; contrôle de la toile au focus.',9)
 para(820,162,332,'<b>DT :</b> Rémi LeGresley - Le Ministère<br/><b>Base :</b> fiche Audio-LX et plan LX fourni.<br/><b>Statut :</b> implantation proposée, à valider sur place.',9)
 foot(1);c.showPage()
 
 # PAGE 2: familiar front and side elevations, all inventory types included.
 head(2,'PLAN LX ET SCÉNOGRAPHIE - FRONT / LEFT')
 pane(28,414,765,330,'FRONT - VUE DEPUIS LE PUBLIC - 1:50')
-pane(28,56,765,347,'LEFT - COUPE SUR E1, À DROITE VUE PUBLIC - 1:65')
+pane(28,56,765,347,'LEFT - COUPE DANS L’AXE CENTRAL - 1:65')
 pane(810,438,352,306,'LÉGENDE - APPAREILS DU MINISTÈRE')
 legend(820,704,332)
 pane(810,56,352,371,'NOTES TECHNIQUES DE MONTAGE')
@@ -225,9 +221,9 @@ for kind,level in [('source',700),('colorado',685)]:
 for label,kind,xyz in PROPOSED_PAR:fixture(*front(*xyz),kind,label,k=.7,labeldy=-19)
 screen_circle(front)
 ex,ez=front(SCREEN_X,SCREEN_Y,SCREEN_Z)
-txt(ex,ez+4,'E1',12,True,VIOLET,'center');txt(ex,ez-11,'Ø 2,00 m estimé',9,True,VIOLET,'center'); txt(ex,ez-24,'image Ø 1,98 m',6.5,False,VIOLET,'center')
-dimv(ex-SCREEN_D/2*fs-18,fy+(SCREEN_Z-SCREEN_D/2)*fs,fy+(SCREEN_Z+SCREEN_D/2)*fs,'2,00 m*',ex-SCREEN_D/2*fs)
-tag(ex-.70*fs,fy+(SCREEN_Z-SCREEN_D/2)*fs-14,'bas +1,05 m*',VIOLET,7.5)
+txt(ex,ez+4,'E1',12,True,VIOLET,'center');txt(ex,ez-11,'Ø 1,94 m calculé',9,True,VIOLET,'center'); txt(ex,ez-24,'image Ø 1,92 m',6.5,False,VIOLET,'center')
+dimv(ex-SCREEN_D/2*fs-18,fy+(SCREEN_Z-SCREEN_D/2)*fs,fy+(SCREEN_Z+SCREEN_D/2)*fs,'1,94 m*',ex-SCREEN_D/2*fs)
+tag(ex-.70*fs,fy+(SCREEN_Z-SCREEN_D/2)*fs-14,'bas +1,08 m*',VIOLET,7.5)
 box(*front(DJX-J['width']/2,DJY,STAGE),J['width']*fs,J['height']*fs,None,colors.black,1)
 txt(*front(DJX,DJY,STAGE+.4),'DJ FRÄNZE',10,True,colors.black,'center')
 xx,zz=front(SX,SY,STAGE)
@@ -236,7 +232,7 @@ line(xx,zz+1.53*fs,xx,zz+.72*fs,TEAL,2)
 for dx in [-.2,.2]:line(xx,zz+.73*fs,xx+dx*fs,zz,TEAL,1.5)
 line(xx-17,zz,xx-17,zz+1.35*fs,colors.black,.8)
 txt(xx,zz-16,'Artiste',8,True,TEAL,'center')
-txt(45,429,'E1 écarté du mur droit. * Hauteur proposée ; à régler avec l’optique, la visibilité et les accroches.',8)
+txt(45,429,'E1 centré au fond de scène. * Hauteur proposée ; cadrage, visibilité et accroches à régler sur place.',8)
 sx,sy,ss=267,99,1000/65*72/25.4
 def side(x,y,z):return sx-y*ss,sy+z*ss
 box(sx-SD*ss,sy,SD*ss,STAGE*ss,None,colors.black,1)
@@ -253,14 +249,14 @@ tag(pxpar+13,pypar-16,'S1-S6 : PAR salle proposés',MUTED,7)
 xx,_=side(SCREEN_X,SCREEN_Y,0)
 line(xx,sy+(SCREEN_Z-SCREEN_D/2)*ss,xx,sy+(SCREEN_Z+SCREEN_D/2)*ss,VIOLET,2.7)
 line(xx,sy+(SCREEN_Z+SCREEN_D/2)*ss,xx,sy+GRID*ss,VIOLET,.7,(3,2))
-px,py=side(P1X,P1Y,P1Z)
+px,py=side(P0X,P0Y,P0Z)
 box(px-12,py-6,24,12,None,VIOLET,1)
 # Candidate support is connected to B4; hardware/load still unverified.
-line(*side(P1X,P1Y,P1Z+.12),*side(P1X,P1Y,GRID),VIOLET,1)
+line(*side(P0X,P0Y,P0Z+.12),*side(P0X,P0Y,GRID),VIOLET,1)
 line(*side(0,0,GRID),*side(0,-4.25,GRID),TEAL,.9)
-poly([side(P1X,P1Y+P['lensForward'],P1Z-P['lensDown']),(xx,sy+(SCREEN_Z+E['imageHeight']/2)*ss),(xx,sy+(SCREEN_Z-E['imageHeight']/2)*ss)],VIOLET,.6,None,(3,3))
-tag(px+19,py-2,'P1 / B4 - NON VALIDÉ',VIOLET,8)
-dimh(xx,px,sy+1.28*ss,'corps / E1 : 5,06 m*')
+poly([side(P0X,P0Y+P['lensForward'],P0Z-P['lensDown']),(xx,sy+(SCREEN_Z+E['imageHeight']/2)*ss),(xx,sy+(SCREEN_Z-E['imageHeight']/2)*ss)],VIOLET,.6,None,(3,3))
+tag(px+19,py-2,'P0 EXISTANT',VIOLET,8)
+dimh(xx,px,sy+1.28*ss,'corps / E1 : env. 1,10 m*')
 tag(xx-30,sy+(SCREEN_Z+SCREEN_D/2)*ss+12,'E1',VIOLET,8)
 dimv(77,sy,sy+STAGE*ss,'0,61 m',105)
 for d in [3.1,6.1,8.9]:
@@ -268,9 +264,9 @@ for d in [3.1,6.1,8.9]:
     line(xx,zz+1.52*ss,xx,zz+.75*ss,LINE,1)
     line(xx,zz+.75*ss,xx-5,zz,LINE,1);line(xx,zz+.75*ss,xx+5,zz,LINE,1)
 txt(160,82,'SCÈNE',8,True,colors.black,'center');txt(560,82,'PUBLIC / DANSE',8,True,ORANGE,'center')
-para(44,371,733,'<b>P1 / B4 proposé :</b> lentille à environ 4,78 m de E1. L’installation existante est décrite à 5 pi de son écran 150 pouces ; sa lentille n’est pas identifiée.',9)
-para(44,319,733,'Trajet vidéo indicatif. Optique, décentrement et adaptation du Chief VCMU à confirmer avant montage (p. 4).',9,color=MUTED)
-para(820,389,332,'<b>Montage LX.</b> Conserver le kit existant, sauf déposes proposées 106 et Zoom 5. Profil strobe SL1 à confirmer (p. 7).<br/><br/><b>Scénographie.</b> E1 suspendu sur B1, DJ à gauche. Valider visibilité, dégagements et accès artiste.<br/><br/><b>Public.</b> S1-S6 sur B4 : 6 x 500 W = <b>3 kW</b>. Confirmer accroches et gradateurs ; régler la couverture sans éblouissement.<br/><br/><b>Accroches.</b> Points approuvés par le DT, fixation et sécurité secondaire. Aucun appareil sur les rails à rideaux.<br/><br/><b>Projection.</b> Identifier la lentille avant de retenir P1. Calcul de recul p. 4 ; focus de protection p. 6.',10)
+para(44,371,733,'<b>P0 conservé :</b> emplacement du plan LX original. La fiche salle annonce 5 pi (1,52 m) de son écran 150 pouces, sans préciser le repère de mesure.',9)
+para(44,319,733,'Trajet vidéo indicatif. Le maintien du support ne valide pas le cadrage de l’écran rond : mire et focus en salle (p. 4).',9,color=MUTED)
+para(820,389,332,'<b>Montage LX.</b> Conserver tout le kit existant, dont 106 et Zoom 5. Profil strobe SL1 à confirmer (p. 7).<br/><br/><b>Scénographie.</b> E1 centré au fond de scène, artiste au centre et DJ à gauche. Valider visibilité, dégagements et accès artiste.<br/><br/><b>Public.</b> S1-S6 sur B4 : 6 x 500 W = <b>3 kW</b>. Confirmer accroches et gradateurs ; régler la couverture sans éblouissement.<br/><br/><b>Accroches.</b> Points approuvés par le DT, fixation et sécurité secondaire. Aucun appareil sur les rails à rideaux.<br/><br/><b>Projection.</b> P0 au point original. Confirmer la référence de lentille, le cadrage et le focus (p. 4 et 6).',10)
 foot(2);c.showPage()
 
 # PAGE 3: wireframe isometric layout like the venue's overview, plus equipment.
@@ -312,49 +308,47 @@ poly([iso(SX-.75,SY-.75,STAGE+.01),iso(SX+.75,SY-.75,STAGE+.01),iso(SX+.75,SY+.7
 tag(*iso(SX-.35,SY-.5,STAGE+.05),'Artiste',TEAL,7.5)
 screen_circle(iso)
 txt(*iso(SCREEN_X,SCREEN_Y,SCREEN_Z),'E1',10,True,VIOLET,'center')
-px,py=iso(P1X,P1Y,P1Z);box(px-10,py-6,20,12,None,VIOLET,1)
-line(*iso(P1X,P1Y,P1Z+.12),*iso(P1X,P1Y,GRID),VIOLET,1)
+px,py=iso(P0X,P0Y,P0Z);box(px-10,py-6,20,12,None,VIOLET,1)
+line(*iso(P0X,P0Y,P0Z+.12),*iso(P0X,P0Y,GRID),VIOLET,1)
 arrow(px+9,py,*iso(SCREEN_X,SCREEN_Y,SCREEN_Z),VIOLET,.7,(3,2),4)
-tag(px-40,py+9,'P1',VIOLET,8)
+tag(px-40,py+9,'P0',VIOLET,8)
 for d,key in [(2.2,'A'),(5,'B'),(8.3,'C')]:tag(*iso(0,-d,.03),f'PISTE {key}',ORANGE,8)
-txt(51,292,'S1-S6 : 6 PAR proposés au-dessus de la piste. 106 et Zoom 5 : déposes proposées pour E1/P1 ; autres points conservés.',8)
+txt(51,292,'S1-S6 : 6 PAR proposés au-dessus de la piste. 106 et Zoom 5 conservés ; appareils auparavant exclus réactivés.',8)
 # Full inventory from the source, including reserve items absent from the plot.
-rows=[['Appareil','Qté','Donnée principale'],['Colorado 1 Tri Tour','12','LED RGB / ARC1'],['Intimidator Spot 375Z','8','5 suspendus + 2 bas ; 106 déposé'],['Source Four 25-50°','6','Zoom 5 : dépose proposée'],['Source Four 36°','8','575 W / 7 dessinés'],['DMG SL1 Mix','1','200 W'],['DMG Mini Mix','2','100 W'],['PAR 56 WFL','6','500 W / S1-S6 proposés']]
+rows=[['Appareil','Qté','Donnée principale'],['Colorado 1 Tri Tour','12','LED RGB / ARC1'],['Intimidator Spot 375Z','8','6 suspendus + 2 bas'],['Source Four 25-50°','6','6 conservées'],['Source Four 36°','8','575 W / 7 dessinés'],['DMG SL1 Mix','1','200 W'],['DMG Mini Mix','2','100 W'],['PAR 56 WFL','6','500 W / S1-S6 proposés']]
 table(819,701,334,[159,34,141],rows,rowheights=[24]+[25]*7,size=8)
 para(822,484,330,'<b>Console :</b> GrandMA3 Command Wing Compact / PC.<br/><b>Gradateurs :</b> 4 Lite-Putter DX-1210.<br/><b>DMX :</b> Chauvet Data Stream 4.<br/><b>Brouillard :</b> Antari F-1W.<br/><b>Bar :</b> éclairage maintenu.',9)
-para(822,326,330,'<b>Panasonic PT-RZ770</b><br/>Laser DLP, 7 000 lm nominaux.<br/>1920 x 1200 / 16:10 ; HDMI.<br/><br/><b>Installation existante :</b> Chief VCMU, ultra-courte focale, à 5 pi (1,52 m) de l’écran 16:9 de 150 pouces selon la salle.<br/><br/><b>Projet :</b> toile ronde Ø 2,00 m estimé, avec masque circulaire.<br/><br/><b>Lentille installée inconnue.</b> Recul et décentrement proposés : p. 4.',10)
-rows=[['Élément','Cote / destination','Application'],['E1 - écran','x +2,35 ; y +0,807 ; Ø 2,00 m estimé','Bord droit x +3,35 ; mur à 0,92 m. Bas proposé +1,05 m / sol salle.'],['P1 - vidéo','x +1,95 ; y -4,25 ; z +2,75 m','Hors comptoir modélisé. Repère lentille à 4,78 m. Optique, décentrements et support non validés.'],['DJ / slam','DJ : x -3,00 ; y +2,10. Slam : x -0,375 ; y +1,10.','Table 1,80 x 0,75 m ; mur gauche à 37 cm. Passage artiste derrière puis côté centre.'],['PAR S1-S6','y -4,25 ; x -3,10 / -1,55 / -0,16 / +0,16 / +1,55 / +3,10.','Hauteur de corps proposée +3,30 m. S1/S6 : A ; S3/S4 : B ; S2/S5 : C.']]
+para(822,326,330,'<b>Panasonic PT-RZ770</b><br/>Laser DLP, 7 000 lm nominaux.<br/>1920 x 1200 / 16:10 ; HDMI.<br/><br/><b>Installation existante :</b> Chief VCMU, ultra-courte focale, à 5 pi (1,52 m) de l’écran 16:9 de 150 pouces selon la salle.<br/><br/><b>Projet :</b> toile ronde Ø 1,94 m calculé, avec masque circulaire.<br/><br/><b>Courte focale annoncée : ET-DLE03S.</b> Référence exacte et cadrage à confirmer ; p. 4.',10)
+rows=[['Élément','Cote / destination','Application'],['E1 - écran','x 0 ; y +3,30 ; Ø 1,94 m calculé','Fond de scène, à la place de la toile existante. Bas proposé +1,08 m / sol salle.'],['P0 - vidéo','x 0 ; y +2,34 ; z +3,40 m indicatifs','Point du plan LX original conservé. Support Chief VCMU existant ; cadrage à vérifier.'],['DJ / artiste','DJ : x -3,00 ; y +2,10. Artiste : x 0 ; y +1,10.','Table 1,80 x 0,75 m. Artiste dans l’axe de scène, devant la projection.'],['PAR S1-S6','y -4,25 ; x -3,10 / -1,55 / -0,16 / +0,16 / +1,55 / +3,10.','Hauteur de corps proposée +3,30 m. S1/S6 : A ; S3/S4 : B ; S2/S5 : C.']]
 table(37,229,747,[105,257,385],rows,rowheights=[24,29,29,29,29],size=8)
 para(38,80,743,'<b>Sources :</b> fiche Audio-LX et plan LX du Ministère ; Panasonic PT-RZ770 Spec File. Cotes de projet proposées, à confirmer sur place.',8)
 c.linkURL('https://leministere.ca/assets/documents/Le-Minist%C3%A8re_Fiche-technique_Audio-LX.pdf',(38,57,420,85),relative=0,thickness=0)
 c.linkURL('https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/PT-RZ770G_STE_04%28sec%29.pdf',(430,57,783,85),relative=0,thickness=0)
 foot(3);c.showPage()
-head(4,'VIDÉOPROJECTION - GABARIT ET RECUL')
-pane(28,395,1134,349,'DONNÉES DE CALCUL - ÉCRAN ESTIMÉ / LENTILLE À IDENTIFIER')
-para(45,703,1090,'<b>PT-RZ770 confirmé ; lentille installée inconnue.</b> P1 sur B4 est une option de repositionnement, à valider avec le DT.',12)
-diag=math.hypot(E['imageWidth'],E['imageHeight'])/.0254
-low=diag*.0174-.0471; high=diag*.0216-.0442
-dle150low=diag*.0286-.054; dle150high=diag*.0413-.0498
-stdlow=diag*.0379-.0746; stdhigh=diag*.0529-.0725
-rows=[['Élément','Valeur retenue','À vérifier'],
-['Écran E1','Ø 2,00 m estimé ; réserve Ø 2,10 m','Mesurer la toile et confirmer sa suspension.'],
-['Image native 16:10',f'3,392 x 2,12 m ; diagonale {diag:.3f} pouces','Réserve optique pour ajuster le masque.'],
-['Image visible','Cercle Ø 1,98 m ; marge blanche 1 cm','Noir hors cercle ; ajuster au diamètre réel.'],
-['Recul lentille / E1','L = 4,25 - 0,28 + 0,807 = 4,777 m','Repère de lentille et position de B4 à relever.'],
-['Décentrements','Horizontal 0,40 m ; vertical 0,69 m','Compatibilité de l’optique, non validée.'],
-['Encombrement P1','Corps x +1,95 ; y -4,25 ; z +2,75 m','Bar, poteaux, ventilation et support réels.']]
+head(4,'VIDÉOPROJECTION - INSTALLATION EXISTANTE CONSERVÉE')
+pane(28,395,1134,349,'ÉCRAN ROND AU FOND DE SCÈNE / PROJECTEUR AU POINT ORIGINAL')
+para(45,703,1090,'<b>Panasonic PT-RZ770 sur support Chief VCMU existant.</b> Écran rond centré à la place de la toile de la salle. Aucune relocalisation du projecteur sur B4.',12)
+diag=math.hypot(E['imageWidth'],E['imageHeight'])
+throw=.3205*diag+.0047
+rows=[['Élément','Donnée retenue','Vérification en salle'],
+['Écran E1','20 pi / 6,096 m de circonférence ; Ø 1,94 m calculé','Mesurer le cerceau monté ; vérifier planéité et suspension.'],
+['Emplacement','Fond de scène, axe x 0 ; y +3,30 m indicatif','Devant le rideau du fond ; hauteur à ajuster au cadrage.'],
+['Projecteur P0','Point du plan LX original conservé','Cotes graphiques : x 0 ; y +2,34 ; z +3,40 m indicatifs.'],
+['Optique annoncée','Panasonic ET-DLE03S - courte focale','Lire la référence exacte sur la lentille : ET-DLE035 à confirmer.'],
+['Installation documentée','Support Chief VCMU ; écran salle 16:9 de 150 pouces','Fiche salle : recul 5 pi / 1,52 m, repère de mesure non précisé.'],
+['Image visible',f'Cercle Ø {E["contentDiameter"]:.2f} m ; bord blanc 1 cm','Masquer le contenu hors cercle ; vérifier la netteté sur toute la toile.']]
 table(45,649,1097,[205,450,442],rows,rowheights=[27]+[34]*6,size=11)
-pane(28,56,1134,326,'PLAGES CONSTRUCTEUR POUR CE GABARIT')
-rows=[['Optique','Plage de recul calculée','Position P1 à 4,777 m'],
-['Standard / ET-DLE170',f'{stdlow:.3f} à {stdhigh:.3f} m','Recul insuffisant.'],
-['ET-DLE150',f'{dle150low:.3f} à {dle150high:.3f} m','Dans la plage ; disponibilité et décentrement à vérifier.'],
-['ET-DLE085',f'{low:.3f} à {high:.3f} m','Hors plage pour ce gabarit.']]
-table(45,339,1097,[260,270,567],rows,rowheights=[27,34,34,34],size=11)
-para(45,189,1089,'<b>Conclusion :</b> B4 peut convenir avec une optique adaptée, mais ne valide pas la lentille actuelle. '
-     'Identifier sa référence avant de fixer le point vidéo.<br/><br/>'
-     '<b>Accroche :</b> adaptation Chief VCMU / tube carré, charge et suspension à approuver. '
-     'Le comptoir est indicatif : contrôler les dégagements sur place.',11)
-para(45,88,1089,'<b>Source :</b> Panasonic PT-RZ770 Spec File, p. 15-16 ; fiche Audio-LX du Ministère. Calcul de recul seul, sans validation de décentrement.',9)
+pane(28,56,1134,326,'CADRAGE À VALIDER - CALCUL CONDITIONNEL ET ESSAI')
+rows=[['Hypothèse ET-DLE035','Calcul pour le gabarit minimal','Portée'],
+['Image native 16:10',f'{E["imageWidth"]:.3f} x {E["imageHeight"]:.3f} m ; diagonale {diag:.3f} m','Gabarit minimal : cercle + marge de réglage.'],
+['Recul au miroir interne',f'0,3205 x {diag:.3f} + 0,0047 = {throw:.3f} m','Formule Panasonic ; approximation ±5 %, pas une cote de pose.'],
+['Projecteur maintenu en place','Mesurer l’image obtenue au point existant','Une image plus grande peut être masquée ; vérifier couverture, décalage vertical et focus.']]
+table(45,339,1097,[260,340,497],rows,rowheights=[27,38,38,46],size=11)
+para(45,167,1089,'<b>Essai requis :</b> afficher une mire, régler le centre puis les bords, ajuster le masque circulaire et la hauteur de la toile. '
+     'La maquette représente l’implantation demandée ; elle ne certifie pas le cadrage ni la netteté de l’installation réelle.',11)
+url='https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/ET-DLE035%28DPQX1334ZB_X1%29_EN-Appendix.pdf'
+para(45,88,1089,'<b>Sources :</b> plan LX et fiche Audio-LX du Ministère ; Panasonic ET-DLE035, annexe 9. Modèle exact à confirmer.',9)
+c.linkURL(url,(45,72,1130,99),relative=0,thickness=0)
 foot(4);c.showPage()
 head(5,'BARRES ET PRIORITÉS D’ACCROCHE - REPÉRAGE DEPUIS LE PLAN SOURCE')
 pane(28,56,690,688,'GRILLE SEULE - SECTIONS VIDES VISIBLES - COTES GRAPHIQUES APPROXIMATIVES')
@@ -373,14 +367,14 @@ for bar in LAYOUT['rigBars']:
     else:tag(*rigp(mx+.08,my),bar['id'],TEAL,9)
 for a,b in [((-SW/2+.06,SD-.06),(SW/2-.06,SD-.06)),((-SW/2+.06,0),(-SW/2+.06,SD-.06)),((SW/2-.06,0),(SW/2-.06,SD-.06))]:line(*rigp(*a),*rigp(*b),colors.HexColor('#B4A126'),1,(4,3))
 line(*rigp(SCREEN_X-SCREEN_D/2,SCREEN_Y),*rigp(SCREEN_X+SCREEN_D/2,SCREEN_Y),VIOLET,4)
-tag(*rigp(SCREEN_X-.45,SCREEN_Y+.22),'E1 / B1',VIOLET,9)
-pp=rigp(P1X,P1Y);box(pp[0]-.25*rs,pp[1]-.25*rs,.5*rs,.5*rs,VIOLET_PALE,VIOLET,1.2)
-tag(pp[0]-20,pp[1]-31,'P1 / B4',VIOLET,9)
-line(*rigp(P1X,P1Y+.28),*rigp(SCREEN_X,SCREEN_Y),VIOLET,1,(4,3))
+tag(*rigp(SCREEN_X-.45,SCREEN_Y+.22),'E1 - FOND',VIOLET,9)
+pp=rigp(P0X,P0Y);box(pp[0]-.25*rs,pp[1]-.25*rs,.5*rs,.5*rs,VIOLET_PALE,VIOLET,1.2)
+tag(pp[0]-20,pp[1]-31,'P0 EXISTANT',VIOLET,9)
+line(*rigp(P0X,P0Y+P['lensForward']),*rigp(SCREEN_X,SCREEN_Y),VIOLET,1,(4,3))
 dimv(656,rigp(0,-4.25)[1],rigp(0,0)[1],'env. 4,25 m',rigp(3.95,0)[0])
 txt(50,110,'Vert : tubes repérés. Jaune : rails à rideaux, accroche interdite.',9)
 txt(50,91,'Une section sans appareil n’est pas un point de charge validé.',9,True,ORANGE)
-para(751,702,392,'<b>Traverses B1-B3.</b><br/>y ≈ +0,807 / +1,77 / +2,78 m.<br/><br/><b>Traverse B4.</b><br/>y ≈ -4,25 m. Option P1 : x +1,95 m.<br/><br/><b>Longitudinales L-G / L-C / L-D.</b><br/>x ≈ -3,36 / -0,20 / +3,02 m. Continuité et extrémités à relever.<br/><br/><b>Section publiée.</b><br/>Tube carré 2 x 2 pouces / 50,8 mm.<br/><br/><b>Réservations proposées.</b><br/>B1 / E1 : dépose de 106.<br/>B4 / P1 : dépose du Zoom 5.<br/><br/><b>Accord du DT avant montage.</b><br/>Confirmer nature des tubes, charges admissibles, fixation Chief VCMU et sécurité secondaire. Aucun rail à rideaux, conduit ou élément décoratif utilisé.<br/><br/>Repérage graphique, sans relevé complet des points d’accroche.',11)
+para(751,702,392,'<b>Traverses B1-B3.</b><br/>y ≈ +0,807 / +1,77 / +2,78 m.<br/><br/><b>Traverse B4.</b><br/>y ≈ -4,25 m. PAR S1-S6 proposés ; Zoom 5 conservé.<br/><br/><b>Longitudinales L-G / L-C / L-D.</b><br/>x ≈ -3,36 / -0,20 / +3,02 m. Continuité et extrémités à relever.<br/><br/><b>Section publiée.</b><br/>Tube carré 2 x 2 pouces / 50,8 mm.<br/><br/><b>Implantation retenue.</b><br/>P0 : support existant conservé.<br/>E1 : centré au fond, suspension au plafond à confirmer.<br/>106 et Zoom 5 conservés.<br/><br/><b>Accord du DT avant montage.</b><br/>Confirmer nature des tubes, charges admissibles, suspension E1 et sécurité secondaire. Aucun rail à rideaux, conduit ou élément décoratif utilisé.<br/><br/>Repérage graphique, sans relevé complet des points d’accroche.',11)
 foot(5);c.showPage()
 head(6,'FOCUS LX - PROTECTION DES DEUX FACES DE L’ÉCRAN')
 pane(28,56,680,688,'DESTINATIONS ET POINTAGES - VIDÉO ACTIVE')
@@ -391,7 +385,7 @@ for f in LAYOUT['fixtures']:
     groups.setdefault(key,[]).append(f['id'])
 rows=[['Appareils','Destination','Slam + vidéo','Danse + vidéo']]
 for (role,slam,dance),ids in groups.items():rows.append([', '.join(i+'*' if i in ('112','S6') else i for i in ids),role,'DISPONIBLE' if slam else 'ÉTEINT','DISPONIBLE' if dance else 'ÉTEINT'])
-table(42,700,652,[310,108,117,117],rows,rowheights=[27]+[37]*(len(rows)-1),size=9)
+table(42,700,652,[310,108,117,117],rows,rowheights=[27]+[32]*(len(rows)-1),size=9)
 para(43,468,644,'<b>DISPONIBLE :</b> focus utilisable, selon l’ambiance. Les appareils éteints restent en place.<br/>'
      '<b>112* :</b> OFF à l’accueil, à l’ouverture et dans Pinky love. <b>S6* :</b> selon ambiance.',11)
 arrival_rows=[['ACCUEIL','Pan / tilt / zoom','Cible x / y / z (m)']]
@@ -403,17 +397,17 @@ for i,row in enumerate(arrival_rows):
     box(42,arrival_y-23,652,23,INK if i==0 else (PALE if i%2 else colors.white),None)
     for x,cell in zip([50,138,396],row):txt(x,arrival_y-16,cell,11,i==0,colors.white if i==0 else INK)
     line(42,arrival_y-23,694,arrival_y-23,LINE,.5);arrival_y-=23
-para(43,242,644,'Accueil proposé : axes moyens, blanc à 100 %, mouvement 1°, sans gobo ni flash. '
+para(43,242,644,'Accueil proposé : axes fixes, blanc à 100 %, sans gobo ni flash. '
      '<b>Angles de repérage, non calibrés DMX.</b>',11)
 para(43,192,644,'<b>Cibles fixes x / y / z (m)</b><br/>'
      'Zoom 1 / 101 vers DJ : -3,00 / +2,61 / +2,00 ; Zoom 1 à 25°.<br/>'
      '201 vers platines : -3,125 / +2,10 / +1,62 ; sans flash.<br/>'
-     'Artiste : -0,375 / +1,10 / +1,6096.<br/>'
-     '210 / SL1 vers haut du corps : -0,375 / +1,10 / +2,00.',11)
+     'Artiste : 0,00 / +1,10 / +1,6096.<br/>'
+     '203 / 204 / 206 / 210 vers haut du corps : 0,00 / +1,10 / +2,00.<br/>SL1 vers avant-scène : -0,30 / +0,20 / +1,20.',11)
 para(741,700,399,'<b>1. Protéger E1.</b><br/>Aucun éclairage direct sur la face ou le dos. Réserve de contrôle : rayon 1,20 m, soit Ø 2,10 m + 15 cm de marge radiale. Gabarit de conception, à vérifier par essai.<br/><br/>'
      '<b>2. Découpes et lyres.</b><br/>Régler couteaux et zoom ; calibrer les zéros. Contrôler les bords du faisceau sur tout le parcours et limiter les amplitudes. Garder le trajet vidéo libre.<br/><br/>'
      '<b>3. Lyre 112 vers le public.</b><br/>Base : pan -30°, tilt 58°, zoom 12°, balayage ±6°. Cible : x +2,6243 ; y -1,0457 ; z 0 m. Focus à valider sans débordement sur E1.<br/><br/>'
-     '<b>4. États et permanences.</b><br/>Bar maintenu ; platines lisibles avec 201, sans flash. Les appareils rouges du plan et Zoom 6 restent éteints. Ambiances suggérées : p. 8.<br/><br/>'
+     '<b>4. États et permanences.</b><br/>Bar maintenu ; platines lisibles avec 201, sans flash. 9, 11, 13, 205, 206, M2 et Zoom 6 réactivés ; 106 et Zoom 5 conservés. Ambiances suggérées : p. 8.<br/><br/>'
      '<b>5. Essai de focus.</b><br/>Mire blanche puis noire ; chaque appareil séparément. Corriger orientation et découpe, puis tester les mouvements et le brouillard. Laisser éteint tout faisceau atteignant directement la toile.',12)
 foot(6);c.showPage();c.save()
 print(OUT)

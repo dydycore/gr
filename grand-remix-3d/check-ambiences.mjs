@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {restoredFixtureIds} from './stage-lighting.mjs';
 import {readFileSync} from 'node:fs';
 import {ambienceDefinitions,createAmbience,ambienceDuration} from './ambiences.js';
 import {profiles,wheel,motionAngles,coneHitsSphere} from './fixture-profiles.js';
@@ -44,6 +45,7 @@ for(const [id,s] of Object.entries(scenes)){
 const arrival=scenes.arrival;
 assert.equal(arrival.videoOn,true,'Arrival includes its welcome projection');
 for(const f of fixtures){
+ if(restoredFixtureIds.includes(f.id)){assert.ok(active(arrival,f.id),'Restored stage light is available on arrival');continue;}
  if(f.id==='201'){assert.equal(arrival.prefs[f.id].dimmer,45,'DJ decks retain their steady task light');continue;}
  if(/^S[1-6]$/.test(f.id)){assert.equal(arrival.prefs[f.id].dimmer,100,'Arrival white PARs full intensity');assert.equal(color(arrival,f.id),'#ffffff');}
  else if(['102','103','104','105','111'].includes(f.id)){assert.equal(arrival.prefs[f.id].dimmer,100,'Bright arrival');assert.equal(color(arrival,f.id),'#ffffff','Arrival matches default white');assert.equal(arrival.prefs[f.id].movement,'static');assert.equal(arrival.prefs[f.id].gobo,0);assert.equal(arrival.timelines[f.id],undefined);}
@@ -135,7 +137,7 @@ for(const id of ['opening','dream','warm']){
 }
 assert.equal(scenes.dj.prefs['101'].dimmer,100,'DJ transition has full coloured spot');
 for(const id of ['202','207'])assert.equal(scenes.dj.prefs[id].dimmer,85,'Strong coloured DJ wash');
-for(const id of ['dream','warm'])for(const f of fixtures.filter(f=>active(scenes[id],f.id)))assert.notEqual(color(scenes[id],f.id),'#ffffff',id+': no white source');
+for(const id of ['dream','warm'])for(const f of fixtures.filter(f=>active(scenes[id],f.id)&&!restoredFixtureIds.includes(f.id)))assert.notEqual(color(scenes[id],f.id),'#ffffff',id+': no white source');
 assert.equal(scenes.dream.fog.rate,.06);assert.equal(scenes.red_alert.fog.rate,.07);assert.equal(scenes.warm.fog.rate,.05);
 for(const scene of Object.values(scenes))assert.ok(scene.fog.rate>=0&&scene.fog.rate<=.07,'All ambiences capped at 7%');
 for(const id of ['102','103','104','105','111','112'])assert.ok(scenes.red_alert.prefs[id].period<scenes.warm.prefs[id].period,'Red faster than warm');
@@ -144,6 +146,7 @@ for(const [id,gobo] of Object.entries({dream:6,red_alert:7,warm:2})){
  assert.deepEqual([...new Set(moving.map(f=>scene.prefs[f.id].gobo).filter(index=>index>0))],[gobo],id+': exactly one factory gobo motif');
  const sequenceGobos=new Set();
  for(const f of moving){
+  if(f.id==='106'){assert.equal(scene.prefs[f.id].gobo,0,'106: open stage fill');assert.equal(scene.prefs[f.id].movement,'static');continue;}
   const expectedGobo=f.id==='101'&&id!=='red_alert'?0:gobo;
   assert.equal(scene.prefs[f.id].gobo,expectedGobo,id+'/'+f.id+': scene motif or intentionally open DJ');
   const timeline=scene.timelines[f.id];assert.ok(timeline?.enabled,id+'/'+f.id+': editable sequence exists');
@@ -164,5 +167,5 @@ for(const fid of ['203','204','208','209','210','251','252'])assert.equal(scenes
 assert.equal(scenes.red_alert.prefs.SL1.dimmer,80);
 assert.equal(scenes.dream.name,'Bleu océan');
 assert.equal(scenes.dream.colors['201'],'#adcaff','Ocean-blue deck fill stays pale blue');
-assert.deepEqual([...new Set(fixtures.filter(f=>active(scenes.dream,f.id)).map(f=>color(scenes.dream,f.id)))].sort(),['#005eff','#0078ff','#35dcff','#adcaff'].sort(),'Ocean-blue scene contains only physical cyan and blue RGB fills, with no magenta or red');
+assert.deepEqual([...new Set(fixtures.filter(f=>active(scenes.dream,f.id)&&!restoredFixtureIds.includes(f.id)).map(f=>color(scenes.dream,f.id)))].sort(),['#005eff','#0078ff','#35dcff','#adcaff'].sort(),'Ocean-blue scene contains only physical cyan and blue RGB fills, with no magenta or red');
 console.log('Final palette: physical cyan gobos, blue DJ, vivid blue RGB and pale blue decks; SL1 red-scene peak80%.');

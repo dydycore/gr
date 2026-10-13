@@ -30,7 +30,7 @@ function openEditor({transient=false,captureState={}}={}){
  }
  const events={};
  const document={addEventListener:(name,handler)=>{events[name]=handler;},createElement:tag=>new Element(tag),head:new Element('head'),getElementById:id=>nodes.get(id)||null,querySelectorAll:()=>[],querySelector:selector=>{const id=selector.slice(1);if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id);}};
- const context={module:{exports:{}},exports:{},document,localStorage,console,performance:{now:()=>0},setTimeout,queueMicrotask};
+ const context={module:{exports:{}},exports:{},document,localStorage,console,structuredClone,performance:{now:()=>0},setTimeout,queueMicrotask};
  vm.runInNewContext(compiled.outputFiles[0].text,context);
  let colors={},selected=null,restored=null;
  const fixtures=layout.fixtures.map(f=>({...f,g:{userData:{details:{}}}}));
@@ -60,7 +60,7 @@ assert.equal(first.selected.name,'Scène renommée');
 assert.equal(first.editor.updateSaved(first.selected.index,copy2.name),true);
 assert.equal(first.selected.name,copy2.name+' (2)','Rename collision keeps the existing scene');
 const persisted=JSON.parse(store.get('grand-remix-lighting-studio-v1'));
-assert.equal(persisted.catalogueVersion,2);assert.equal(persisted.scenes.length,2);
+assert.equal(persisted.catalogueVersion,3);assert.equal(persisted.scenes.length,2);
 assert.ok(persisted.scenes.every(s=>s.duration===30),'Save clamps duration to 30 seconds');
 assert.deepEqual(persisted.scenes.map(s=>s.name),[copy2.name,first.selected.name]);
 const reloaded=openEditor();
@@ -232,7 +232,7 @@ for(const f of layout.fixtures.filter(f=>f.kind==='moving'&&!f.notUsed&&f.id!=='
 }
 gn.get('lighting-undo').onclick();assert.deepEqual(JSON.parse(settings()),timelineBefore);
 groupEditor.editor.select(layout.fixtures.find(f=>f.id==='202'));const safeBefore=JSON.parse(settings());gn.get('fixture-apply-kind').onclick();const safeAfter=JSON.parse(settings());
-for(const id of ['205','206'])assert.deepEqual(safeAfter.prefs[id],safeBefore.prefs[id],'Unused fixtures remain untouched');
+for(const id of ['205','206'])assert.equal(safeAfter.prefs[id].dimmer,safeAfter.prefs['202'].dimmer,'Restored COLORados receive same-model settings');
 groupEditor.editor.select(layout.fixtures.find(f=>f.id==='SL1'));assert.equal(gn.get('fixture-apply-kind').disabled,true);
 groupEditor.editor.applyPreset({id:'pinky'});assert.equal(gn.get('lighting-undo').disabled,true,'A new ambience starts a fresh history');
 console.log('PASS : same-model group copy, timeline and orientation preservation, excluded fixtures, single-step group undo/redo, Ctrl+Z, native text undo and slider gestures.');

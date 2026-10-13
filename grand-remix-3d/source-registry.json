@@ -632,6 +632,18 @@
       "scene": "hiphop",
       "asset": "media/backgrounds/hiphop.mp4",
       "sourceSha256": "c55f65b026527cd5d8c0075ca3f03a787be9112e7b917c01ff12ef28cdd42115"
+    },
+    {
+      "id": "panasonic-dle035",
+      "category": "technical",
+      "title": "Panasonic ET-DLE035 — annexe de calcul",
+      "url": "https://eu.connect.panasonic.com/sites/default/files/media/document/2024-04/ET-DLE035%28DPQX1334ZB_X1%29_EN-Appendix.pdf",
+      "use": "Calcul conditionnel PT-RZ770 en 16:10 ; référence communiquée ET-DLE03S à confirmer, pas une validation de la lentille installée.",
+      "evidence": "../pdf/grand_remix/build_plan_v18.py; implantation.json",
+      "verification": {
+        "date": "2026-10-13",
+        "method": "Documentation primaire Panasonic, formules et repères de mesure"
+      }
     }
   ],
   "limitations": [

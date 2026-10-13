@@ -32,6 +32,7 @@ par les commandes Exporter et Importer de la maquette.
 ## Vérification
 
 ```sh
+node check-stage-layout.mjs
 node check-lighting-persistence.mjs
 node check-export-sequence.mjs
 node check-fog-volume.mjs
@@ -61,3 +62,13 @@ Les PC, y compris tactiles ou dans une fenêtre étroite, conservent le profil
 précédent. Les exports vidéo utilisent aussi le profil complet. Les tests
 automatisés et les aperçus au format mobile ne remplacent pas une mesure sur
 les téléphones et tablettes physiques.
+
+## Implantation au fond de scène
+
+Écran circulaire centré devant le rideau du fond : circonférence annoncée de 20 pi,
+diamètre calculé de 1,94 m. P0 reste au point du plan LX original de la salle.
+L’artiste est centré ; les neuf appareils auparavant exclus ou déposés sont
+réactivés dans les huit ambiances. Les focus et les balayages sont adaptés à la
+toile arrière. La migration conserve les ambiances personnelles et les réglages
+non concernés. La référence exacte de courte focale et le cadrage restent à
+confirmer sur place ; le calcul ET-DLE035 du PDF est conditionnel.

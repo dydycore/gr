@@ -1,14 +1,16 @@
 import assert from 'node:assert/strict';
+import layout from './implantation.json' with {type:'json'};
+import {applyStageLighting} from './stage-lighting.mjs';
 import {createHash} from 'node:crypto';
 import publicLighting from './published-lighting.json' with {type:'json'};
 import {mergeSceneCatalogue,keepLocalSceneChanges,keepLocalPresetChanges,replaceLocalScene,uniqueSceneName,migratePromotedLighting} from './published-lighting-state.mjs';
 const expectedIds=['arrival','opening','dream','red_alert','warm','pinky','dj','hiphop'];
 assert.equal(publicLighting.format,'grand-remix-published-lighting');
 assert.equal(publicLighting.version,1);
-assert.equal(publicLighting.geometryId,'294317811a38');
+assert.equal(publicLighting.geometryId,layout.geometryId);
 assert.deepEqual(Object.keys(publicLighting.presetOverrides).sort(),expectedIds.sort());
 assert.deepEqual(publicLighting.scenes,[],'Promoted scenes occur only in the main ambience catalogue');
-assert.equal(publicLighting.catalogueVersion,2);
+assert.equal(publicLighting.catalogueVersion,3);
 assert.equal(publicLighting.holdDuration,30);
 for(const scene of publicLighting.scenes){
  assert.equal(scene.duration,30);
@@ -24,11 +26,12 @@ assert.equal(publicLighting.presetOverrides.red_alert.timelines.SL1.steps.filter
 assert.equal(publicLighting.presetOverrides.hiphop.fog.rate,.07);
 for(const p of Object.values(publicLighting.presetOverrides))assert.ok(p.fog.rate>=0&&p.fog.rate<=.07,'All published fog presets capped at 7%');
 const published=publicLighting.migration.promotedScenes.map(source=>{
- const p=publicLighting.presetOverrides[source.presetId];
+ const p=publicLighting.migration.previousLayout.presetOverrides[source.presetId];
  return {name:source.name,duration:p.duration,prefs:p.prefs,colors:p.colors,timelines:p.timelines,view:source.previousView};
 });
 for(const [id,hash] of Object.entries({pinky:'2e7e71e730377ad48e307f489c944b4f33af326c732b84ec476259b5084133f7',opening:'8f7985be47aea0e987b2e324cbe892cc7b71f9bc599a5ea8971b821cf8bb5461'})){
- const p=publicLighting.presetOverrides[id];
+ const p=publicLighting.migration.previousLayout.presetOverrides[id];
+ assert.deepEqual(publicLighting.presetOverrides[id],applyStageLighting(p,layout.fixtures,id),id+': only requested stage-light changes applied');
  assert.equal(createHash('sha256').update(JSON.stringify({prefs:p.prefs,colors:p.colors,timelines:p.timelines})).digest('hex'),hash,id+': original user light settings unchanged');
  assert.equal(p.videoMode,id);assert.equal(p.view.ambience,id);assert.equal(p.view.videoMode,id);
 }
@@ -77,4 +80,4 @@ assert.deepEqual(catalogue.slice(0,2),published,'A subsequent Save must use the 
 assert.equal(catalogue[renamedIndex].duration,21);
 assert.equal(uniqueSceneName(published[1].name,catalogue.filter((_,i)=>i!==renamedIndex)),published[1].name+' (2)','Rename collision does not overwrite another scene');
 assert.equal(JSON.stringify(published),originalCatalogue,'Public data is never mutated');
-console.log('PASS : 8 ambiances principales, Pinky et Ouverture intactes, migration sans doublons, copies sans écrasement et modifications locales préservées.');
+console.log('PASS : 8 ambiances principales, palettes et programmes conservés, appareils réactivés, migration sans doublons, copies sans écrasement et modifications locales préservées.');

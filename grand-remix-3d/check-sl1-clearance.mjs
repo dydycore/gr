@@ -52,8 +52,8 @@ assert.deepEqual(fixture.focus.slamTarget,fixture.focus.danceTarget,'One manuall
 for(const mode of ['slam','dance']){
  assert.equal(fixture.focus[mode+'On'],true,`${mode}: SL1 available`);
  const target=fixture.focus[mode+'Target'];
- assert.equal(target[0],layout.slam.x,`${mode}: preserve artist horizontal aim`);
- assert.equal(target[1],layout.slam.y,`${mode}: preserve artist depth aim`);
+ assert.equal(target[0],-.3,`${mode}: slight manual bias away from bar`);
+ assert.equal(target[1],.2,`${mode}: manual downstage aim`);
  const {direction,distance}=directionFor(target);
  const shallowest=direction[1]*Math.cos(alpha)+Math.sqrt(1-direction[1]**2)*Math.sin(alpha);
  assert.ok(shallowest<0,`${mode}: every cone edge points toward a lower surface`);
@@ -66,7 +66,7 @@ for(const mode of ['slam','dance']){
   completeLength=Math.max(completeLength,length);
   assert.ok(length>distance-offset,`${mode}: check volume after the artist target`);
   assert.equal(coneHitsSphere(start,direction,length,slope,screen,reserve),false,
-   `${mode}: SL1 full 90 deg cone intersects the screen reserve; manually raise aim toward the upper body`);
+   `${mode}: SL1 full 90 deg cone intersects the screen reserve; check the manual downstage aim`);
   const hit=cells.find(cell=>coneHitsSphere(start,direction,length,slope,cell.center,cell.radius));
   assert.equal(hit,undefined,`${mode}: full cone intersects conservative ${hit?.name} cover`);
   const v=screen.map((value,axis)=>value-start[axis]);

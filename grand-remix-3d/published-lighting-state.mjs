@@ -1,3 +1,5 @@
+import layout from './implantation.json' with {type:'json'};
+import {applyStageLighting} from './stage-lighting.mjs';
 // Les réglages publics restent la source commune; les modifications locales
 // ne changent que le navigateur qui les a enregistrées.
 const same=(a,b)=>{
@@ -11,12 +13,13 @@ const same=(a,b)=>{
 export function migratePromotedLighting(local,published){
  if(!local||typeof local!=='object')return local;
  if((local.catalogueVersion||1)>=(published.catalogueVersion||1))return local;
- const promoted=published.migration?.promotedScenes||[];
- const presetOverrides=Object.fromEntries(Object.entries(local.presetOverrides||{}).filter(([id,preset])=>!same(preset,published.migration?.previousPresetOverrides?.[id])));
+ const previous=published.migration?.previousLayout;
+ const promoted=(local.catalogueVersion||1)<2?published.migration?.promotedScenes||[]:[];
+ const presetOverrides=Object.fromEntries(Object.entries(local.presetOverrides||{}).filter(([id,preset])=>!same(preset,published.migration?.previousPresetOverrides?.[id])&&!same(preset,previous?.presetOverrides?.[id])));
  const scenes=[],promotedSceneBackups=[...(local.promotedSceneBackups||[])];
  const key=name=>typeof name==='string'?name.trim().toLocaleLowerCase('fr-CA'):'';
  for(const scene of Array.isArray(local.scenes)?local.scenes:[]){
-  const source=promoted.find(item=>key(item.name)===key(scene.name)),preset=source&&published.presetOverrides[source.presetId];
+  const source=promoted.find(item=>key(item.name)===key(scene.name)),preset=source&&(previous?.presetOverrides||published.presetOverrides)[source.presetId];
   if(!preset){scenes.push(scene);continue;}
   const original={name:scene.name,duration:preset.duration,prefs:preset.prefs,colors:preset.colors,timelines:preset.timelines,view:source.previousView};
   if(same(scene,original))continue;
@@ -26,7 +29,8 @@ export function migratePromotedLighting(local,published){
   if(!promotedSceneBackups.some(saved=>same(saved,scene)))promotedSceneBackups.push(scene);
   if(!presetOverrides[source.presetId])presetOverrides[source.presetId]={...preset,name:preset.name,duration:scene.duration,prefs:scene.prefs,colors:scene.colors,timelines:scene.timelines,fog:scene.view?.fog,artistVisible:scene.view?.artistVisible,videoOn:scene.view?.videoOn,flashes:scene.view?.flashes,videoMode:source.presetId,view:{...scene.view,ambience:source.presetId,videoMode:source.presetId}};
  }
- return {...local,catalogueVersion:published.catalogueVersion||1,scenes,presetOverrides,promotedSceneBackups};
+ const adapt=scene=>previous?applyStageLighting(scene,layout.fixtures):scene;
+ return {...local,catalogueVersion:published.catalogueVersion||1,scenes:scenes.map(adapt),presetOverrides:Object.fromEntries(Object.entries(presetOverrides).map(([id,scene])=>[id,previous?applyStageLighting(scene,layout.fixtures,id):scene])),promotedSceneBackups};
 }
 
 export function mergeSceneCatalogue(published,personal){

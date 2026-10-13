@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {restoredFixtureIds} from './stage-lighting.mjs';
 import {readFileSync} from 'node:fs';
 import {coneHitsSphere,profiles} from './fixture-profiles.js';
 import {distributionFor} from './optical-distributions.js';
@@ -108,6 +109,7 @@ const arrival=createAmbience('arrival',layout.fixtures);
 const activeIds=new Set([...ids,'S1','S2','S3','S4','S5','S6']);
 for(const fixture of layout.fixtures){
  const fx=arrival.prefs[fixture.id];
+ if(restoredFixtureIds.includes(fixture.id)){assert.ok(fx.dimmer>0,fixture.id+': restored stage fill');continue;}
  assert.equal(fx.dimmer,fixture.id==='201'?45:activeIds.has(fixture.id)?100:0,`${fixture.id}: arrival intensity`);
  if(activeIds.has(fixture.id))assert.equal(arrival.colors[fixture.id],'#ffffff',`${fixture.id}: arrival white`);
  if(ids.includes(fixture.id)){
@@ -118,7 +120,7 @@ for(const fixture of layout.fixtures){
  }
 }
 assert.equal(arrival.videoOn,true,'Screen projector shows the welcome visual during arrival');
-console.log(`Arrival PASS: five static white heads + six white PARs at 100%; 201 deck light at 45%, other stage sources and 112 off; shared JSON angles match targets.`);
+console.log(`Arrival PASS: five static white heads + six white PARs at 100%; 201 deck light at 45%, restored stage fills active, other stage sources and 112 off; shared JSON angles match targets.`);
 console.log(`Full cones to farthest floor edge: 0 screen/bar/column/stage intersections (${cells.length} covering cells); all 7,200 sampled footprint edges remain inside the room.`);
 console.log(`Screen R1.20 m unchanged; extra margins ${reports.map(r=>`${r.id}=${r.margin.toFixed(4)}`).join(' / ')} m. Spread: two front, one middle, rear left + right; target separation >=2.4 m.`);
 console.log('Limits: indicative venue dimensions, sampled footprint edges, no calibrated lux/uniformity or physical installation validation.');
